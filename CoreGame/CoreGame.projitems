@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>E39E56E6-2AE8-49E4-97AC-6FB2F8579C92</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>CoreGame</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Component\BaseComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\Renderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\Sprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Transform2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\MathEx.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Line.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\BoundingBox2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Engine\GameSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Engine\Input.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene\Actor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene\Object\Player.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene\SpriteActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene\World.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\ScreenDebugger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+  </ItemGroup>
+</Project>
