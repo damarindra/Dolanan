@@ -11,7 +11,6 @@ namespace CoreGame.Component
 	{
 		public Texture2D Texture2D { get; set; }
 
-		// BUG : always return zero bounding box. Not attached to parent?
 		// BoundingBox2D will control the render. It will check if this boundingbox inside the camera boundingBox
 		public BoundingBox2D BoundingBox
 		{
@@ -83,7 +82,6 @@ namespace CoreGame.Component
 
 		public override void DrawComponent(GameTime gameTime, SpriteBatch spriteBatch)
 		{
-			// TODO : It is needing to culling by ourself? yes it is
 			// Please check Game.Draw (https://github.com/MonoGame/MonoGame/issues/3624) 
 			// NumDraws
 			// NumClears

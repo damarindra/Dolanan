@@ -16,8 +16,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\MathEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Line.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoundingBox2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Engine\Animation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\GameSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\Input.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Engine\BaseObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene\Actor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene\Camera.cs" />

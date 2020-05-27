@@ -5,11 +5,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CoreGame.Component
 {
-	public class BaseComponent
+	public class BaseComponent : BaseObject
 	{
 		public Transform2D TransformComponent = new Transform2D();
 		public Actor Owner;
-		public string Name;
 
 		public BaseComponent()
 		{

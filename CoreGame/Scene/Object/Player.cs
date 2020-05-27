@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using CoreGame.Engine;
+using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -43,6 +44,11 @@ namespace CoreGame.Scene.Object
 
 			movement *= _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			transform.Position += movement;
+		}
+
+		public void WhatsUpDude(string thisIsStr)
+		{
+			Log.Print(thisIsStr);
 		}
 	}
 }

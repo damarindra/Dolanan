@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using CoreGame.Engine;
 using CoreGame.Scene;
@@ -7,6 +10,8 @@ using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Sigil;
+using Sigil.NonGeneric;
 
 namespace CoreGame
 {
@@ -72,7 +77,7 @@ namespace CoreGame
 		
 		protected override void Initialize()
 		{
-			// TODO: Add your initialization logic here
+			// Add your initialization logic here
 			World = new World();
 			// _scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
 			// _scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
@@ -85,8 +90,9 @@ namespace CoreGame
 			RenderTarget =
 				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportSize.X, World.Camera.ViewportSize.Y);
 
-			// TODO: use this.Content to load your game content here
+			// use this.Content to load your game content here
 			Console.WriteLine("Starting Game");
+			
 			
 			p = new Player(Content.Load<Texture2D>("player"));
 			p.Name = "Player";
@@ -104,7 +110,7 @@ namespace CoreGame
 			World.AddActor(p);
 			World.Camera.FollowActor = p;
 			World.AddActor(spr);
-
+			
 			// World.Camera.FollowActor = p;
 		}
 
@@ -124,6 +130,8 @@ namespace CoreGame
 			if (Keyboard.GetState().IsKeyDown(Keys.R))
 				spr.transform.Rotation += 0.01f;
 			
+			// TODO: Use preprocessor for windows only
+			// Read here : https://gamedev.stackexchange.com/questions/55657/monogame-cross-platform-conditional-compilation-symbols
 			if(IsActive)
 				ClipCursor();
 			

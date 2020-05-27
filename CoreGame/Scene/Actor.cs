@@ -9,11 +9,10 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace CoreGame.Scene
 {
-	public class Actor
+	public class Actor : BaseObject
 	{
-		public string Name = "";
-		public Transform2D transform = new Transform2D();
-		
+		public Transform2D transform { get; set; } = new Transform2D();
+
 		// Component stuff
 		// Render
 		private readonly List<BaseComponent> _components = new List<BaseComponent>();
