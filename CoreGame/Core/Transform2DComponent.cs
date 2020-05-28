@@ -1,12 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CoreGame.Component;
+using Microsoft.Xna.Framework;
 
 namespace CoreGame.Engine
 {
-	public class Transform2D
+	public class Transform2DComponent : IComponent
 	{
 		public Matrix Matrix;
 		
-		public Transform2D Parent { get; set; }
+		public Transform2DComponent Parent { get; set; }
 		
 		// Local
 		public Vector2 Position
@@ -76,7 +77,7 @@ namespace CoreGame.Engine
 			get => Parent?.GlobalScale * Scale ?? Scale;
 		}
 
-		public void UpdateTransform()
+		private void UpdateTransform()
 		{
 			Matrix = Matrix.CreateScale(new Vector3(GlobalScale, 0)) *
 			          Matrix.CreateRotationZ(GlobalRotation) *
@@ -98,6 +99,11 @@ namespace CoreGame.Engine
 		public Vector2 Down
 		{
 			get => new Vector2(Matrix.Down.X, Matrix.Down.Y);
+		}
+
+		public void UpdateComponent(GameTime gameTime)
+		{
+			UpdateTransform();
 		}
 	}
 }

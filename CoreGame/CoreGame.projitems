@@ -9,14 +9,14 @@
     <Import_RootNamespace>CoreGame</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Animation\AnimationSequence.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\BaseComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\Renderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\Sprite.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Transform2D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Transform2DComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MathEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Line.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoundingBox2D.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Engine\Animation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\GameSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\BaseObject.cs" />
@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Content\" />
+    <Folder Include="$(MSBuildThisFileDirectory)lib\release" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />

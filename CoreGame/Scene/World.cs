@@ -40,9 +40,6 @@ namespace CoreGame.Scene
 		{
 			foreach (var actor in Actors)
 			{
-				if(actor == Camera)
-					continue;
-				
 				actor.Draw(gameTime, spriteBatch);
 			}
 		}

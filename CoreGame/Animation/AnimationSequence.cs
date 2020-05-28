@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using CoreGame.Engine;
 using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Sigil;
 
-namespace CoreGame.Engine
+namespace CoreGame.Animation
 {
+	//==================================================================================
+	// ============================= END ANIMATION =====================================
+	//==================================================================================
+
+	#region ANIMATION
+	
 	// TODO : Complete the animation system
 	// TODO : Changing Animation value need a delegate to refresh the other value. For now, it can only be set on constructor
-	public class Animation : BaseObject
+	public class AnimationSequence : BaseObject
 	{
 		/// <summary>
 		/// Total time animation in miliseconds
 		/// </summary>
 		public float AnimationLength { get; private set; }
 
+		public bool IsPlaying { get; private set; } = true;
+		
 		public bool IsReverse
 		{
 			get => _animationData.IsReverse;
@@ -30,7 +39,6 @@ namespace CoreGame.Engine
 
 		AnimationData _animationData;
 
-		public bool IsPlaying { get; private set; } = true;
 
 		List<ValueTrack<int>> _intTracks = new List<ValueTrack<int>>();
 		List<ValueTrack<float>> _floatTracks = new List<ValueTrack<float>>();
@@ -42,7 +50,7 @@ namespace CoreGame.Engine
 		/// Create new Animation
 		/// </summary>
 		/// <param name="animationLength">animation time in miliseconds</param>
-		public Animation(float animationLength, bool isReverse = false, bool isLoop = true)
+		public AnimationSequence(float animationLength, bool isReverse = false, bool isLoop = true)
 		{
 			AnimationLength = animationLength;
 			_animationData = new AnimationData(this);
@@ -138,18 +146,26 @@ namespace CoreGame.Engine
 		public float Position { get; set; }
 		public bool IsLoop { get; set; }
 		public bool IsReverse { get; set; }
+		
+		/// <summary>
+		/// Get this value after calling UpdateAnimationData (it is already called, don't call it again)
+		/// So, this will give true value if in this frame UpdateAnimationData,
+		/// the Position before update is less than AnimationLength and less than zero
+		/// OR otherwise
+		/// For IsLoop only
+		/// </summary>
 		public bool IsThisFrameLoopBack { get; private set; }
 
-		public Animation Animation
+		public AnimationSequence AnimationSequence
 		{
-			get => _animation;
+			get => _animationSequence;
 		}
 
-		private Animation _animation;
+		private AnimationSequence _animationSequence;
 
-		public AnimationData(Animation animation)
+		public AnimationData(AnimationSequence animationSequence)
 		{
-			_animation = animation;
+			_animationSequence = animationSequence;
 		}
 
 		public void UpdateAnimationData(GameTime gameTime)
@@ -161,26 +177,33 @@ namespace CoreGame.Engine
 			{
 				if (Position < 0)
 					Position = 0;
-				else if (Position > _animation.AnimationLength)
-					Position = _animation.AnimationLength;
+				else if (Position > _animationSequence.AnimationLength)
+					Position = _animationSequence.AnimationLength;
 			}
 			else
 			{
 				if (Position < 0)
 				{
-					Position = _animation.AnimationLength - Position;
+					Position = _animationSequence.AnimationLength - Position;
 					IsThisFrameLoopBack = true;
 				}
-				else if (Position > _animation.AnimationLength)
+				else if (Position > _animationSequence.AnimationLength)
 				{
-					Position = Position - _animation.AnimationLength;
+					Position = Position - _animationSequence.AnimationLength;
 					IsThisFrameLoopBack = true;
 				}
 			}
 			
 		}
 	}
-
+	#endregion
+	//==================================================================================
+	// ============================= END ANIMATION =====================================
+	//==================================================================================
+ 
+	//==================================================================================
+	// ================================= KEY =====================================
+	//==================================================================================
 	#region KEY
 	// TODO: Key -> Changing TimeMilisec need auto sort List<Key> inside the Track. 
 	// TODO: Make key IEquatable. It will add ability to check if a key already recorded
@@ -197,7 +220,7 @@ namespace CoreGame.Engine
 		}
 	}
 
-	public class TKey<T> : Key
+	public class Key<T> : Key
 	{
 		public T Value;
 
@@ -206,21 +229,28 @@ namespace CoreGame.Engine
 		/// </summary>
 		/// <param name="timeMilisec">Time in miliseconds</param>
 		/// <param name="val"></param>
-		public TKey(float timeMilisec, T val) : base(timeMilisec)
+		public Key(float timeMilisec, T val) : base(timeMilisec)
 		{
 			Value = val;
 		}
 	}
 
 	[Obsolete("Actually, object is just base class, if we store upper type, then it return to the base. SO it is useless")]
-	public class KeyValue : TKey<object>
+	public class KeyValue : Key<object>
 	{
 		public KeyValue(float timeMilisec, object val) : base(timeMilisec, val)
 		{
 		}
 	}
 	#endregion
+	//==================================================================================
+	// ============================= END KEY =====================================
+	//==================================================================================
 
+	//==================================================================================
+	// ================================= TRACK =====================================
+	//==================================================================================
+	#region TRACK
 	public enum TrackType
 	{
 		Value, Bezier, Method, Audio
@@ -231,7 +261,6 @@ namespace CoreGame.Engine
 		None, Field, Property
 	}
 
-	#region TRACK
 	public class Track : BaseObject
 	{
 		public TrackType Type;
@@ -239,9 +268,9 @@ namespace CoreGame.Engine
 		/// Object currently being recorded
 		/// </summary>
 		protected object RecordObject;
-		protected Animation Owner;
+		protected AnimationSequence Owner;
 
-		public Track(Animation owner, object recordObject)
+		public Track(AnimationSequence owner, object recordObject)
 		{
 			Owner = owner;
 			RecordObject = recordObject;
@@ -255,7 +284,7 @@ namespace CoreGame.Engine
 	/// <typeparam name="T"></typeparam>
 	public class Track<T> : Track
 	{
-		private List<TKey<T>> Keys = new List<TKey<T>>();
+		private List<Key<T>> Keys = new List<Key<T>>();
 		private int _nextKeyIndex = -1;
 		private int _lastValidKeyIndex = -1;
 
@@ -267,7 +296,7 @@ namespace CoreGame.Engine
 			}
 		}
 		
-		public Track(Animation owner,object recordObject) : base(owner, recordObject)
+		public Track(AnimationSequence owner,object recordObject) : base(owner, recordObject)
 		{
 		}
 
@@ -276,7 +305,7 @@ namespace CoreGame.Engine
 		/// </summary>
 		/// <param name="key"></param>
 		/// <typeparam name="T"></typeparam>
-		public virtual void AddKey(TKey<T> key)
+		public virtual void AddKey(Key<T> key)
 		{
 			if (key.TimeMilisec < 0)
 			{
@@ -296,7 +325,7 @@ namespace CoreGame.Engine
 		/// <param name="animationData"></param>
 		/// <param name="key">key result</param>
 		public virtual bool TryGetNewKey(float positionBeforeUpdate, float currentPosition, AnimationData animationData,
-			out TKey<T> key)
+			out Key<T> key)
 		{
 			key = null;
 			if (Keys.Count == 0)
@@ -312,7 +341,7 @@ namespace CoreGame.Engine
 				return true;
 			}
 			
-			TKey<T> nextKey = Keys[_nextKeyIndex];
+			Key<T> nextKey = Keys[_nextKeyIndex];
 
 			float min = Math.Min(positionBeforeUpdate, currentPosition);
 			float max = Math.Max(positionBeforeUpdate, currentPosition);
@@ -428,7 +457,7 @@ namespace CoreGame.Engine
 		private readonly PropertyInfo _propertyInfo;
 		protected Action<object, T> Setter;
 		
-		public ValueTrack(Animation owner,object recordObject, string varName) : base(owner,recordObject)
+		public ValueTrack(AnimationSequence owner,object recordObject, string varName) : base(owner,recordObject)
 		{
 			VarName = varName;
 			Type = TrackType.Value;
@@ -478,7 +507,7 @@ namespace CoreGame.Engine
 	{
 		private MethodInfo _methodInfo;
 		
-		public MethodTrack(Animation owner,object recordObject, string methodName) : base(owner, recordObject)
+		public MethodTrack(AnimationSequence owner,object recordObject, string methodName) : base(owner, recordObject)
 		{
 			Type t = recordObject.GetType();
 			while (t != null)
@@ -524,4 +553,7 @@ namespace CoreGame.Engine
 	// 	}
 	// }
 
+	//==================================================================================
+	// ============================= END TRACK =====================================
+	//==================================================================================
 }

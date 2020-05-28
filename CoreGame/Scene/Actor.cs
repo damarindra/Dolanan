@@ -11,7 +11,7 @@ namespace CoreGame.Scene
 {
 	public class Actor : BaseObject
 	{
-		public Transform2D transform { get; set; } = new Transform2D();
+		public Transform2DComponent transform { get; set; } = new Transform2DComponent();
 
 		// Component stuff
 		// Render
@@ -68,7 +68,7 @@ namespace CoreGame.Scene
 		// MonoGame Update
 		public virtual void Update(GameTime gameTime)
 		{
-			transform.UpdateTransform();
+			transform.UpdateComponent(gameTime);
 			foreach (var component in _components)
 			{
 				component.UpdateComponent(gameTime);

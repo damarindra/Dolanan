@@ -1,6 +1,5 @@
 ﻿#nullable enable
-using System;
-using System.Collections.Generic;
+using CoreGame.Animation;
 using CoreGame.Engine;
 using CoreGame.Tools;
 using Microsoft.Xna.Framework;
@@ -11,7 +10,7 @@ namespace CoreGame.Scene.Object
 {
 	public class Player : SpriteActor
 	{
-		public Animation Animation;
+		public AnimationSequence AnimationSequence;
 		
 		private float _moveSpeed = 60;
 		
@@ -19,16 +18,16 @@ namespace CoreGame.Scene.Object
 		{
 			Sprite.SrcLocation = Point.Zero;
 			Sprite.SrcSize = new Point(32, 32);
-			Animation = new Animation(1500, true, false);
+			AnimationSequence = new AnimationSequence(1500, true, false);
 			
-			Track<int> t = Animation.CreateNewValueTrack<int>("SpriteFrame", Sprite, "Frame");
-			Animation.Seek(1500);
-			t.AddKey(new TKey<int>(0, 0));
-			t.AddKey(new TKey<int>(300, 1));
-			t.AddKey(new TKey<int>(600, 2));
-			t.AddKey(new TKey<int>(900, 3));
-			t.AddKey(new TKey<int>(1200, 4));
-			t.AddKey(new TKey<int>(1500, 5));
+			Track<int> t = AnimationSequence.CreateNewValueTrack<int>("SpriteFrame", Sprite, "Frame");
+			AnimationSequence.Seek(1500);
+			t.AddKey(new Key<int>(0, 0));
+			t.AddKey(new Key<int>(300, 1));
+			t.AddKey(new Key<int>(600, 2));
+			t.AddKey(new Key<int>(900, 3));
+			t.AddKey(new Key<int>(1200, 4));
+			t.AddKey(new Key<int>(1500, 5));
 			t.PrintALl();
 		}
 
@@ -60,7 +59,7 @@ namespace CoreGame.Scene.Object
 			movement *= _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 			transform.Position += movement;
 			
-			Animation.UpdateAnimation(gameTime);
+			AnimationSequence.UpdateAnimation(gameTime);
 		}
 
 		public void WhatsUpDude(string thisIsStr)

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using CoreGame.Component;
 using CoreGame.Engine;
 using CoreGame.Scene;
 using CoreGame.Scene.Object;
@@ -51,7 +53,6 @@ namespace CoreGame
 
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
-
 		}
 
 		private void OnWindowResize(object? sender, EventArgs e)
@@ -153,21 +154,10 @@ namespace CoreGame
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
-			// SpriteBatch.Begin();
-			// SpriteBatch.Draw(Content.Load<Texture2D>("ui_fin_exp"), Vector2.One * -9999, Color.White);
-			//World.Draw(gameTime, _spriteBatch);
-			//p.Draw(gameTime, SpriteBatch);
-			foreach (var worldActor in World.Actors)
-			{
-				worldActor.Draw(gameTime, SpriteBatch);
-			}
+			World.Draw(gameTime, SpriteBatch);
 			SpriteBatch.End();
 
 			ScreenDebugger.Draw(SpriteBatch);
-			// Texture2D t = Content.Load<Texture2D>("ui_fin_exp");
-			// _spriteBatch.Begin();
-			// _spriteBatch.Draw(t, Vector2.Zero, Color.White );
-			// _spriteBatch.End();
 
 			BackBufferRender();
 

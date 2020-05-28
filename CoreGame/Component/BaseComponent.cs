@@ -7,7 +7,7 @@ namespace CoreGame.Component
 {
 	public class BaseComponent : BaseObject
 	{
-		public Transform2D TransformComponent = new Transform2D();
+		public Transform2DComponent TransformComponent = new Transform2DComponent();
 		public Actor Owner;
 
 		public BaseComponent()
@@ -16,8 +16,18 @@ namespace CoreGame.Component
 
 		public virtual void UpdateComponent(GameTime gameTime)
 		{
-			TransformComponent.UpdateTransform();
+			TransformComponent.UpdateComponent(gameTime);
 		}
 		public virtual void DrawComponent(GameTime gameTime, SpriteBatch spriteBatch) { }
+	}
+
+	public interface IComponent
+	{
+		public abstract void UpdateComponent(GameTime gameTime);
+	}
+
+	public interface IDrawableComponent : IComponent
+	{
+		public abstract void DrawComponent(GameTime gameTime, SpriteBatch spriteBatch);
 	}
 }
