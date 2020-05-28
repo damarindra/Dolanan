@@ -13,16 +13,27 @@ namespace CoreGame.Component
 		public UInt16 Frame
 		{
 			get => _frame;
-			set => _frame = value;
+			set
+			{
+				_frame = value;
+				Point rectPosition = new Point();
+				rectPosition.Y = (int) MathF.Floor(_frame / (Texture2D.Width / FrameSize.X)) * FrameSize.Y; 
+				rectPosition.X = (int) MathF.Floor(_frame % (Texture2D.Width / FrameSize.X)) * FrameSize.X;
+				SrcLocation = rectPosition;
+			}
 		}
 
-
 		private UInt16 _frame = 0;
-		private Point _frameSize;
+
+		public Point FrameSize
+		{
+			get => SrcSize;
+			set => SrcSize = value;
+		}
 
 		public Sprite() : base()
 		{
-			_frameSize = SrcRectangle.Size;
+			FrameSize = SrcRectangle.Size;
 		}
 	}
 }

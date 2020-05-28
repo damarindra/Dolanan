@@ -6,6 +6,23 @@ namespace CoreGame.Engine
 {
 	public static class MathEx
 	{
+		public static int PosMod(int i1, int i2)
+		{
+			int i = i1 % i2;
+			if ((i < 0 && i2 > 0) || (i > 0 && i2 < 0))
+				i += i2;
+
+			return i;
+		}
+		public static float FPosMod(float f1, float f2)
+		{
+			float i = f1 % f2;
+			if ((i < 0 && f2 > 0) || (i > 0 && f2 < 0))
+				i += f2;
+
+			return i;
+		}
+		
 		public static float Min(params float[] floats)
 		{
 			return floats.Min();

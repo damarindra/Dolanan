@@ -96,7 +96,6 @@ namespace CoreGame
 			
 			p = new Player(Content.Load<Texture2D>("player"));
 			p.Name = "Player";
-			p.Sprite.SrcRectangle = new Rectangle(0,0, 32, 32);
 			p.transform.Position = Vector2.Zero;
 			//p.transform.Rotation = MathHelper.ToRadians(45);
 			//p.transform.Position += p.transform.Right * _graphics.PreferredBackBufferWidth / 2;
@@ -104,7 +103,7 @@ namespace CoreGame
 			spr = new SpriteActor(Content.Load<Texture2D>("square_64x64"));
 			// spr.transform.Position = new Vector2(World.Camera.ViewportSize.X / 2, 0);
 			// spr.transform.Rotation = MathHelper.ToRadians(45);
-			spr.Sprite.SrcRectangle = new Rectangle(0,0, 64, 64);
+			spr.Sprite.SrcSize = new Point(64, 64);
 			spr.Name = "Spr";
 			
 			World.AddActor(p);
@@ -116,6 +115,7 @@ namespace CoreGame
 
 		protected override void Update(GameTime gameTime)
 		{
+			//Log.Print(gameTime.ElapsedGameTime.Milliseconds.ToString());
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();

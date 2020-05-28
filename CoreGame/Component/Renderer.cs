@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using CoreGame.Engine;
 using CoreGame.Tools;
@@ -18,9 +19,9 @@ namespace CoreGame.Component
 			{
 				return new BoundingBox2D(TransformComponent.Matrix, 
 					-_origin, 
-					new Vector2(_srcRectangle.Width - _origin.X, -_origin.Y),
-					new Vector2(-_origin.X, _srcRectangle.Height - _origin.Y),
-					new Vector2(_srcRectangle.Size.X, _srcRectangle.Size.Y) - _origin);
+					new Vector2(_srcSize.X - _origin.X, -_origin.Y),
+					new Vector2(-_origin.X, _srcSize.Y - _origin.Y),
+					new Vector2(_srcSize.X, _srcSize.Y) - _origin);
 			}
 		}
 
@@ -29,24 +30,29 @@ namespace CoreGame.Component
 		/// </summary>
 		public Rectangle SrcRectangle
 		{
-			get => _srcRectangle;
-			set
-			{
-				_origin.X = Pivot.X * value.Width;
-				_origin.Y = Pivot.X * value.Height;
-				_srcRectangle = value;
-			}
+			get => new Rectangle(SrcLocation, _srcSize);
 		}
 
-		private Rectangle _srcRectangle;
+		public Point SrcLocation { get; set; }
 
+		public Point SrcSize
+		{
+			get => _srcSize;
+			set
+			{
+				_origin.X = Pivot.X * value.X;
+				_origin.Y = Pivot.X * value.Y;
+				_srcSize = value;
+			}
+		}
+		
 		public RendererPivot Pivot
 		{
 			get => _pivot;
 			set
 			{
-				_origin.X = value.X * _srcRectangle.Width;
-				_origin.Y = value.Y * _srcRectangle.Height;
+				_origin.X = value.X * _srcSize.X;
+				_origin.Y = value.Y * _srcSize.Y;
 				_pivot = value;
 			}
 		}
@@ -57,6 +63,7 @@ namespace CoreGame.Component
 		public Color ModulatedColor { get; set; } = Color.White;
 
 		public SpriteEffects SpriteEffect = SpriteEffects.None;
+		private Point _srcSize;
 		public float LayerDepth { get; set; }
 
 		public Renderer() : base()

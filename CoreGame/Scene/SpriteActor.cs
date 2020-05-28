@@ -19,7 +19,8 @@ namespace CoreGame.Scene
 
 			Sprite = AddComponent<Sprite>("SpriteRenderer");
 			Sprite.Texture2D = texture2D;
-			Sprite.SrcRectangle = texture2D.Bounds;
+			Sprite.SrcLocation = texture2D.Bounds.Location;
+			Sprite.SrcSize = texture2D.Bounds.Size;
 			Sprite.Pivot = RendererPivot.Center;
 		}
 
@@ -27,7 +28,8 @@ namespace CoreGame.Scene
 		{
 			Sprite = AddComponent<Sprite>("SpriteRenderer");
 			Sprite.Texture2D = texture2D;
-			Sprite.SrcRectangle = texture2D.Bounds;
+			Sprite.SrcLocation = texture2D.Bounds.Location;
+			Sprite.SrcSize = texture2D.Bounds.Size;
 			Sprite.Pivot = RendererPivot.Center;
 
 			transform.Position = position;
