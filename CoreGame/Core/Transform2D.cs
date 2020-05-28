@@ -3,11 +3,11 @@ using Microsoft.Xna.Framework;
 
 namespace CoreGame.Engine
 {
-	public class Transform2DComponent : IComponent
+	public class Transform2D
 	{
 		public Matrix Matrix;
 		
-		public Transform2DComponent Parent { get; set; }
+		public Transform2D Parent { get; set; }
 		
 		// Local
 		public Vector2 Position

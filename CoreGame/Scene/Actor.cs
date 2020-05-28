@@ -11,7 +11,7 @@ namespace CoreGame.Scene
 {
 	public class Actor : BaseObject
 	{
-		public Transform2DComponent transform { get; set; } = new Transform2DComponent();
+		public Transform2D transform { get; set; } = new Transform2D();
 
 		// Component stuff
 		// Render
@@ -53,7 +53,7 @@ namespace CoreGame.Scene
 		//Extension stuff
 		public T AddComponent<T>(string name) where T : BaseComponent, new()
 		{
-			T t = new T {Owner = this, TransformComponent = {Parent = transform}};
+			T t = new T {Owner = this, Transform = {Parent = transform}};
 			t.Name = name;
 			_components.Add(t);
 			return t;

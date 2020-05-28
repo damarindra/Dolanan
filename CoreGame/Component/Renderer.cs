@@ -17,7 +17,7 @@ namespace CoreGame.Component
 		{
 			get
 			{
-				return new BoundingBox2D(TransformComponent.Matrix, 
+				return new BoundingBox2D(Transform.Matrix, 
 					-_origin, 
 					new Vector2(_srcSize.X - _origin.X, -_origin.Y),
 					new Vector2(-_origin.X, _srcSize.Y - _origin.Y),
@@ -75,15 +75,15 @@ namespace CoreGame.Component
 			base.UpdateComponent(gameTime);
 
 			BoundingBox2D box = BoundingBox;
-			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location, box.Location + TransformComponent.Down * 10),
+			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location, box.Location + Transform.Down * 10),
 				5));
 			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location + new Vector2(box.Width, 0),
-					box.Location+ new Vector2(box.Width, 0) + TransformComponent.Down * 10),
+					box.Location+ new Vector2(box.Width, 0) + Transform.Down * 10),
 				5));
 			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location+ new Vector2(0, box.Height),
-					box.Location + new Vector2(0, box.Height) + TransformComponent.Down * 10),
+					box.Location + new Vector2(0, box.Height) + Transform.Down * 10),
 				5));
-			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location + box.Size, box.Location+ box.Size + TransformComponent.Down * 10),
+			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location + box.Size, box.Location+ box.Size + Transform.Down * 10),
 				5));
 		}
 
@@ -95,8 +95,8 @@ namespace CoreGame.Component
 			// NumTargets
 			// NumTextures
 			if(GameClient.Instance.World.Camera.BoundingBox2D.Intersects(BoundingBox))
-				spriteBatch.Draw(Texture2D, TransformComponent.GlobalPosition, SrcRectangle, ModulatedColor,
-					TransformComponent.GlobalRotation, _origin, TransformComponent.Scale, SpriteEffect, LayerDepth);
+				spriteBatch.Draw(Texture2D, Transform.GlobalPosition, SrcRectangle, ModulatedColor,
+					Transform.GlobalRotation, _origin, Transform.Scale, SpriteEffect, LayerDepth);
 			else
 				Log.PrintWarning("Skipping render : " + Owner.Name);
 		}

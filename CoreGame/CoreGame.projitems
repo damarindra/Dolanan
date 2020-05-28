@@ -13,7 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Component\BaseComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\Renderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\Sprite.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\Transform2DComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Transform2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MathEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Line.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\BoundingBox2D.cs" />
@@ -31,7 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Content\" />
-    <Folder Include="$(MSBuildThisFileDirectory)lib\release" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
