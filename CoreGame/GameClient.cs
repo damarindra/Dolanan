@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CoreGame.Component;
+using CoreGame.Controller;
 using CoreGame.Engine;
+using CoreGame.Resources;
 using CoreGame.Scene;
 using CoreGame.Scene.Object;
 using CoreGame.Tools;
@@ -22,7 +24,7 @@ namespace CoreGame
 	/// Contains basic setup for your game settings, such as window settings
 	/// 
 	/// </summary>
-	class GameClient : Game
+	public class GameClient : Game
 	{
 		public static GameClient Instance = null;
 
@@ -40,6 +42,8 @@ namespace CoreGame
 		private SpriteActor spr;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 
+		private bool _debugShowCollision = false;
+
 		public GameClient()
 		{
 			Instance = this;
@@ -47,9 +51,11 @@ namespace CoreGame
 			_graphics = new GraphicsDeviceManager(this);
 			GameSettings.InitializeGameSettings(_graphics, Window);
 			Window.ClientSizeChanged += OnWindowResize;
-
+			
+			
 			Input.AddInputAction("Alt", new InputAction(Keys.LeftAlt, Keys.RightAlt));
 			Input.AddInputAction("Enter", new InputAction(Keys.Enter));
+			Input.AddInputAction("Show Collision", new InputAction(Keys.F4));
 
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
@@ -79,39 +85,49 @@ namespace CoreGame
 		protected override void Initialize()
 		{
 			// Add your initialization logic here
-			World = new World();
+			World = new World(GameSettings.WorldCollisionSize.X, GameSettings.WorldCollisionSize.Y);
 			// _scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
 			// _scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
+			
+			World.Initialize();
 
 			base.Initialize();
+			
+			World.Start();
 		}
 		protected override void LoadContent()
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
+			GameMgr.Init(this, SpriteBatch);
+			FontRes.Init();
+			
 			RenderTarget =
 				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportSize.X, World.Camera.ViewportSize.Y);
 
 			// use this.Content to load your game content here
 			Console.WriteLine("Starting Game");
 			
+			p = World.CreateActor<Player>("Player");
+			p.Sprite.Texture2D = Content.Load<Texture2D>("player");
+			p.Teleport(World.Camera.Transform.GlobalPosition);
 			
-			p = new Player(Content.Load<Texture2D>("player"));
-			p.Name = "Player";
-			p.transform.Position = Vector2.Zero;
-			//p.transform.Rotation = MathHelper.ToRadians(45);
-			//p.transform.Position += p.transform.Right * _graphics.PreferredBackBufferWidth / 2;
-			
-			spr = new SpriteActor(Content.Load<Texture2D>("square_64x64"));
-			// spr.transform.Position = new Vector2(World.Camera.ViewportSize.X / 2, 0);
-			// spr.transform.Rotation = MathHelper.ToRadians(45);
-			spr.Sprite.SrcSize = new Point(64, 64);
-			spr.Name = "Spr";
-			
-			World.AddActor(p);
 			World.Camera.FollowActor = p;
-			World.AddActor(spr);
 			
-			// World.Camera.FollowActor = p;
+			spr = World.CreateActor<SpriteActor>("Sprite");
+			spr.Sprite.Texture2D = Content.Load<Texture2D>("square_64x64");
+			spr.Sprite.SrcSize = new Point(64, 64);
+			//
+			// var tileTex = Content.Load<Texture2D>("tiles_16x16");
+			// for(int x = -64; x < 64; x++){
+			// 	for (int y = -64; y < 64; y++)
+			// 	{
+			// 		var tile = new SpriteActor();
+			// 		tile.Sprite.Texture2D = tileTex;
+			// 		tile.Sprite.SrcSize = new Point(16, 16);
+			// 		tile.Transform.GlobalPosition = new Vector2(x * 16, y * 16);
+			// 		World.AddActor(tile);
+			// 	}
+			// }
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -119,7 +135,9 @@ namespace CoreGame
 			//Log.Print(gameTime.ElapsedGameTime.Milliseconds.ToString());
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
+			{
 				Exit();
+			}
 			if (Input.IsInputActionPressed("Alt") && Input.IsInputActionJustPressed("Enter"))
 			{
 				if (GameSettings.WindowMode == WindowMode.Borderless)
@@ -129,12 +147,14 @@ namespace CoreGame
 			}
 
 			if (Keyboard.GetState().IsKeyDown(Keys.R))
-				spr.transform.Rotation += 0.01f;
+				spr.Transform.Rotation += 0.01f;
 			
+			if (Input.IsInputActionJustPressed("Show Collision")) _debugShowCollision = !_debugShowCollision;
+
 			// TODO: Use preprocessor for windows only
 			// Read here : https://gamedev.stackexchange.com/questions/55657/monogame-cross-platform-conditional-compilation-symbols
-			if(IsActive)
-				ClipCursor();
+			// if(IsActive)
+			// 	ClipCursor();
 			
 			World.Update(gameTime);
 
@@ -145,6 +165,8 @@ namespace CoreGame
 			Input.LastFrameGamePadState = GamePad.GetState(0);
 
 			base.Update(gameTime);
+			
+			World.LateUpdate(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
@@ -154,8 +176,18 @@ namespace CoreGame
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
-			World.Draw(gameTime, SpriteBatch);
+			World.Draw(gameTime);
 			SpriteBatch.End();
+
+			
+			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
+			if (_debugShowCollision)
+			{
+				var b = World.Bounds;
+				World.DrawDebug((int)b.X, (int) b.Y, (int) b.Width, (int) b.Height, DrawCell, DrawBox, DrawString);
+			}
+			SpriteBatch.End();
+
 
 			ScreenDebugger.Draw(SpriteBatch);
 
@@ -208,5 +240,27 @@ namespace CoreGame
 	    
 			ClipCursor(ref rect);
 		}
+		
+		#region DEBUGING COLLISION
+		
+		private void DrawCell(int x, int y, int w, int h, float alpha)
+		{
+			GameMgr.SpriteBatch.DrawStroke(new Rectangle(x, y, w, h), new Color(Color.White, alpha));
+		}
+
+		private void DrawBox(Humper.IBox box)
+		{
+			Color color;
+
+			color = Color.White;
+
+			GameMgr.SpriteBatch.Draw(box.Bounds, color, 0.3f);
+		}
+
+		private void DrawString(string message, int x, int y, float alpha)
+		{
+		}
+
+		#endregion
 	}
 }

@@ -1,5 +1,8 @@
-﻿namespace CoreGame.Engine
+﻿using System;
+
+namespace CoreGame.Engine
 {
+	[Obsolete]
 	/// <summary>
 	/// Base Object for all of object type in game.
 	/// </summary>

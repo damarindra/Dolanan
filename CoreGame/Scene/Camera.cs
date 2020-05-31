@@ -4,78 +4,88 @@ using CoreGame.Engine;
 using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace CoreGame.Scene
 {
-	public class Camera : Actor
+	/// <summary>
+	/// Camera used for virtually rendering the world.
+	/// It actually shifting the spritebatch matrix to the opposite of camera.
+	/// </summary>
+	public class Camera : IGameCycle
 	{
+		public Transform2D Transform { get; private set; }
 		public Actor FollowActor { get; set; }
 		public float SmoothSpeed { get; set; }
 		public bool UseSmooth { get; set; }
-
-		public Point ViewportSize;
+		public Point ViewportSize { get; set; }
+		public Rectangle Limit { get; set; }
 
 		private bool _pixelPerfect = false;
-
-		public BoundingBox2D BoundingBox2D
-		{
-			get
-			{
-				return new BoundingBox2D(transform.Matrix, 
-					new Vector2(-ViewportSize.X / 2, -ViewportSize.Y / 2), 
-					new Vector2(ViewportSize.X / 2, -ViewportSize.Y / 2),
-					new Vector2(-ViewportSize.X / 2, ViewportSize.Y / 2),
-					new Vector2(ViewportSize.X / 2, ViewportSize.Y / 2));
-			}
-		}
-
+		
 		public Camera()
 		{
 			// TODO set viewport size default using window size
 			//ViewportSize = PG_003.Instance.
-		}
-
-		public Camera(Vector2 globalPosition, Point size)
-		{
-			transform.GlobalPosition = globalPosition;
-			ViewportSize = size;
-		}
-
-		public Camera(bool useSmooth, float smoothSpeed, bool pixelPerfect)
-		{
-			UseSmooth = useSmooth;
-			SmoothSpeed = smoothSpeed;
-			_pixelPerfect = pixelPerfect;
+			ViewportSize = GameSettings.ViewportSize;
+			Transform = Transform2D.Identity;
+			Transform.Position = new Vector2(ViewportSize.X / 2, ViewportSize.Y / 2);
+			Limit = new Rectangle(0,0, GameSettings.WorldCollisionSize.X, GameSettings.WorldCollisionSize.Y);
+			Log.Print(Limit.ToString());
 		}
 
 		//TODO SpriteBatch with this matrix offsetting a little bit
 		public Matrix GetTopLeftMatrix()
 		{
-			return Matrix.CreateTranslation(-(transform.Position.X - ViewportSize.X / 2),
-				-(transform.Position.Y - ViewportSize.Y / 2), 0);
+			return Matrix.CreateTranslation(-(Transform.Position.X - ViewportSize.X / 2),
+				-(Transform.Position.Y - ViewportSize.Y / 2), 0);
 		}
-		
-		public override void LateUpdate(GameTime gameTime)
+
+		public virtual void Initialize()
+		{
+		}
+
+		public virtual void Start()
+		{
+		}
+
+		public virtual void Update(GameTime gameTime)
+		{
+		}
+
+		public virtual void LateUpdate(GameTime gameTime)
 		{
 			if(FollowActor == null)
 				return;
 			
+			var position = Transform.Position;
 			if (UseSmooth)
 			{
 				float s = (float) gameTime.ElapsedGameTime.TotalSeconds * SmoothSpeed;
-				transform.GlobalPosition = ((FollowActor.transform.GlobalPosition - transform.Position) * s) + transform.GlobalPosition;
+				position = ((FollowActor.Transform.GlobalPosition - Transform.Position) * s) + Transform.Position;
 			}
 			else
-				transform.GlobalPosition = FollowActor.transform.GlobalPosition;
+				position = FollowActor.Transform.Position;
+			
+			//Verify limit
+			if (Limit != Rectangle.Empty)
+			{
+				position.X = MathEx.Clamp(position.X, ViewportSize.X / 2, 
+					Limit.X + Limit.Width - (ViewportSize.X / 2));
+				position.Y = MathEx.Clamp(position.Y, ViewportSize.Y / 2,
+					Limit.Y + Limit.Height- (ViewportSize.Y / 2));
+			}
 
 			if (_pixelPerfect)
-				transform.GlobalPosition = new Vector2(MathF.Round(transform.GlobalPosition.X), MathF.Round(transform.GlobalPosition.Y));
+				Transform.Position = new Vector2(MathF.Round(position.X),
+					MathF.Round(position.Y));
+			else
+				Transform.Position = position;
+		}
 
-			BoundingBox2D b = BoundingBox2D;
-			ScreenDebugger.DrawSquare(new SquareDebug(b.Location, 10));
-			ScreenDebugger.DrawSquare(new SquareDebug(b.Location + new Vector2(b.Width, 0), 10));
-			ScreenDebugger.DrawSquare(new SquareDebug(b.Location+ new Vector2(b.Width, b.Height), 10));
-			ScreenDebugger.DrawSquare(new SquareDebug(b.Location + new Vector2(0, b.Height), 10));
+		public void Draw(GameTime gameTime, float layerZDepth = 0)
+		{
+			
 		}
 	}
 }

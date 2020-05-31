@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\..\monogame-aseprite-master\source\MonoGame.Aseprite.ContentPipeline\bin\Release\MonoGame.Aseprite.ContentPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -61,6 +62,18 @@
 /processorParam:TextureFormat=Color
 /build:D:/D_Documents/Aseprite/PG_001/square_64x64.png;square_64x64.png
 
+#begin D:/D_Documents/Aseprite/PG_001/tiles_16x16.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/tiles_16x16.png;tiles_16x16.png
+
 #begin D:/D_Documents/Aseprite/PG_001/ui_fin_exp.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -72,4 +85,11 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:D:/D_Documents/Aseprite/PG_001/ui_fin_exp.png;ui_fin_exp.png
+
+#begin Fonts/bitty.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/bitty.spritefont
 

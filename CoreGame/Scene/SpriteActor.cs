@@ -1,40 +1,21 @@
 ﻿using System;
+using CoreGame.Collision;
 using CoreGame.Component;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace CoreGame.Scene
 {
+	// TODO : Remove this
 	public class SpriteActor : Actor
 	{
-		public Sprite Sprite;
+		public Sprite Sprite { get; private set; }
+		private Body _body;
 
-		public SpriteActor(Texture2D texture2D) : base()
+		public SpriteActor(string name, Layer layer) : base(name, layer)
 		{
-			if (texture2D == null)
-			{
-				Console.WriteLine("Texture is null! Abort creating sprite");
-				return;
-			}
-
-			Sprite = AddComponent<Sprite>("SpriteRenderer");
-			Sprite.Texture2D = texture2D;
-			Sprite.SrcLocation = texture2D.Bounds.Location;
-			Sprite.SrcSize = texture2D.Bounds.Size;
-			Sprite.Pivot = RendererPivot.Center;
+			Sprite = AddComponent<Sprite>();
+			_body = layer.GameWorld.Create(Transform, 64, 64, new Vector2(32, 32));
 		}
-
-		public SpriteActor(Texture2D texture2D, Vector2 position) : base()
-		{
-			Sprite = AddComponent<Sprite>("SpriteRenderer");
-			Sprite.Texture2D = texture2D;
-			Sprite.SrcLocation = texture2D.Bounds.Location;
-			Sprite.SrcSize = texture2D.Bounds.Size;
-			Sprite.Pivot = RendererPivot.Center;
-
-			transform.Position = position;
-			LateInit(null, transform.Position, transform.Rotation, transform.Scale);
-		}
-
 	}
 }

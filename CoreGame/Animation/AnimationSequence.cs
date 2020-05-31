@@ -18,7 +18,7 @@ namespace CoreGame.Animation
 	
 	// TODO : Complete the animation system
 	// TODO : Changing Animation value need a delegate to refresh the other value. For now, it can only be set on constructor
-	public class AnimationSequence : BaseObject
+	public class AnimationSequence
 	{
 		/// <summary>
 		/// Total time animation in miliseconds
@@ -85,10 +85,7 @@ namespace CoreGame.Animation
 			foreach (var valueTrack in _intTracks)
 			{
 				if (valueTrack.TryGetNewKey(positionBeforeUpdate, _animationData.Position, _animationData, out var key))
-				{
 					valueTrack.SetValueToTrackedObject(key.Value);
-					Log.Print(_animationData.Position.ToString());
-				}
 			}
 			foreach (var valueTrack in _stringTracks)
 			{
@@ -261,7 +258,7 @@ namespace CoreGame.Animation
 		None, Field, Property
 	}
 
-	public class Track : BaseObject
+	public class Track
 	{
 		public TrackType Type;
 		/// <summary>
@@ -287,14 +284,6 @@ namespace CoreGame.Animation
 		private List<Key<T>> Keys = new List<Key<T>>();
 		private int _nextKeyIndex = -1;
 		private int _lastValidKeyIndex = -1;
-
-		public void PrintALl()
-		{
-			foreach (var key in Keys)
-			{
-				Log.Print(key.TimeMilisec.ToString());
-			}
-		}
 		
 		public Track(AnimationSequence owner,object recordObject) : base(owner, recordObject)
 		{
@@ -337,7 +326,6 @@ namespace CoreGame.Animation
 				key = Keys[0];
 				_nextKeyIndex = 0;
 				UpdateNextIndex(0, animationData);
-				Log.Print("Starto");
 				return true;
 			}
 			
@@ -367,7 +355,6 @@ namespace CoreGame.Animation
 				{
 					key = nextKey;
 					UpdateNextIndex(max - min, animationData);
-					Log.Print("Reversed to : " + _nextKeyIndex);
 				}
 				// just regular next animation, forward or backward
 				else if (isFoundNextKey)
@@ -376,7 +363,6 @@ namespace CoreGame.Animation
 					key = nextKey;
 
 					UpdateNextIndex(max - min, animationData);
-					Log.Print("AFter getting Key, next index is : " + _nextKeyIndex);
 				}
 			}
 
@@ -422,7 +408,6 @@ namespace CoreGame.Animation
 				}
 			}
 			
-			Log.Print(_nextKeyIndex + " - " + maybeNextIndex);
 			return _nextKeyIndex = maybeNextIndex;
 		}
 
@@ -451,24 +436,24 @@ namespace CoreGame.Animation
 
 	public class ValueTrack<T> : Track<T>
 	{
-		protected string VarName;
-		protected readonly ReflectionInfoType InfoType = ReflectionInfoType.None;
-		protected readonly FieldInfo FieldInfo;
+		private string _varName;
+		private readonly ReflectionInfoType _infoType = ReflectionInfoType.None;
+		private readonly FieldInfo _fieldInfo;
 		private readonly PropertyInfo _propertyInfo;
-		protected Action<object, T> Setter;
+		private readonly Action<object, T> _setter;
 		
 		public ValueTrack(AnimationSequence owner,object recordObject, string varName) : base(owner,recordObject)
 		{
-			VarName = varName;
+			_varName = varName;
 			Type = TrackType.Value;
 
 			Type t = recordObject.GetType();
-			while (t != null && InfoType == ReflectionInfoType.None)
+			while (t != null && _infoType == ReflectionInfoType.None)
 			{
 				_propertyInfo = t.GetProperty(varName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 				if (_propertyInfo != null)
 				{
-					InfoType = ReflectionInfoType.Property;
+					_infoType = ReflectionInfoType.Property;
 					Emit<Action<object, T>> setterEmit = Emit<Action<object, T>>
 						.NewDynamicMethod()
 						.LoadArgument(0)
@@ -476,30 +461,30 @@ namespace CoreGame.Animation
 						.LoadArgument(1)
 						.Call(_propertyInfo.GetSetMethod(nonPublic: true))
 						.Return();
-					Setter = setterEmit.CreateDelegate();
+					_setter = setterEmit.CreateDelegate();
 					
 					break;
 				}
 				
-				FieldInfo = t.GetField(varName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-				if (FieldInfo != null)
+				_fieldInfo = t.GetField(varName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				if (_fieldInfo != null)
 				{
-					InfoType = ReflectionInfoType.Field;
+					_infoType = ReflectionInfoType.Field;
 					break;
 				}
 
 				t = t.BaseType;
 			}
 			
-			if(FieldInfo == null && _propertyInfo == null)
+			if(_fieldInfo == null && _propertyInfo == null)
 				Log.PrintError("Variable name : " + varName + "not found at " + recordObject.GetType());
 		}
 		public void SetValueToTrackedObject(T param)
 		{
-			if(InfoType == ReflectionInfoType.Property)
-				Setter(RecordObject, param);
-			else if(InfoType == ReflectionInfoType.Field)
-				FieldInfo.SetValue(RecordObject, param);
+			if(_infoType == ReflectionInfoType.Property)
+				_setter(RecordObject, param);
+			else if(_infoType == ReflectionInfoType.Field)
+				_fieldInfo.SetValue(RecordObject, param);
 		}
 	}
 	
@@ -521,8 +506,8 @@ namespace CoreGame.Animation
 				t = t.BaseType;
 			}
 			
-			if(_methodInfo == null)
-				Log.PrintError("Method name : " + methodName + "not found at " + recordObject.GetType());
+			// if(_methodInfo == null)
+			// 	Log.PrintError("Method name : " + methodName + "not found at " + recordObject.GetType());
 			
 		}
 

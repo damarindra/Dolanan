@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 namespace CoreGame.Engine
 {
 	/// <summary>Describes a 2D-rectangle.</summary>
-	[DataContract]
+	[DataContract][Obsolete]
 	public struct BoundingBox2D : IEquatable<BoundingBox2D>
 	{
 		private static BoundingBox2D _emptyBoundingBox2D;

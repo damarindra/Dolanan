@@ -1,14 +1,43 @@
-﻿using CoreGame.Component;
+﻿using System;
+using CoreGame.Component;
+using CoreGame.Scene;
 using Microsoft.Xna.Framework;
 
 namespace CoreGame.Engine
 {
-	public class Transform2D
+	public delegate void TransformParentChange(Transform2D parent);
+	
+	/// <summary>
+	/// A component that control a Transformation.
+	/// </summary>
+	public class Transform2D : ICloneable
 	{
-		public Matrix Matrix;
+		public static Transform2D Identity => new Transform2D();
 		
-		public Transform2D Parent { get; set; }
+		public TransformParentChange OnTransformParentChange;
 		
+		public Matrix Matrix { get; private set; }
+		
+		private Transform2D _parent;
+		private Vector2 _position = Vector2.Zero;
+		private float _rotation = 0f;
+		private Vector2 _scale = Vector2.One;
+
+		private Transform2D()
+		{
+			Matrix = Matrix.Identity;
+		}
+
+		public Transform2D Parent
+		{
+			get => _parent;
+			set
+			{
+				_parent = value;
+				OnTransformParentChange?.Invoke(value);
+			}
+		}
+
 		// Local
 		public Vector2 Position
 		{
@@ -19,7 +48,6 @@ namespace CoreGame.Engine
 				UpdateTransform();
 			}
 		}
-		private Vector2 _position = Vector2.Zero;
 
 		public Vector2 GlobalPosition
 		{
@@ -45,7 +73,6 @@ namespace CoreGame.Engine
 				UpdateTransform();
 			}
 		}
-		private float _rotation = 0f;
 		public float GlobalRotation
 		{
 			get => ParentGlobalRotation + Rotation;
@@ -71,7 +98,6 @@ namespace CoreGame.Engine
 			}
 		}
 
-		private Vector2 _scale = Vector2.One;
 		private Vector2 GlobalScale
 		{
 			get => Parent?.GlobalScale * Scale ?? Scale;
@@ -101,9 +127,16 @@ namespace CoreGame.Engine
 			get => new Vector2(Matrix.Down.X, Matrix.Down.Y);
 		}
 
-		public void UpdateComponent(GameTime gameTime)
+		public object Clone()
 		{
-			UpdateTransform();
+			Transform2D clone = Transform2D.Identity;
+			clone.Parent = Parent;
+			clone.Position = Position;
+			clone.Rotation = Rotation;
+			clone.Scale = Scale;
+			clone.UpdateTransform();
+
+			return clone;
 		}
 	}
 }

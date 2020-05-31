@@ -22,6 +22,11 @@ namespace CoreGame.Engine
 
 			return i;
 		}
+
+		public static float Clamp(float val, float min, float max)
+		{
+			return MathF.Min(MathF.Max(val, min), max);
+		}
 		
 		public static float Min(params float[] floats)
 		{

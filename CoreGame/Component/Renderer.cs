@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using CoreGame.Controller;
 using CoreGame.Engine;
 using CoreGame.Tools;
 using Microsoft.Xna.Framework;
@@ -8,22 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CoreGame.Component
 {
-	public class Renderer : BaseComponent
+	public class Renderer : Component
 	{
 		public Texture2D Texture2D { get; set; }
-
-		// BoundingBox2D will control the render. It will check if this boundingbox inside the camera boundingBox
-		public BoundingBox2D BoundingBox
-		{
-			get
-			{
-				return new BoundingBox2D(Transform.Matrix, 
-					-_origin, 
-					new Vector2(_srcSize.X - _origin.X, -_origin.Y),
-					new Vector2(-_origin.X, _srcSize.Y - _origin.Y),
-					new Vector2(_srcSize.X, _srcSize.Y) - _origin);
-			}
-		}
 
 		/// <summary>
 		/// rectangle texture, cropping the texture with this rect
@@ -66,39 +55,23 @@ namespace CoreGame.Component
 		private Point _srcSize;
 		public float LayerDepth { get; set; }
 
-		public Renderer() : base()
+		public Renderer() : base() { }
+
+		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
 		}
 
-		public override void UpdateComponent(GameTime gameTime)
-		{
-			base.UpdateComponent(gameTime);
-
-			BoundingBox2D box = BoundingBox;
-			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location, box.Location + Transform.Down * 10),
-				5));
-			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location + new Vector2(box.Width, 0),
-					box.Location+ new Vector2(box.Width, 0) + Transform.Down * 10),
-				5));
-			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location+ new Vector2(0, box.Height),
-					box.Location + new Vector2(0, box.Height) + Transform.Down * 10),
-				5));
-			ScreenDebugger.DebugDraw(new LineDebug(new Line(box.Location + box.Size, box.Location+ box.Size + Transform.Down * 10),
-				5));
-		}
-
-		public override void DrawComponent(GameTime gameTime, SpriteBatch spriteBatch)
+		public override void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
 			// Please check Game.Draw (https://github.com/MonoGame/MonoGame/issues/3624) 
 			// NumDraws
 			// NumClears
 			// NumTargets
 			// NumTextures
-			if(GameClient.Instance.World.Camera.BoundingBox2D.Intersects(BoundingBox))
-				spriteBatch.Draw(Texture2D, Transform.GlobalPosition, SrcRectangle, ModulatedColor,
-					Transform.GlobalRotation, _origin, Transform.Scale, SpriteEffect, LayerDepth);
-			else
-				Log.PrintWarning("Skipping render : " + Owner.Name);
+			// if(GameClient.Instance.World.Camera.BoundingBox2D.Intersects(BoundingBox))
+			GameMgr.SpriteBatch.Draw(Texture2D, Owner.Transform.GlobalPosition, SrcRectangle, ModulatedColor,
+					Owner.Transform.GlobalRotation, _origin, Owner.Transform.Scale, SpriteEffect, layerZDepth);
 		}
 	}
 

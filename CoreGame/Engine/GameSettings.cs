@@ -57,6 +57,10 @@ namespace CoreGame.Engine
 			}
 		}
 		
+		/// <summary>
+		/// Default size for Collision detection. Up this to make it bigger
+		/// </summary>
+		public static Point WorldCollisionSize = new Point(2048, 1440);
 		
 		/// <summary>
 		/// Window Size
