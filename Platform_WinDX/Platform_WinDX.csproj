@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Aseprite" Version="1.1.1" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX.Core" Version="3.8.0.3" />
+    <PackageReference Include="MonoGame.Content.Builder" Version="3.7.*" />
+    <PackageReference Include="Sigil" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Content\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <MonoGameContentReference Include="..\CoreGame\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+    </MonoGameContentReference>
+  </ItemGroup>
+  
+  <Import Project="..\CoreGame\CoreGame.projitems" Label="Shared" />
+  <Import Project="..\HumperShared\HumperShared.projitems" Label="Shared" />
+
+</Project>
+
