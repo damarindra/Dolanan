@@ -41,6 +41,9 @@
     </MonoGameContentReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MonoGame.Humper\MonoGame.Humper.csproj" />
+  </ItemGroup>
+
   <Import Project="..\CoreGame\CoreGame.projitems" Label="Shared" />
-  <Import Project="..\HumperShared\HumperShared.projitems" Label="Shared" />
 </Project>

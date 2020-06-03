@@ -44,11 +44,24 @@ namespace CoreGame.Scene
 		
 		protected List<Actor> Actors = new List<Actor>();
 		
+		/// <summary>
+		/// Actors that created in runtime (After Initialize function)
+		/// This will activate Start function to be called
+		/// </summary>
+		private List<Actor> _delayedActor = new List<Actor>();
+		
+		/// <summary>
+		/// Add Actor to the current layer. Actor will not available in the world directly. It need to wait
+		/// to the next frame.
+		/// </summary>
+		/// <param name="name"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		public T AddActor<T>(string name) where T : Actor
 		{
 			T actor = (T) Activator.CreateInstance(typeof(T), name, this);
 			
-			Actors.Add(actor);
+			AddActor(actor, false);
 			return actor;
 		}
 		// TODO AddActor Recursively
@@ -59,7 +72,7 @@ namespace CoreGame.Scene
 		/// <param name="recursive">add all child actor</param>
 		public void AddActor(Actor actor, bool recursive = true)
 		{
-			Actors.Add(actor);
+			_delayedActor.Add(actor);
 			if (recursive)
 			{
 				foreach (var child in actor.GetChilds)
@@ -76,14 +89,20 @@ namespace CoreGame.Scene
 				actor.Initialize();
 			}
 		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="isThisAfterInitialize">true when only created at Initialize cycle</param>
 		public virtual void Start()
 		{
-			foreach (Actor actor in Actors)
+			for (int i = _delayedActor.Count - 1; i >= 0; i--)
 			{
-				actor.Start();
+				_delayedActor[i].Start();
+				_delayedActor.RemoveAt(i);
 			}
 		}
-
+		
 		public virtual void Update(GameTime gameTime)
 		{
 			foreach (Actor actor in Actors)
@@ -98,9 +117,22 @@ namespace CoreGame.Scene
 			{
 				actor.LateUpdate(gameTime);
 			}
+
+			ForceAddNewestActor();
 		}
 
-		public virtual void Draw(GameTime gameTime, float layerZDepth = 0)
+		/// <summary>
+		/// Add all newest actor
+		/// </summary>
+		public void ForceAddNewestActor()
+		{
+			foreach (var actor in _delayedActor)
+			{
+				Actors.Add(actor);
+			}
+		}
+
+		public virtual void Draw(GameTime gameTime, float layerZDepth)
 		{
 			foreach (Actor actor in Actors)
 			{

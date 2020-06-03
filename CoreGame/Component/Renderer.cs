@@ -62,7 +62,7 @@ namespace CoreGame.Component
 			base.Update(gameTime);
 		}
 
-		public override void Draw(GameTime gameTime, float layerZDepth = 0)
+		public override void Draw(GameTime gameTime, float layerZDepth)
 		{
 			// Please check Game.Draw (https://github.com/MonoGame/MonoGame/issues/3624) 
 			// NumDraws

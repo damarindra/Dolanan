@@ -56,6 +56,18 @@
 			{
 				return g1.Bounds == g2.Bounds;
 			}
+
+			public override bool Equals(object? obj)
+			{
+				if ((Cell) obj != null)
+					return (Cell)obj == this;
+				return false;
+			}
+
+			public override int GetHashCode()
+			{
+				return Bounds.GetHashCode();
+			}
 		}
 
 		public Grid(int width, int height, float cellSize)

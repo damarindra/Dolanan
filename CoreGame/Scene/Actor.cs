@@ -71,7 +71,7 @@ namespace CoreGame.Scene
 			}
 		}
 
-		public virtual void Draw(GameTime gameTime, float layerZDepth = 0)
+		public virtual void Draw(GameTime gameTime, float layerZDepth)
 		{
 			foreach (var component in _components)
 			{

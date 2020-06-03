@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CoreGame.Collision;
 using CoreGame.Engine;
+using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Humper;
 using Humper.Base;
@@ -10,6 +11,7 @@ using Humper.Responses;
 
 namespace CoreGame.Scene
 {
+	
 	//TODO create system that load and unload world. generally changing scene. World is scene
 	/// <summary>
 	/// World, yes world. It also handle all collision.
@@ -19,6 +21,8 @@ namespace CoreGame.Scene
 		public Camera Camera;
 		protected List<Layer> Layers = new List<Layer>();
 		private LayerName _defaultLayer = LayerName.Default;
+		
+
 
 		public World(int width, int height, float cellSize = 64)
 		{
@@ -54,13 +58,26 @@ namespace CoreGame.Scene
 			Camera.Initialize();
 		}
 
+		public void PostInit()
+		{
+			foreach (Layer layer in Layers)
+			{
+				layer.ForceAddNewestActor();
+			}
+			Camera.Start();
+		}
+		
+		/// <summary>
+		/// Do not place any start again in here. In fact start will always called at the beginning of Update
+		/// Layer.Start is allowed since it will called the newest Actor once
+		/// Just don't call Actor.Start at here!. At ALL!
+		/// </summary>
 		public virtual void Start()
 		{
 			foreach (Layer layer in Layers)
 			{
 				layer.Start();
 			}
-			Camera.Start();
 		}
 
 		public virtual void Update(GameTime gameTime)
@@ -119,6 +136,7 @@ namespace CoreGame.Scene
 
 		IBox IWorld.Create(float x, float y, float width, float height)
 		{
+			Log.Print("Use the World.Create instead! IWorld.Create is not supported!");
 			throw new NotImplementedException();
 		}
 

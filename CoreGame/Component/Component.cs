@@ -1,4 +1,5 @@
-﻿using CoreGame.Engine;
+﻿using System;
+using CoreGame.Engine;
 using CoreGame.Scene;
 using CoreGame.Tools;
 using Microsoft.Xna.Framework;

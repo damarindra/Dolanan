@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Component\Renderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controller\GameMgr.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Cloner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\IGameCycle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Transform2D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\MathEx.cs" />
@@ -25,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Engine\Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\BaseObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GameClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\ResAnimatedSprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resources\FontRes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resources\ResourceBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene\Actor.cs" />

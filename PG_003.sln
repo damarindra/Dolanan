@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform_OpenGL", "Platform
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CoreGame", "CoreGame\CoreGame.shproj", "{56718425-E188-4C51-91EC-74D4D1757FD9}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HumperShared", "HumperShared\HumperShared.shproj", "{1DFF10FE-9913-449F-9E42-F2D025AF9B36}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Humper", "MonoGame.Humper\MonoGame.Humper.csproj", "{0627678B-B835-4310-BD83-642CE6F2276C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -33,6 +33,14 @@ Global
 		{44357A38-89D8-4D68-B8E0-EE42F9C82FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44357A38-89D8-4D68-B8E0-EE42F9C82FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44357A38-89D8-4D68-B8E0-EE42F9C82FD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD7D455-8710-44A5-B275-8606EB78D80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0627678B-B835-4310-BD83-642CE6F2276C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0627678B-B835-4310-BD83-642CE6F2276C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0627678B-B835-4310-BD83-642CE6F2276C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0627678B-B835-4310-BD83-642CE6F2276C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

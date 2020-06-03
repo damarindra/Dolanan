@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using CoreGame.Component;
 using CoreGame.Controller;
 using CoreGame.Engine;
 using CoreGame.Resources;
@@ -14,8 +9,8 @@ using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Sigil;
-using Sigil.NonGeneric;
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace CoreGame
 {
@@ -27,6 +22,8 @@ namespace CoreGame
 	public class GameClient : Game
 	{
 		public static GameClient Instance = null;
+
+		public bool IsGameFinishedInitialize { get; private set; }
 
 		public GraphicsDeviceManager Graphics
 		{
@@ -92,15 +89,17 @@ namespace CoreGame
 			World.Initialize();
 
 			base.Initialize();
-			
-			World.Start();
+
+			World.PostInit();
+			IsGameFinishedInitialize = true;
 		}
 		protected override void LoadContent()
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			GameMgr.Init(this, SpriteBatch);
 			FontRes.Init();
-			
+			new ResAnimatedSprite().Load();
+
 			RenderTarget =
 				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportSize.X, World.Camera.ViewportSize.Y);
 
@@ -108,14 +107,29 @@ namespace CoreGame
 			Console.WriteLine("Starting Game");
 			
 			p = World.CreateActor<Player>("Player");
-			p.Sprite.Texture2D = Content.Load<Texture2D>("player");
 			p.Teleport(World.Camera.Transform.GlobalPosition);
 			
 			World.Camera.FollowActor = p;
 			
 			spr = World.CreateActor<SpriteActor>("Sprite");
-			spr.Sprite.Texture2D = Content.Load<Texture2D>("square_64x64");
+			spr.Sprite.Texture2D = Content.Load<Texture2D>("Graphics/square_64x64");
 			spr.Sprite.SrcSize = new Point(64, 64);
+
+			Transform2D tr1 = Transform2D.Identity;
+			Transform2D tr2 = Transform2D.Identity;
+			tr2.Position += new Vector2(60, 32);
+			Transform2D tr3 = Transform2D.Identity;
+			tr3.Position += new Vector2(256, 123);
+			Transform2D tr4 = Transform2D.Identity;
+			tr4.Position += new Vector2(70, 326);
+			Transform2D tr5 = Transform2D.Identity;
+			tr5.Position += new Vector2(753, 43);
+			
+			World.Create(tr1, 128, 64, Vector2.Zero);
+			World.Create(tr2, 128, 128, Vector2.Zero);
+			World.Create(tr3, 64, 128, Vector2.Zero);
+			World.Create(tr4, 128 + 43, 64+76, Vector2.Zero);
+			World.Create(tr5, 128+43, 64+65, Vector2.Zero);
 			//
 			// var tileTex = Content.Load<Texture2D>("tiles_16x16");
 			// for(int x = -64; x < 64; x++){
@@ -132,6 +146,12 @@ namespace CoreGame
 
 		protected override void Update(GameTime gameTime)
 		{
+			// Why start on Update ? isn't it will call every frame. yes it is.
+			// Actor.Start() only called once after the object created in runtime. So, this is fine,
+			// since only new Actor that called start.
+			World.Start();
+
+			
 			//Log.Print(gameTime.ElapsedGameTime.Milliseconds.ToString());
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))

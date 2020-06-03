@@ -121,7 +121,7 @@ namespace CoreGame.Collision
 
 		private void AddTag(Enum tag)
 		{
-			if (tags == null)
+			if (tags == CollisionTagFlag.None)
 			{
 				tags = (CollisionTagFlag)tag;
 			}
@@ -139,7 +139,7 @@ namespace CoreGame.Collision
 
 		private void RemoveTag(Enum tag)
 		{
-			if (tags != null)
+			if (tags != CollisionTagFlag.None)
 			{
 				var t = this.tags.GetType();
 				var ut = Enum.GetUnderlyingType(t);
@@ -153,12 +153,12 @@ namespace CoreGame.Collision
 
 		public bool HasTag(params Enum[] values)
 		{
-			return (tags != null) && values.Any((value) => this.tags.HasFlag(value));
+			return (tags != CollisionTagFlag.None) && values.Any((value) => this.tags.HasFlag(value));
 		}
 
 		public bool HasTags(params Enum[] values)
 		{
-			return (tags != null) && values.All((value) => this.tags.HasFlag(value));
+			return (tags != CollisionTagFlag.None) && values.All((value) => this.tags.HasFlag(value));
 		}
 
 		#endregion

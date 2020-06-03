@@ -21,7 +21,7 @@ namespace CoreGame.Tools
 			{
 				if (_texture2D == null)
 				{
-					_texture2D = GameClient.Instance.Content.Load<Texture2D>("1px");
+					_texture2D = GameClient.Instance.Content.Load<Texture2D>("Graphics/1px");
 				}
 
 				return _texture2D;

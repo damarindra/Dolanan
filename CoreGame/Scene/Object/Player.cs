@@ -4,6 +4,7 @@ using CoreGame.Animation;
 using CoreGame.Collision;
 using CoreGame.Component;
 using CoreGame.Engine;
+using CoreGame.Resources;
 using CoreGame.Tools;
 using Humper;
 using Humper.Base;
@@ -11,6 +12,7 @@ using Humper.Responses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Aseprite;
 
 namespace CoreGame.Scene.Object
 {
@@ -21,22 +23,27 @@ namespace CoreGame.Scene.Object
 		
 		private float _moveSpeed = 60;
 		public Body Body { get; private set; }
-		public Sprite Sprite { get; private set; }
+		public AseSprite Sprite { get; private set; }
 
 		public Player(string name, Layer layer) : base(name, layer)
 		{
-			Sprite = AddComponent<Sprite>();
-			Sprite.SrcLocation = Point.Zero;
-			Sprite.SrcSize = new Point(32, 32);
+			Sprite = AddComponent<AseSprite>();
+
+			AnimatedSprite animatedSprite;
+			if(ResAnimatedSprite.Instance.TryGet("player", out animatedSprite))
+				Sprite.AnimatedSprite = animatedSprite;
+			
+			Sprite.AnimatedSprite.Play("Idle");
+			
 			AnimationSequence = new AnimationSequence(1500);
 			
-			Track<int> t = AnimationSequence.CreateNewValueTrack<int>("SpriteFrame", Sprite, "Frame");
-			t.AddKey(new Key<int>(0, 0));
-			t.AddKey(new Key<int>(300, 1));
-			t.AddKey(new Key<int>(600, 2));
-			t.AddKey(new Key<int>(900, 3));
-			t.AddKey(new Key<int>(1200, 4));
-			t.AddKey(new Key<int>(1500, 5));
+			// Track<int> t = AnimationSequence.CreateNewValueTrack<int>("SpriteFrame", Sprite, "Frame");
+			// t.AddKey(new Key<int>(0, 0));
+			// t.AddKey(new Key<int>(300, 1));
+			// t.AddKey(new Key<int>(600, 2));
+			// t.AddKey(new Key<int>(900, 3));
+			// t.AddKey(new Key<int>(1200, 4));
+			// t.AddKey(new Key<int>(1500, 5));
 			
 			Input.AddInputAxis("Horizontal", 
 				new InputAxis(positiveKey: Keys.D, negativeKey: Keys.A, thumbStick: GamePadThumbStickDetail.LeftHorizontal));
@@ -62,6 +69,15 @@ namespace CoreGame.Scene.Object
 			Move(gameTime, movementInput);
 			
 			AnimationSequence.UpdateAnimation(gameTime);
+			
+			Sprite.Update(gameTime);
+		}
+
+		public override void Draw(GameTime gameTime, float layerZDepth = 0)
+		{
+			base.Draw(gameTime, layerZDepth);
+
+			Sprite.Draw(gameTime, layerZDepth);
 		}
 
 		#endregion

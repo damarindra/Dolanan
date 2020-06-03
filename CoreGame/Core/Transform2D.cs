@@ -23,7 +23,7 @@ namespace CoreGame.Engine
 		private float _rotation = 0f;
 		private Vector2 _scale = Vector2.One;
 
-		private Transform2D()
+		public Transform2D()
 		{
 			Matrix = Matrix.Identity;
 		}

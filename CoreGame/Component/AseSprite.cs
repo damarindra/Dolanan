@@ -1,15 +1,37 @@
-﻿using MonoGame.Aseprite;
+﻿using System.Diagnostics;
+using CoreGame.Controller;
+using Microsoft.Xna.Framework;
+using MonoGame.Aseprite;
 
 namespace CoreGame.Component
 {
 	// TODO : AseSprite
 	public class AseSprite : Component
 	{
-		private AnimatedSprite _animatedSprite;
+		public AnimatedSprite AnimatedSprite { get; set; }
 
-		public override void Initialize()
+		public override void Start()
 		{
-			AnimationDefinition animationDefinition;
+			base.Start();
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			if(AnimatedSprite == null)
+				return;
+
+			AnimatedSprite.Position = Owner.Transform.GlobalPosition;
+			AnimatedSprite.RenderDefinition.Rotation = Owner.Transform.Rotation;
+			AnimatedSprite.RenderDefinition.Scale = Owner.Transform.Scale;
+			AnimatedSprite.Update(gameTime);
+		}
+
+		public override void Draw(GameTime gameTime, float layerZDepth)
+		{
+			base.Draw(gameTime, layerZDepth);
+
+			AnimatedSprite.RenderDefinition.LayerDepth = layerZDepth;
+			AnimatedSprite.Render(GameMgr.SpriteBatch);
 		}
 	}
 }
