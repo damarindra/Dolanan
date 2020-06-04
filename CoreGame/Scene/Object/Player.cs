@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Aseprite;
+using Hit = CoreGame.Collision.Hit;
 
 namespace CoreGame.Scene.Object
 {
@@ -21,7 +22,8 @@ namespace CoreGame.Scene.Object
 	{
 		public AnimationSequence AnimationSequence { get; private set; }
 		
-		private float _moveSpeed = 60;
+		private float _moveSpeed = 160;
+		public BodyHumper BodyHumper { get; private set; }
 		public Body Body { get; private set; }
 		public AseSprite Sprite { get; private set; }
 
@@ -50,7 +52,9 @@ namespace CoreGame.Scene.Object
 			Input.AddInputAxis("Vertical", 
 				new InputAxis(positiveKey: Keys.S, negativeKey: Keys.W, thumbStick: GamePadThumbStickDetail.LeftVertical));
 
-			Body = layer.GameWorld.Create(Transform, 32, 32, new Vector2(16, 16));
+			Body = Layer.GameWorld.CreateBody(Transform, new Vector2(0, 0), new Vector2(32,32));
+			//Body = layer.GameWorld.CreateAABB(Transform.Position, Vector2.One * 32);
+			//Body = layer.GameWorld.Create(Transform, 32, 32, new Vector2(16, 16));
 		}
 
 		// TODO : Set Body Size in realtime, dunno if allowed
@@ -63,7 +67,6 @@ namespace CoreGame.Scene.Object
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-			Log.Print(Body.Bounds.ToString());
 
 			Vector2 movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 			Move(gameTime, movementInput);
@@ -83,6 +86,7 @@ namespace CoreGame.Scene.Object
 		#endregion
 		private void Move(GameTime gameTime, Vector2 movementInput)
 		{
+			//movementInput.X = 1;
 			if (Math.Abs(movementInput.LengthSquared()) < Single.Epsilon)
 				return;
 			movementInput.Normalize();
@@ -91,14 +95,30 @@ namespace CoreGame.Scene.Object
 			movement += Transform.Right * movementInput.X;
 			movement += Transform.Up * movementInput.Y;
 
-			movement *= _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+			if (movement != Vector2.Zero)
+			{
+				movement *= _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-			Body.Move(Transform.Position.X + movement.X,Transform.Position.Y + movement.Y, CollisionRes);
+				Vector2 resultVelo;
+				Vector2 remainderVelo;
+				Hit hit;
+				
+				Layer.GameWorld.CheckCollision(Body, movement, out resultVelo, out remainderVelo, out hit);
+				Console.WriteLine(hit.Normal);
+				if (hit.Normal != Vector2.Zero)
+				{
+					resultVelo += remainderVelo.Slide(hit.Normal);
+					Console.WriteLine(remainderVelo.Slide(hit.Normal));
+				}
+				Body.Position += resultVelo;
+				Transform.Position += resultVelo;
+			}
+			//Body.Move(Transform.Position.X + movement.X,Transform.Position.Y + movement.Y, CollisionRes);
 		}
 
 		public void Teleport(Vector2 position)
 		{
-			Body.Teleport(position);
+			//Body.Teleport(position);
 		}
 
 		protected virtual CollisionResponses CollisionRes(ICollision arg)

@@ -35,11 +35,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Humper\Sources\Humper\Humper.csproj" />
     <ProjectReference Include="..\MonoGame.Humper\MonoGame.Humper.csproj" />
   </ItemGroup>
   
   <Import Project="..\CoreGame\CoreGame.projitems" Label="Shared" />
+  
 
 </Project>
 

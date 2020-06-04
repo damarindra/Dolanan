@@ -107,7 +107,6 @@ namespace CoreGame
 			Console.WriteLine("Starting Game");
 			
 			p = World.CreateActor<Player>("Player");
-			p.Teleport(World.Camera.Transform.GlobalPosition);
 			
 			World.Camera.FollowActor = p;
 			
@@ -115,21 +114,6 @@ namespace CoreGame
 			spr.Sprite.Texture2D = Content.Load<Texture2D>("Graphics/square_64x64");
 			spr.Sprite.SrcSize = new Point(64, 64);
 
-			Transform2D tr1 = Transform2D.Identity;
-			Transform2D tr2 = Transform2D.Identity;
-			tr2.Position += new Vector2(60, 32);
-			Transform2D tr3 = Transform2D.Identity;
-			tr3.Position += new Vector2(256, 123);
-			Transform2D tr4 = Transform2D.Identity;
-			tr4.Position += new Vector2(70, 326);
-			Transform2D tr5 = Transform2D.Identity;
-			tr5.Position += new Vector2(753, 43);
-			
-			World.Create(tr1, 128, 64, Vector2.Zero);
-			World.Create(tr2, 128, 128, Vector2.Zero);
-			World.Create(tr3, 64, 128, Vector2.Zero);
-			World.Create(tr4, 128 + 43, 64+76, Vector2.Zero);
-			World.Create(tr5, 128+43, 64+65, Vector2.Zero);
 			//
 			// var tileTex = Content.Load<Texture2D>("tiles_16x16");
 			// for(int x = -64; x < 64; x++){
@@ -204,7 +188,8 @@ namespace CoreGame
 			if (_debugShowCollision)
 			{
 				var b = World.Bounds;
-				World.DrawDebug((int)b.X, (int) b.Y, (int) b.Width, (int) b.Height, DrawCell, DrawBox, DrawString);
+				World.DrawCollision();
+				//World.DrawDebug((int)b.X, (int) b.Y, (int) b.Width, (int) b.Height, DrawCell, DrawBox, DrawString);
 			}
 			SpriteBatch.End();
 

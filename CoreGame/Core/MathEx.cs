@@ -57,5 +57,15 @@ namespace CoreGame.Engine
 		{
 			return MathF.Atan2(v.Y - point.Y, v.X - point.X);
 		}
+
+		public static Vector2 Slide(this Vector2 v, Vector2 normal)
+		{
+			return v - normal * Vector2.Dot(v, normal);
+		}
+
+		public static Vector2 Reflect(this Vector2 v, Vector2 normal)
+		{
+			return 2.0f * normal * Vector2.Dot(v, normal) - v;
+		}
 	}
 }
