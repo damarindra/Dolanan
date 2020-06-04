@@ -12,7 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animation\AnimationSequence.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\AABB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\Body.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collision\BodyHumper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\Collision.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\Hit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\AseSprite.cs" />

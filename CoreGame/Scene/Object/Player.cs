@@ -5,12 +5,7 @@ using CoreGame.Collision;
 using CoreGame.Component;
 using CoreGame.Engine;
 using CoreGame.Resources;
-using CoreGame.Tools;
-using Humper;
-using Humper.Base;
-using Humper.Responses;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Aseprite;
 using Hit = CoreGame.Collision.Hit;
@@ -23,7 +18,6 @@ namespace CoreGame.Scene.Object
 		public AnimationSequence AnimationSequence { get; private set; }
 		
 		private float _moveSpeed = 160;
-		public BodyHumper BodyHumper { get; private set; }
 		public Body Body { get; private set; }
 		public AseSprite Sprite { get; private set; }
 
@@ -114,16 +108,6 @@ namespace CoreGame.Scene.Object
 				Transform.Position += resultVelo;
 			}
 			//Body.Move(Transform.Position.X + movement.X,Transform.Position.Y + movement.Y, CollisionRes);
-		}
-
-		public void Teleport(Vector2 position)
-		{
-			//Body.Teleport(position);
-		}
-
-		protected virtual CollisionResponses CollisionRes(ICollision arg)
-		{
-			return CollisionResponses.Slide;
 		}
 	}
 }

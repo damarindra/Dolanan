@@ -3,13 +3,9 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using CoreGame.Engine;
-using Humper.Base;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-
-
-[assembly: InternalsVisibleTo("ScreenDebugger")]
 
 namespace CoreGame.Tools
 {
@@ -99,21 +95,6 @@ namespace CoreGame.Tools
 	public static class Debug
 	{
 		private static Texture2D pixel;
-
-		public static Rectangle ToRectangle(this RectangleF r)
-		{
-			return new Rectangle((int)r.X,(int)r.Y,(int)r.Width,(int)r.Height);
-		}
-
-		public static void Draw(this SpriteBatch spriteBatch, RectangleF rect, Color color)
-		{
-			spriteBatch.Draw(rect.ToRectangle(), color);
-		}
-
-		public static void Draw(this SpriteBatch spriteBatch, RectangleF rect, Color color, float fillOpacity)
-		{
-			spriteBatch.Draw(rect.ToRectangle(), color, fillOpacity);
-		}
 
 		public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Color color)
 		{

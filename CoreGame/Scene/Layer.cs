@@ -1,16 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using CoreGame.Controller;
 using CoreGame.Engine;
-using CoreGame.Resources;
-using CoreGame.Tools;
-using Humper;
-using Humper.Base;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using Color = Microsoft.Xna.Framework.Color;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace CoreGame.Scene
 {

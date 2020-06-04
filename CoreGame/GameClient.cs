@@ -187,7 +187,6 @@ namespace CoreGame
 			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
 			if (_debugShowCollision)
 			{
-				var b = World.Bounds;
 				World.DrawCollision();
 				//World.DrawDebug((int)b.X, (int) b.Y, (int) b.Width, (int) b.Height, DrawCell, DrawBox, DrawString);
 			}
@@ -245,27 +244,5 @@ namespace CoreGame
 	    
 			ClipCursor(ref rect);
 		}
-		
-		#region DEBUGING COLLISION
-		
-		private void DrawCell(int x, int y, int w, int h, float alpha)
-		{
-			GameMgr.SpriteBatch.DrawStroke(new Rectangle(x, y, w, h), new Color(Color.White, alpha));
-		}
-
-		private void DrawBox(Humper.IBox box)
-		{
-			Color color;
-
-			color = Color.White;
-
-			GameMgr.SpriteBatch.Draw(box.Bounds, color, 0.3f);
-		}
-
-		private void DrawString(string message, int x, int y, float alpha)
-		{
-		}
-
-		#endregion
 	}
 }
