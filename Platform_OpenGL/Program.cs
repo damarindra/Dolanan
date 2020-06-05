@@ -1,5 +1,5 @@
 ﻿using System;
-using CoreGame;
+using Dolanan;
 
 namespace Platform_OpenGL
 {
@@ -9,7 +9,7 @@ namespace Platform_OpenGL
         static void Main()
         {
             Console.WriteLine("Starting OpenGL");
-            using (var game = new CoreGame.GameClient())
+            using (var game = new Dolanan.GameMin())
                 game.Run();
         }
     }

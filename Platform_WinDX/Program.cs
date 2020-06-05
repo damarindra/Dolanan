@@ -1,5 +1,5 @@
 ﻿using System;
-using CoreGame;
+using Dolanan;
 
 namespace Platform_WinDX
 {
@@ -9,7 +9,7 @@ namespace Platform_WinDX
         static void Main()
         {
             Console.WriteLine("Starting Win DX");
-            using (var game = new CoreGame.GameClient())
+            using (var game = new Dolanan.GameMin())
                 game.Run();
         }
     }

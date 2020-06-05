@@ -29,12 +29,12 @@
   </ItemGroup>
   
   <ItemGroup>
-    <MonoGameContentReference Include="..\CoreGame\Content\Content.mgcb">
+    <MonoGameContentReference Include="..\Dolanan\Content\Content.mgcb">
       <Link>Content\Content.mgcb</Link>
     </MonoGameContentReference>
   </ItemGroup>
   
-  <Import Project="..\CoreGame\CoreGame.projitems" Label="Shared" />
+  <Import Project="..\Dolanan\Dolanan.projitems" Label="Shared" />
   
 
 </Project>
