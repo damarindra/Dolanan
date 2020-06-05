@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using CoreGame.Controller;
+using CoreGame.Scene;
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite;
 
@@ -32,6 +33,10 @@ namespace CoreGame.Components
 
 			AnimatedSprite.RenderDefinition.LayerDepth = layerZDepth;
 			AnimatedSprite.Render(GameMgr.SpriteBatch);
+		}
+
+		public AseSprite(Actor owner) : base(owner)
+		{
 		}
 	}
 }

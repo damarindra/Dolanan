@@ -31,7 +31,7 @@ namespace CoreGame.Components
 			set => SrcSize = value;
 		}
 
-		public Sprite() : base()
+		public Sprite(Actor owner) : base(owner)
 		{
 			FrameSize = SrcRectangle.Size;
 		}

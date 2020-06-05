@@ -1,5 +1,6 @@
-﻿#nullable enable
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CoreGame.Components;
 using CoreGame.Engine;
 using Microsoft.Xna.Framework;
@@ -12,7 +13,7 @@ namespace CoreGame.Scene
 	public class Actor : IGameCycle
 	{
 		public string Name;
-		public Transform2D Transform = Transform2D.Identity;
+		public Transform2D Transform;
 		public Layer Layer { get; private set; }
 		
 		protected readonly List<Actor> Childs = new List<Actor>();
@@ -30,13 +31,14 @@ namespace CoreGame.Scene
 		{
 			Name = name;
 			Layer = layer;
+			Transform = Transform2D.Identity;
 		}
 		
 		
 		//Extension stuff
-		public T AddComponent<T>() where T : Component, new()
+		public T AddComponent<T>() where T : Component
 		{
-			T t = new T {Owner = this};
+			T t = (T)Activator.CreateInstance(typeof(T), this);
 			_components.Add(t);
 			t.Start();
 			return t;
@@ -46,6 +48,11 @@ namespace CoreGame.Scene
 		{
 			if (_components.Contains(component))
 				_components.Remove(component);
+		}
+
+		public T GetComponent<T>()
+		{
+			return _components.OfType<T>().First();
 		}
 
 		public virtual void Initialize() {

@@ -26,6 +26,36 @@ namespace CoreGame.Scene.Object
 			Sprite = AddComponent<AseSprite>();
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
+			Body.OnCollisionEnter += other =>
+			{
+				if(other.Tag == "wall")
+					Console.WriteLine("Yay, I found Wall");
+			};
+			Body.OnTriggerEnter += other =>
+			{
+				if(other.Tag == "trigger")
+					Console.WriteLine("haha, triggered!");
+			};
+			Body.OnCollisionExit += other =>
+			{
+				if(other.Tag == "wall")
+					Console.WriteLine("By bye wall");
+			};
+			Body.OnTriggerExit += other =>
+			{
+				if(other.Tag == "trigger")
+					Console.WriteLine("By Bye trigger!");
+			};
+			Body.OnCollisionStay += other =>
+			{
+				if(other.Tag == "wall")
+					Console.WriteLine("The wall loves me");
+			};
+			Body.OnTriggerStay += other =>
+			{
+				if(other.Tag == "trigger")
+					Console.WriteLine("I'm still Triggered!");
+			};
 
 			AnimatedSprite animatedSprite;
 			if(ResAnimatedSprite.Instance.TryGet("player", out animatedSprite))
@@ -95,22 +125,8 @@ namespace CoreGame.Scene.Object
 			{
 				movement *= _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-				// Vector2 resultVelo;
-				// Vector2 remainderVelo;
-				// Hit hit;
-				//
 				Body.Move(movement);
-				// Layer.GameWorld.CheckCollision(Body, movement, out resultVelo, out remainderVelo, out hit);
-				// Console.WriteLine(hit.Normal);
-				// if (hit.Normal != Vector2.Zero)
-				// {
-				// 	resultVelo += remainderVelo.Slide(hit.Normal);
-				// 	Console.WriteLine(remainderVelo.Slide(hit.Normal));
-				// }
-				// Body.Position += resultVelo;
-				// Transform.Position += resultVelo;
 			}
-			//Body.Move(Transform.Position.X + movement.X,Transform.Position.Y + movement.Y, CollisionRes);
 		}
 	}
 }

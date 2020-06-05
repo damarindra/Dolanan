@@ -17,8 +17,9 @@ namespace CoreGame.Components
 			set => _owner = value;
 		}
 
-		public Component()
+		public Component(Actor owner)
 		{
+			Owner = owner;
 		}
 
 		public virtual void Initialize()

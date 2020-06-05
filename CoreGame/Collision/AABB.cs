@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework;
 
 namespace CoreGame.Collision
 {
+	/// <summary>
+	/// AABB is the base class for Box Collider, don't use it! Use Body!
+	/// </summary>
 	public class AABB : Component
 	{
 		public Vector2 Position
@@ -46,14 +49,15 @@ namespace CoreGame.Collision
 		// public Vector2 BottomRight => Max;
 
 		private Vector2 _size = Vector2.One * 32;
-		
-		public AABB(){}
+
+		public AABB(Actor owner) : base(owner)
+		{
+			Position = Owner.Transform.GlobalPosition;
+		}
 
 		public override void Start()
 		{
 			base.Start();
-			Position = Owner.Transform.GlobalPosition;
-			GameMgr.Game.World.Colliders.Add(this);
 		}
 
 		public bool Overlaps(AABB other)

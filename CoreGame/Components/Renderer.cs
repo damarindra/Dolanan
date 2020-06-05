@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using CoreGame.Controller;
 using CoreGame.Engine;
+using CoreGame.Scene;
 using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -55,7 +56,7 @@ namespace CoreGame.Components
 		private Point _srcSize;
 		public float LayerDepth { get; set; }
 
-		public Renderer() : base() { }
+		public Renderer(Actor owner) : base(owner) { }
 
 		public override void Update(GameTime gameTime)
 		{

@@ -7,5 +7,6 @@ namespace CoreGame.Collision
 	{
 		public Actor Actor;
 		public Vector2 Normal;
+		public Body Body;
 	}
 }

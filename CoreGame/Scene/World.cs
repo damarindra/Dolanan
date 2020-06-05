@@ -30,27 +30,26 @@ namespace CoreGame.Scene
 			{
 				Layers.Add(new Layer(this, name));
 			}
-
-			//CreateAABB(new Vector2(8, 80), new Vector2(40, 65));
 		}
 
 		#region GameCycle
 
 		public Layer GetLayer(LayerName layerName)
 		{
-			//return Layers.Count < (int) layerName ? Layers[(int) layerName] : Layers[(int) layerName];
 			return Layers[(int) layerName];
 		}
 		public Layer GetDefaultLayer()
 		{
-			Console.WriteLine(Layers.Count);
-			//return Layers.Count < (int) layerName ? Layers[(int) layerName] : Layers[(int) layerName];
 			return Layers[(int) LayerName.Default];
 		}
 
 		public T CreateActor<T>(string name) where T : Actor
 		{
-			return Layers[(int)_defaultLayer].AddActor<T>(name);
+			return GetDefaultLayer().AddActor<T>(name);
+		}
+		public T CreateActor<T>(string name, Layer layer) where T : Actor
+		{
+			return layer.AddActor<T>(name);
 		}
 		
 		public virtual void Initialize()
@@ -61,11 +60,20 @@ namespace CoreGame.Scene
 			}
 			Camera.Initialize();
 			
-			CollisionHelper.CreateColliderActor(new Vector2(165, 0), new Vector2(128, 64));
-			CollisionHelper.CreateColliderActor(new Vector2(60, 32),new Vector2(128, 128));
-			CollisionHelper.CreateColliderActor(new Vector2(256, 123),new Vector2(64, 128));
-			CollisionHelper.CreateColliderActor(new Vector2(70, 326),new Vector2( 128 + 43, 64+76));
-			CollisionHelper.CreateColliderActor(new Vector2(753, 43),new Vector2( 128+43, 64+65));
+			var a = CollisionHelper.CreateColliderActor(new Vector2(165, 0), new Vector2(128, 64));
+			a.GetComponent<Body>().Tag = "wall";
+			a = CollisionHelper.CreateColliderActor(new Vector2(60, 32),new Vector2(128, 128));
+			a.GetComponent<Body>().Tag = "wall";
+			a = CollisionHelper.CreateColliderActor(new Vector2(256, 123),new Vector2(64, 128));
+			a.GetComponent<Body>().Tag = "wall";
+			a = CollisionHelper.CreateColliderActor(new Vector2(70, 326),new Vector2( 128 + 43, 64+76));
+			a.GetComponent<Body>().Tag = "wall";
+			a = CollisionHelper.CreateColliderActor(new Vector2(753, 43),new Vector2( 128+43, 64+65));
+			a.GetComponent<Body>().Tag = "wall";
+
+			var ac = CollisionHelper.CreateColliderActor(new Vector2(0, 128), new Vector2(32, 32));
+			ac.GetComponent<Body>().BodyType = BodyType.Overlap;
+			ac.GetComponent<Body>().Tag = "trigger";
 		}
 
 		public void PostInit()
@@ -124,75 +132,9 @@ namespace CoreGame.Scene
 		
 		#endregion
 
-		public Body CreateBody(Transform2D transform, Vector2 origin, Vector2 size)
-		{
-			Body result = new Body(transform, origin, size);
-			Colliders.Add(result);
-			return result;
-		}
-
-		public AABB CreateAABB(Vector2 pos, Vector2 size)
-		{
-			AABB result = new AABB();
-			result.Position = pos;
-			result.Size = size;
-			Colliders.Add(result);
-			return result;
-		}
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="aabb"></param>
-		/// <param name="velo"></param>
-		/// <param name="resultVelo"></param>
-		/// <param name="remainder"></param>
-		/// <param name="hit"></param>
-		/// <param name="bounce"></param>
-		public void CheckCollision(AABB aabb, Vector2 velo, out Vector2 resultVelo, out Vector2 remainder, out Hit hit, int bounce = 3)
-		{
-			resultVelo = Vector2.Zero;
-			remainder = Vector2.Zero;
-			hit = new Hit();
-
-			int bounceCounter = 0;
-
-			Vector2 resultTemp;
-			
-			foreach (AABB b in Colliders)
-			{
-				if(b == aabb)
-					continue;
-				
-				if (Check(aabb, b, velo, out var rVelo, out var rRemain, out var rHit))
-				{
-					resultVelo = rVelo;
-					remainder = rRemain;
-					hit = rHit;
-
-					velo = rVelo;
-					//Console.WriteLine(resultVelo);
-					
-					bounceCounter++;
-					if (bounceCounter >= bounce)
-					{
-						Log.Print("Done Seq");
-						return;
-					}
-				}
-				
-			}
-
-			// no collision
-			if (bounceCounter == 0)
-				resultVelo = velo;
-			Log.Print("Done Seq");
-
-		}
-
 		public void DrawCollision()
 		{
-			foreach (AABB collisionCollider in Colliders)
+			foreach (Body collisionCollider in Colliders)
 			{
 				GameMgr.SpriteBatch.DrawStroke(new Rectangle((int) collisionCollider.Min.X, (int)collisionCollider.Min.Y,
 					(int)collisionCollider.Size.X, (int)collisionCollider.Size.Y ), Color.White);

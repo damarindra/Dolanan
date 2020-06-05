@@ -7,7 +7,7 @@ namespace CoreGame.Collision
 {
 	public class WorldCollision
 	{
-		public List<AABB> Colliders = new List<AABB>();
+		public List<Body> Colliders = new List<Body>();
 
 		/// <summary>
 		/// Check collision between A and B, A is the moving body that uses velo. This only check, not moving the AABB a
@@ -71,23 +71,108 @@ namespace CoreGame.Collision
 				outVel = plane * velo;
 				outRemainder = velo - outVel;
 
-				var aMin = a.Min;
-				var aMax = a.Max;
-				var bMin = b.Min;
-				var bMax = b.Max;
+				// var aMin = a.Min;
+				// var aMax = a.Max;
+				// var bMin = b.Min;
+				// var bMax = b.Max;
 
 				if (plane.X != 0 && velo.Y != 0)
 					hitInfo.Normal.Y = MathF.Sign(-velo.Y);
 				else if (plane.Y != 0 && velo.X != 0)
 					hitInfo.Normal.X = MathF.Sign(-velo.X);
 
-				Log.Print("Touching");
-				Log.Print(plane.ToString());
-				Log.Print(outVel.ToString());
-				Log.Print(outRemainder.ToString());
+				// Log.Print("Touching");
+				// Log.Print(plane.ToString());
+				// Log.Print(outVel.ToString());
+				// Log.Print(outRemainder.ToString());
 			}
 			
 			return true;
+		}
+		
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="body"></param>
+		/// <param name="velo"></param>
+		/// <param name="resultVelo"></param>
+		/// <param name="remainder"></param>
+		/// <param name="hit"></param>
+		/// <param name="bounce"></param>
+		public void CheckCollision(Body body, Vector2 velo, out Vector2 resultVelo, out Vector2 remainder, out Hit hit, int bounce = 3)
+		{
+			resultVelo = Vector2.Zero;
+			remainder = Vector2.Zero;
+			hit = new Hit();
+
+			int bounceCounter = 0;
+
+			Vector2 resultTemp;
+			
+			HashSet<Body> newCollidedBody = new HashSet<Body>();
+			
+			foreach (Body b in Colliders)
+			{
+				if(b == body)
+					continue;
+
+				if (Check(body, b, velo, out var rVelo, out var rRemain, out var rHit))
+				{
+					resultVelo = rVelo;
+					remainder = rRemain;
+					hit = rHit;
+					hit.Actor = b.Owner;
+					hit.Body = b;
+					
+					// Register collision for delegate Collison
+					body.RegisterCollision(b);
+					b.RegisterCollision(body);
+
+					newCollidedBody.Add(b);
+
+					velo = rVelo;
+					//Console.WriteLine(resultVelo);
+					
+					bounceCounter++;
+					if (bounceCounter >= bounce)
+					{
+						break;
+					}
+				}
+			}
+			
+			// no collision
+			if (bounceCounter == 0)
+				resultVelo = velo;
+
+			// Exiting the collision
+			HashSet<Body> bodyExit = new HashSet<Body>();
+
+			foreach (Body b in body.CollidedBodies)
+			{
+				if (!newCollidedBody.Contains(b))
+					bodyExit.Add(b);
+			}
+			
+			if (bodyExit.Count > 0)
+			{
+				foreach (Body b in bodyExit)
+				{
+					if (b.BodyType == BodyType.Overlap)
+					{
+						b.OnTriggerExit?.Invoke(body);
+						body.OnTriggerExit?.Invoke(b);
+					}
+					else
+					{
+						b.OnCollisionExit?.Invoke(body);
+						body.OnCollisionExit?.Invoke(b);
+					}
+					b.CollidedBodies.Remove(body);
+					body.CollidedBodies.Remove(b);
+				}
+			}
 		}
 	}
 }
