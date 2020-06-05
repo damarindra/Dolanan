@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using CoreGame.Engine;
 using Microsoft.Xna.Framework;
 
@@ -42,8 +43,8 @@ namespace CoreGame.Scene
 		private List<Actor> _delayedActor = new List<Actor>();
 		
 		/// <summary>
-		/// Add Actor to the current layer. Actor will not available in the world directly. It need to wait
-		/// to the next frame.
+		/// Add Actor to the current layer. When adding at runtime, Actor will not available in the world directly.
+		/// It need to wait to the next frame.
 		/// </summary>
 		/// <param name="name"></param>
 		/// <typeparam name="T"></typeparam>

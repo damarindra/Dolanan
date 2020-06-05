@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Diagnostics;
+using CoreGame.Components;
+using CoreGame.Controller;
+using CoreGame.Scene;
 using Microsoft.Xna.Framework;
 
 namespace CoreGame.Collision
 {
-	public class AABB
+	public class AABB : Component
 	{
-		public virtual Vector2 Position
+		public Vector2 Position
 		{
-			get => _position;
+			get => Owner.Transform.GlobalPosition;
 			set
 			{
-				_position = value;
+				Owner.Transform.GlobalPosition = value;
 				// Center = _position + _size / 2f;
 			}
 		}
-		public virtual Vector2 Size
+		public Vector2 Size
 		{
 			get => _size;
 			set
@@ -41,13 +45,15 @@ namespace CoreGame.Collision
 		// public Vector2 BottomLeft => Position + Vector2.UnitY * Size.Y;
 		// public Vector2 BottomRight => Max;
 
-		private Vector2 _position, _size;
+		private Vector2 _size = Vector2.One * 32;
 		
 		public AABB(){}
-		public AABB(Vector2 position, Vector2 size)
+
+		public override void Start()
 		{
-			Position = position;
-			Size = size;
+			base.Start();
+			Position = Owner.Transform.GlobalPosition;
+			GameMgr.Game.World.Colliders.Add(this);
 		}
 
 		public bool Overlaps(AABB other)

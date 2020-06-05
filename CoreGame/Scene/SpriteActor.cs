@@ -1,6 +1,6 @@
 ﻿using System;
 using CoreGame.Collision;
-using CoreGame.Component;
+using CoreGame.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

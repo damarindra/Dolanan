@@ -12,12 +12,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Animation\AnimationSequence.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\AABB.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\Body.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collision\Collision.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collision\WorldCollision.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collision\Hit.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\AseSprite.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\Component.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\Renderer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\Sprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\AseSprite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\Component.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\Renderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Components\Sprite.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controller\GameMgr.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Cloner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\IGameCycle.cs" />
@@ -38,6 +38,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Scene\Object\Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene\SpriteActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene\World.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\GameHelper\CollisionHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\Log.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\ScreenDebugger.cs" />
   </ItemGroup>

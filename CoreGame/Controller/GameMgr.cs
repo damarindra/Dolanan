@@ -5,9 +5,13 @@ namespace CoreGame.Controller
 {
 	public static class GameMgr
 	{
-		public static void Init(GameClient game, SpriteBatch spriteBatch)
+		public static void Init(GameClient game)
 		{
 			Game = game;
+		}
+
+		public static void Load(SpriteBatch spriteBatch)
+		{
 			SpriteBatch = spriteBatch;
 		}
 		

@@ -2,7 +2,7 @@
 using System;
 using CoreGame.Animation;
 using CoreGame.Collision;
-using CoreGame.Component;
+using CoreGame.Components;
 using CoreGame.Engine;
 using CoreGame.Resources;
 using Microsoft.Xna.Framework;
@@ -24,6 +24,8 @@ namespace CoreGame.Scene.Object
 		public Player(string name, Layer layer) : base(name, layer)
 		{
 			Sprite = AddComponent<AseSprite>();
+			Body = AddComponent<Body>();
+			Body.BodyType = BodyType.Kinematic;
 
 			AnimatedSprite animatedSprite;
 			if(ResAnimatedSprite.Instance.TryGet("player", out animatedSprite))
@@ -46,7 +48,7 @@ namespace CoreGame.Scene.Object
 			Input.AddInputAxis("Vertical", 
 				new InputAxis(positiveKey: Keys.S, negativeKey: Keys.W, thumbStick: GamePadThumbStickDetail.LeftVertical));
 
-			Body = Layer.GameWorld.CreateBody(Transform, new Vector2(0, 0), new Vector2(32,32));
+			//Body = Layer.GameWorld.CreateBody(Transform, new Vector2(0, 0), new Vector2(32,32));
 			//Body = layer.GameWorld.CreateAABB(Transform.Position, Vector2.One * 32);
 			//Body = layer.GameWorld.Create(Transform, 32, 32, new Vector2(16, 16));
 		}
@@ -93,19 +95,20 @@ namespace CoreGame.Scene.Object
 			{
 				movement *= _moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-				Vector2 resultVelo;
-				Vector2 remainderVelo;
-				Hit hit;
-				
-				Layer.GameWorld.CheckCollision(Body, movement, out resultVelo, out remainderVelo, out hit);
-				Console.WriteLine(hit.Normal);
-				if (hit.Normal != Vector2.Zero)
-				{
-					resultVelo += remainderVelo.Slide(hit.Normal);
-					Console.WriteLine(remainderVelo.Slide(hit.Normal));
-				}
-				Body.Position += resultVelo;
-				Transform.Position += resultVelo;
+				// Vector2 resultVelo;
+				// Vector2 remainderVelo;
+				// Hit hit;
+				//
+				Body.Move(movement);
+				// Layer.GameWorld.CheckCollision(Body, movement, out resultVelo, out remainderVelo, out hit);
+				// Console.WriteLine(hit.Normal);
+				// if (hit.Normal != Vector2.Zero)
+				// {
+				// 	resultVelo += remainderVelo.Slide(hit.Normal);
+				// 	Console.WriteLine(remainderVelo.Slide(hit.Normal));
+				// }
+				// Body.Position += resultVelo;
+				// Transform.Position += resultVelo;
 			}
 			//Body.Move(Transform.Position.X + movement.X,Transform.Position.Y + movement.Y, CollisionRes);
 		}

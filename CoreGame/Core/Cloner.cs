@@ -3,6 +3,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CoreGame.Engine
 {
+	/// <summary>
+	/// Cloning 
+	/// </summary>
 	public static class Cloner
 	{
 		public static T Clone<T>(T obj)

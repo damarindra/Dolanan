@@ -3,7 +3,7 @@ using CoreGame.Controller;
 using Microsoft.Xna.Framework;
 using MonoGame.Aseprite;
 
-namespace CoreGame.Component
+namespace CoreGame.Components
 {
 	// TODO : AseSprite
 	public class AseSprite : Component

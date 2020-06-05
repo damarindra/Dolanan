@@ -85,6 +85,7 @@ namespace CoreGame
 			World = new World(GameSettings.WorldCollisionSize.X, GameSettings.WorldCollisionSize.Y);
 			// _scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
 			// _scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
+			GameMgr.Init(this);
 			
 			World.Initialize();
 
@@ -96,7 +97,7 @@ namespace CoreGame
 		protected override void LoadContent()
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
-			GameMgr.Init(this, SpriteBatch);
+			GameMgr.Load(SpriteBatch);
 			FontRes.Init();
 			new ResAnimatedSprite().Load();
 

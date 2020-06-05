@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CoreGame.Controller;
+using CoreGame.Engine;
 using Microsoft.Xna.Framework.Content;
 
 namespace CoreGame.Resources
@@ -54,6 +55,24 @@ namespace CoreGame.Resources
 		public bool TryGet(string key, out T val)
 		{
 			return (ResourceHolder.TryGetValue(key, out val));
+		}
+		
+		/// <summary>
+		/// create a new copy, so it will not reference to the ResourceHolder. Useful when ResourceBox type is like AseSprite
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="val"></param>
+		/// <returns></returns>
+		public bool TryGetCopy(string key, out T val)
+		{
+			val = default;
+			if (ResourceHolder.TryGetValue(key, out var value))
+			{
+				val = Cloner.Clone(value);
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

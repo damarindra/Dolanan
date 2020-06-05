@@ -5,7 +5,7 @@ using CoreGame.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace CoreGame.Component
+namespace CoreGame.Components
 {
 	public class Component : IGameCycle
 	{

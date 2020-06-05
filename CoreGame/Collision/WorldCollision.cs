@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace CoreGame.Collision
 {
-	public class Collision
+	public class WorldCollision
 	{
 		public List<AABB> Colliders = new List<AABB>();
 

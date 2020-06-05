@@ -1,5 +1,5 @@
 ﻿using System;
-using CoreGame.Component;
+using CoreGame.Components;
 using CoreGame.Scene;
 using Microsoft.Xna.Framework;
 
