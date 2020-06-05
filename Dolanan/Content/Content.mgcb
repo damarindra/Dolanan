@@ -1,0 +1,112 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\..\monogame-aseprite-master\source\MonoGame.Aseprite.ContentPipeline\bin\Release\MonoGame.Aseprite.ContentPipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin D:/D_Documents/Aseprite/PG_001/1px.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/1px.png;Graphics/1px.png
+
+#begin D:/D_Documents/Aseprite/PG_001/concept_character_v3_green.json
+/importer:AsepriteImporter
+/processor:AsepriteProcessor
+/build:D:/D_Documents/Aseprite/PG_001/concept_character_v3_green.json;Graphics/Aseprites/player_ase.json
+
+#begin D:/D_Documents/Aseprite/PG_001/concept_character_v3_green.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/concept_character_v3_green.png;Graphics/player.png
+
+#begin D:/D_Documents/Aseprite/PG_001/concept_character_v3_green.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/concept_character_v3_green.png;Graphics/Aseprites/player.png
+
+#begin D:/D_Documents/Aseprite/PG_001/objects.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/objects.png;Graphics/objects.png
+
+#begin D:/D_Documents/Aseprite/PG_001/square_64x64.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/square_64x64.png;Graphics/square_64x64.png
+
+#begin D:/D_Documents/Aseprite/PG_001/tiles_16x16.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/tiles_16x16.png;Graphics/tiles_16x16.png
+
+#begin D:/D_Documents/Aseprite/PG_001/ui_fin_exp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:D:/D_Documents/Aseprite/PG_001/ui_fin_exp.png;Graphics/ui_fin_exp.png
+
+#begin Fonts/bitty.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/bitty.spritefont
+

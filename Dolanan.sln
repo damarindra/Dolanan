@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Dolanan", "Dolanan\Dolanan.shproj", "{56718425-E188-4C51-91EC-74D4D1757FD9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform_OpenGL", "Platform_OpenGL\Platform_OpenGL.csproj", "{7B81CE94-CBF8-4648-9D90-03224278A931}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform_WinDX", "Platform_WinDX\Platform_WinDX.csproj", "{321DB5A8-C5C4-4186-B614-7F5A322A00C8}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Dolanan\Dolanan.projitems*{321db5a8-c5c4-4186-b614-7f5a322a00c8}*SharedItemsImports = 5
+		Dolanan\Dolanan.projitems*{56718425-e188-4c51-91ec-74d4d1757fd9}*SharedItemsImports = 13
+		Dolanan\Dolanan.projitems*{7b81ce94-cbf8-4648-9d90-03224278a931}*SharedItemsImports = 5
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF36A810-7114-489E-9EEF-EE0838C61DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF36A810-7114-489E-9EEF-EE0838C61DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF36A810-7114-489E-9EEF-EE0838C61DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF36A810-7114-489E-9EEF-EE0838C61DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B81CE94-CBF8-4648-9D90-03224278A931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B81CE94-CBF8-4648-9D90-03224278A931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B81CE94-CBF8-4648-9D90-03224278A931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B81CE94-CBF8-4648-9D90-03224278A931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{321DB5A8-C5C4-4186-B614-7F5A322A00C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{321DB5A8-C5C4-4186-B614-7F5A322A00C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{321DB5A8-C5C4-4186-B614-7F5A322A00C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{321DB5A8-C5C4-4186-B614-7F5A322A00C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0956DE-5C5A-4B2F-9544-DBB9D3D8D1FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0956DE-5C5A-4B2F-9544-DBB9D3D8D1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0956DE-5C5A-4B2F-9544-DBB9D3D8D1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0956DE-5C5A-4B2F-9544-DBB9D3D8D1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {25C3766F-543D-4F00-95DB-56B7ED2A1A6E}
+	EndGlobalSection
+EndGlobal
