@@ -10,7 +10,7 @@ using Sigil;
 namespace Dolanan.Animation
 {
 	//==================================================================================
-	// ============================= END ANIMATION =====================================
+	// ============================= START ANIMATION =====================================
 	//==================================================================================
 
 	#region ANIMATION
@@ -28,17 +28,17 @@ namespace Dolanan.Animation
 		
 		public bool IsReverse
 		{
-			get => _animationData.IsReverse;
+			get => AnimationData.IsReverse;
 		}
 
 		public bool IsLoop
 		{
-			get => _animationData.IsLoop;
+			get => AnimationData.IsLoop;
 		}
 
-		AnimationData _animationData;
+		public AnimationData AnimationData { get; private set; }
 
-
+		private List<ValueTrack<object>> _valueTracks = new List<ValueTrack<object>>();
 		List<ValueTrack<int>> _intTracks = new List<ValueTrack<int>>();
 		List<ValueTrack<float>> _floatTracks = new List<ValueTrack<float>>();
 		List<ValueTrack<bool>> _boolTracks = new List<ValueTrack<bool>>();
@@ -52,16 +52,21 @@ namespace Dolanan.Animation
 		public AnimationSequence(float animationLength, bool isReverse = false, bool isLoop = true)
 		{
 			AnimationLength = animationLength;
-			_animationData = new AnimationData(this);
-			_animationData.IsLoop = isLoop;
-			_animationData.IsReverse = isReverse;
+			AnimationData = new AnimationData(this);
+			AnimationData.IsLoop = isLoop;
+			AnimationData.IsReverse = isReverse;
 		}
 
 		public ValueTrack<T> CreateNewValueTrack<T>(string trackName, object trackedObj, string trackedField)
 		{
-			ValueTrack<T> newTrack = new ValueTrack<T>(this, trackedObj, trackedField);
-			if (typeof(T) == typeof(int))
+			var newTrack = new ValueTrack<T>(this, trackedObj, trackedField);
+			
+			Console.WriteLine(typeof(T));
+			if (typeof(T) == typeof(Int32))
+			{
 				_intTracks.Add(newTrack as ValueTrack<int>);
+				Console.WriteLine(_intTracks.Count);
+			}
 			else if (typeof(T) == typeof(float))
 				_floatTracks.Add(newTrack as ValueTrack<float>);
 			else if (typeof(T) == typeof(bool))
@@ -77,33 +82,34 @@ namespace Dolanan.Animation
 			if (!IsPlaying)
 				return;
 
-			float positionBeforeUpdate = _animationData.Position;
-			_animationData.UpdateAnimationData(gameTime);
-			
+			float positionBeforeUpdate = AnimationData.Position;
+			AnimationData.UpdateAnimationData(gameTime);
+			Console.WriteLine(AnimationData.Position);
+			Console.WriteLine(_intTracks.Count);
 			
 			foreach (var valueTrack in _intTracks)
 			{
-				if (valueTrack.TryGetNewKey(positionBeforeUpdate, _animationData.Position, _animationData, out var key))
+				if (valueTrack.TryGetNewKey(positionBeforeUpdate, AnimationData.Position, AnimationData, out var key))
 					valueTrack.SetValueToTrackedObject(key.Value);
 			}
 			foreach (var valueTrack in _stringTracks)
 			{
-				if(valueTrack.TryGetNewKey(positionBeforeUpdate, _animationData.Position, _animationData, out var key))
+				if(valueTrack.TryGetNewKey(positionBeforeUpdate, AnimationData.Position, AnimationData, out var key))
 					valueTrack.SetValueToTrackedObject(key.Value);
 			}
 			foreach (var valueTrack in _floatTracks)
 			{
-				if(valueTrack.TryGetNewKey(positionBeforeUpdate, _animationData.Position, _animationData, out var key))
+				if(valueTrack.TryGetNewKey(positionBeforeUpdate, AnimationData.Position, AnimationData, out var key))
 					valueTrack.SetValueToTrackedObject(key.Value);
 			}
 			foreach (var valueTrack in _boolTracks)
 			{
-				if(valueTrack.TryGetNewKey(positionBeforeUpdate, _animationData.Position, _animationData, out var key))
+				if(valueTrack.TryGetNewKey(positionBeforeUpdate, AnimationData.Position, AnimationData, out var key))
 					valueTrack.SetValueToTrackedObject(key.Value);
 			}
 			foreach (var valueTrack in _methodTracks)
 			{
-				if (valueTrack.TryGetNewKey(positionBeforeUpdate, _animationData.Position, _animationData, out var key))
+				if (valueTrack.TryGetNewKey(positionBeforeUpdate, AnimationData.Position, AnimationData, out var key))
 					valueTrack.CallMethod(key.Value);
 			}
 		}
@@ -115,7 +121,8 @@ namespace Dolanan.Animation
 
 		public void Restart()
 		{
-			_animationData.Position = 0;
+			AnimationData.Position = 0;
+			UpdateTrackPosition(0);
 			IsPlaying = true;
 		}
 
@@ -124,7 +131,6 @@ namespace Dolanan.Animation
 			IsPlaying = true;
 		}
 
-		// TODO : Seek doesn't work because we need to update all of the track _nextKeyIndex
 		public void Seek(float timeInMilisec)
 		{
 			if (timeInMilisec < 0)
@@ -132,17 +138,45 @@ namespace Dolanan.Animation
 			else if (timeInMilisec > AnimationLength)
 				timeInMilisec = AnimationLength;
 
-			_animationData.Position = timeInMilisec;
+			AnimationData.Position = timeInMilisec;
+			UpdateTrackPosition(timeInMilisec);
 			Resume();
+		}
+
+		void UpdateTrackPosition(float positionMilisec)
+		{
+			foreach (var valueTrack in _boolTracks)
+				valueTrack.SeekTrack(positionMilisec);
+			foreach (var valueTrack in _floatTracks)
+				valueTrack.SeekTrack(positionMilisec);
+			foreach (var valueTrack in _intTracks)
+				valueTrack.SeekTrack(positionMilisec);
+			foreach (var valueTrack in _methodTracks)
+				valueTrack.SeekTrack(positionMilisec);
+			foreach (var valueTrack in _stringTracks)
+				valueTrack.SeekTrack(positionMilisec);
 		}
 	}
 
+	/// <summary>
+	/// DONE
+	/// </summary>
 	public class AnimationData
 	{
 		public float Position { get; set; }
 		public bool IsLoop { get; set; }
-		public bool IsReverse { get; set; }
-		
+		public float Speed { get; set; } = 1f;
+
+		public bool IsReverse
+		{
+			get => Speed < 0;
+			set
+			{
+				if (value)Speed = MathF.Abs(Speed) * -1;
+				else Speed = MathF.Abs(Speed);
+			}
+		}
+
 		/// <summary>
 		/// Get this value after calling UpdateAnimationData (it is already called, don't call it again)
 		/// So, this will give true value if in this frame UpdateAnimationData,
@@ -164,10 +198,15 @@ namespace Dolanan.Animation
 			_animationSequence = animationSequence;
 		}
 
+		/// <summary>
+		/// Updating animation position on timelime. It is timer
+		/// DONE
+		/// </summary>
+		/// <param name="gameTime"></param>
 		public void UpdateAnimationData(GameTime gameTime)
 		{
 			IsThisFrameLoopBack = false;
-			Position += gameTime.ElapsedGameTime.Milliseconds  * (IsReverse ? -1 : 1);
+			Position += gameTime.ElapsedGameTime.Milliseconds * Speed;
 
 			if (!IsLoop)
 			{
@@ -193,6 +232,7 @@ namespace Dolanan.Animation
 		}
 	}
 	#endregion
+	
 	//==================================================================================
 	// ============================= END ANIMATION =====================================
 	//==================================================================================
@@ -200,6 +240,7 @@ namespace Dolanan.Animation
 	//==================================================================================
 	// ================================= KEY =====================================
 	//==================================================================================
+	
 	#region KEY
 	// TODO: Key -> Changing TimeMilisec need auto sort List<Key> inside the Track. 
 	// TODO: Make key IEquatable. It will add ability to check if a key already recorded
@@ -239,6 +280,7 @@ namespace Dolanan.Animation
 		}
 	}
 	#endregion
+	
 	//==================================================================================
 	// ============================= END KEY =====================================
 	//==================================================================================
@@ -284,9 +326,7 @@ namespace Dolanan.Animation
 		private int _nextKeyIndex = -1;
 		private int _lastValidKeyIndex = -1;
 		
-		public Track(AnimationSequence owner,object recordObject) : base(owner, recordObject)
-		{
-		}
+		public Track(AnimationSequence owner,object recordObject) : base(owner, recordObject) { }
 
 		/// <summary>
 		/// Adding a Keyframe
@@ -303,6 +343,39 @@ namespace Dolanan.Animation
 			Keys.Add(key);
 			Keys = Keys.OrderBy(a => a.TimeMilisec).ToList();
 			UpdateLastValidKeysIndex(Owner.AnimationLength);
+		}
+
+		public void SeekTrack(float position)
+		{
+			if(Keys.Count < 1)
+				return;
+			if (!Owner.AnimationData.IsReverse)
+			{
+				for (int i = 0; i < Keys.Count; i++)
+				{
+					if (position < Keys[i].TimeMilisec)
+					{
+						_nextKeyIndex = i;
+						return;
+					}
+				}
+
+				// if not found, the key index must be the opposite of playback mode 
+				_nextKeyIndex = 0;
+			}
+			else
+			{
+				for (int i = Keys.Count - 1; i >= 0; i--)
+				{
+					if (position > Keys[i].TimeMilisec)
+					{
+						_nextKeyIndex = i;
+						return;
+					}
+				}
+				// if not found, the key index must be the opposite of playback mode 
+				_nextKeyIndex = Keys.Count - 1;
+			}
 		}
 
 		/// <summary>
@@ -333,6 +406,7 @@ namespace Dolanan.Animation
 			float min = Math.Min(positionBeforeUpdate, currentPosition);
 			float max = Math.Max(positionBeforeUpdate, currentPosition);
 			bool isFoundNextKey = min < nextKey.TimeMilisec && nextKey.TimeMilisec <= max;
+			Console.WriteLine(min + " - " + max + " | " + nextKey.TimeMilisec);
 
 			if (!animationData.IsLoop)
 			{
@@ -371,7 +445,8 @@ namespace Dolanan.Animation
 		/// <summary>
 		/// Update the next index
 		/// Perform delta checking, so we can get accurate next key
-		/// This is stupid to be honest. Who the fuck doing animation frame LESS THAN 16 MILISECONDS
+		/// This is stupid to be honest. Who the fuck doing animation frame LESS THAN 16 MILISECONDS...
+		/// But this saves your life when your game frame rate is dropped so much
 		/// </summary>
 		/// <param name="deltaAnimationTime"></param>
 		/// <param name="animationData"></param>
@@ -412,6 +487,8 @@ namespace Dolanan.Animation
 
 		private int TurnToValidKeysIndex(int i)
 		{
+			if (_lastValidKeyIndex == 0)
+				return 0;
 			return Owner.IsLoop ? MathEx.PosMod(i, _lastValidKeyIndex) : i < 0 ? 0 : i > _lastValidKeyIndex ? _lastValidKeyIndex : i;
 		}
 
@@ -423,10 +500,10 @@ namespace Dolanan.Animation
 			if (Keys.Count == 1)
 				return _lastValidKeyIndex = 0;
 
-			for (int i = 1; i < Keys.Count; i++)
+			for (int i = Keys.Count - 1; i >= 0; i--)
 			{
-				if (Keys[i].TimeMilisec > animationLength)
-					return _lastValidKeyIndex = i - 1;
+				if (Keys[i].TimeMilisec <= animationLength)
+					return _lastValidKeyIndex = i;
 			}
 
 			return _lastValidKeyIndex = Keys.Count - 1;
@@ -484,9 +561,11 @@ namespace Dolanan.Animation
 				_setter(RecordObject, param);
 			else if(_infoType == ReflectionInfoType.Field)
 				_fieldInfo.SetValue(RecordObject, param);
+			
+			Console.WriteLine("uhuy");
 		}
 	}
-	
+
 	public class MethodTrack : Track<object>
 	{
 		private MethodInfo _methodInfo;

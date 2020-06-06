@@ -10,7 +10,7 @@ namespace Dolanan.Components
 	public class Sprite : Renderer
 	{
 		// TODO: Complete setter and getter event, such changing frame will automatically change the sprite image
-		public UInt16 Frame
+		public int Frame
 		{
 			get => _frame;
 			set
@@ -23,7 +23,7 @@ namespace Dolanan.Components
 			}
 		}
 
-		private UInt16 _frame = 0;
+		private int _frame = 0;
 
 		public Point FrameSize
 		{

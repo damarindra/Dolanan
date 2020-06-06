@@ -48,7 +48,7 @@ namespace Dolanan.Components
 			}
 		}
 		
-		public RendererPivot Pivot
+		public Pivot Pivot
 		{
 			get => _pivot;
 			set
@@ -64,7 +64,7 @@ namespace Dolanan.Components
 
 		public SpriteEffects SpriteEffect = SpriteEffects.None;
 
-		private RendererPivot _pivot = RendererPivot.Center;
+		private Pivot _pivot = Pivot.Center;
 		private Vector2 _origin;
 		private Point _srcSize;
 		private Texture2D _texture;
@@ -86,37 +86,37 @@ namespace Dolanan.Components
 
 
 	[DataContract]
-	public struct RendererPivot : IEquatable<RendererPivot>
+	public struct Pivot : IEquatable<Pivot>
 	{
-		static RendererPivot()
+		static Pivot()
 		{
-			RendererPivot.Center = new RendererPivot(.5f, .5f);
-			RendererPivot.TopLeft = new RendererPivot(0, 0);
-			RendererPivot.TopRight = new RendererPivot(1, 0);
-			RendererPivot.BottomLeft = new RendererPivot(0, 1);
-			RendererPivot.BottomRight = new RendererPivot(1, 1);
+			Pivot.Center = new Pivot(.5f, .5f);
+			Pivot.TopLeft = new Pivot(0, 0);
+			Pivot.TopRight = new Pivot(1, 0);
+			Pivot.BottomLeft = new Pivot(0, 1);
+			Pivot.BottomRight = new Pivot(1, 1);
 		}
 
 		public float X;
 		public float Y;
 
-		public RendererPivot(float x, float y)
+		public Pivot(float x, float y)
 		{
 			X = x;
 			Y = y;
 		}
 
-		public RendererPivot(float value)
+		public Pivot(float value)
 		{
 			X = value;
 			Y = value;
 		}
 
-		public static RendererPivot Center { get; private set; }
-		public static RendererPivot TopLeft { get; private set; }
-		public static RendererPivot TopRight { get; private set; }
-		public static RendererPivot BottomLeft { get; private set; }
-		public static RendererPivot BottomRight { get; private set; }
+		public static Pivot Center { get; private set; }
+		public static Pivot TopLeft { get; private set; }
+		public static Pivot TopRight { get; private set; }
+		public static Pivot BottomLeft { get; private set; }
+		public static Pivot BottomRight { get; private set; }
 
 		public bool Equals(Vector2 other)
 		{
@@ -125,7 +125,7 @@ namespace Dolanan.Components
 
 		public override bool Equals(object obj)
 		{
-			return obj is RendererPivot other && Equals(other);
+			return obj is Pivot other && Equals(other);
 		}
 
 		public override int GetHashCode()
@@ -133,61 +133,61 @@ namespace Dolanan.Components
 			return this.X.GetHashCode() * 397 ^ this.Y.GetHashCode();
 		}
 
-		public bool Equals(RendererPivot other)
+		public bool Equals(Pivot other)
 		{
 			return (double) this.X == (double) other.X && (double) this.Y == (double) other.Y;
 		}
 
-		public static RendererPivot operator -(RendererPivot value)
+		public static Pivot operator -(Pivot value)
 		{
 			value.X = -value.X;
 			value.Y = -value.Y;
 			return value;
 		}
 
-		public static RendererPivot operator +(RendererPivot value1, RendererPivot value2)
+		public static Pivot operator +(Pivot value1, Pivot value2)
 		{
 			value1.X += value2.X;
 			value1.Y += value2.Y;
 			return value1;
 		}
 
-		public static RendererPivot operator -(RendererPivot value1, RendererPivot value2)
+		public static Pivot operator -(Pivot value1, Pivot value2)
 		{
 			value1.X -= value2.X;
 			value1.Y -= value2.Y;
 			return value1;
 		}
 
-		public static RendererPivot operator *(RendererPivot value1, RendererPivot value2)
+		public static Pivot operator *(Pivot value1, Pivot value2)
 		{
 			value1.X *= value2.X;
 			value1.Y *= value2.Y;
 			return value1;
 		}
 
-		public static RendererPivot operator *(RendererPivot value, float scaleFactor)
+		public static Pivot operator *(Pivot value, float scaleFactor)
 		{
 			value.X *= scaleFactor;
 			value.Y *= scaleFactor;
 			return value;
 		}
 
-		public static RendererPivot operator *(float scaleFactor, RendererPivot value)
+		public static Pivot operator *(float scaleFactor, Pivot value)
 		{
 			value.X *= scaleFactor;
 			value.Y *= scaleFactor;
 			return value;
 		}
 
-		public static RendererPivot operator /(RendererPivot value1, RendererPivot value2)
+		public static Pivot operator /(Pivot value1, Pivot value2)
 		{
 			value1.X /= value2.X;
 			value1.Y /= value2.Y;
 			return value1;
 		}
 
-		public static RendererPivot operator /(RendererPivot value1, float divider)
+		public static Pivot operator /(Pivot value1, float divider)
 		{
 			float num = 1f / divider;
 			value1.X *= num;
@@ -195,22 +195,22 @@ namespace Dolanan.Components
 			return value1;
 		}
 
-		public static bool operator ==(RendererPivot value1, Vector2 value2)
+		public static bool operator ==(Pivot value1, Vector2 value2)
 		{
 			return (double) value1.X == (double) value2.X && (double) value1.Y == (double) value2.Y;
 		}
 
-		public static bool operator !=(RendererPivot value1, Vector2 value2)
+		public static bool operator !=(Pivot value1, Vector2 value2)
 		{
 			return (double) value1.X != (double) value2.X || (double) value1.Y != (double) value2.Y;
 		}
 
-		public static implicit operator Vector2(RendererPivot val)
+		public static implicit operator Vector2(Pivot val)
 		{
 			return new Vector2(val.X, val.Y);
 		}
 
-		public static implicit operator Point(RendererPivot val)
+		public static implicit operator Point(Pivot val)
 		{
 			return new Point((int) val.X, (int) val.Y);
 		}

@@ -63,11 +63,6 @@ namespace Dolanan.Engine
 		public static bool ClipCursor { get; set; } = false;
 		
 		/// <summary>
-		/// Default size for Collision detection. Up this to make it bigger
-		/// </summary>
-		public static Point WorldCollisionSize = new Point(2048, 1440);
-		
-		/// <summary>
 		/// Window Size
 		/// Tips : Pixel Art Guide for windowSize
 		/// 720p 1440p = 640, 480 (divide / multiply by even number)

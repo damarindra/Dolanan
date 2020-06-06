@@ -38,5 +38,19 @@ namespace Dolanan.Components
 		public AseSprite(Actor owner) : base(owner)
 		{
 		}
+
+		public void SetOrigin(Vector2 origin)
+		{
+			AnimatedSprite.RenderDefinition.Origin = origin;
+		}
+		public void SetOrigin(Pivot pivot)
+		{
+			AnimatedSprite.RenderDefinition.Origin = pivot * AnimatedSprite.CurrentFrame.frame.Size.ToVector2();
+		}
+
+		public Vector2 GetOrigin()
+		{
+			return AnimatedSprite.RenderDefinition.Origin;
+		}
 	}
 }

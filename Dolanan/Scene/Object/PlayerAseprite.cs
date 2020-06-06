@@ -5,15 +5,12 @@ using Dolanan.Collision;
 using Dolanan.Components;
 using Dolanan.Engine;
 using Dolanan.Resources;
-using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Aseprite;
-using Hit = Dolanan.Collision.Hit;
 
 namespace Dolanan.Scene.Object
 {
-	public class Player : Actor
+	public class PlayerAseprite : Actor
 	{
 		public AnimationSequence AnimationSequence { get; private set; }
 		
@@ -21,14 +18,21 @@ namespace Dolanan.Scene.Object
 		public Body Body { get; private set; }
 		public AseSprite Sprite { get; private set; }
 
-		public Player(string name, Layer layer) : base(name, layer) { }
+		public PlayerAseprite(string name, Layer layer) : base(name, layer) { }
 
 		public override void Start()
 		{
 			base.Start();
 			Sprite = AddComponent<AseSprite>();
+			if(ResAnimatedSprite.Instance.TryGet("player", out var animatedSprite))
+				Sprite.AnimatedSprite = animatedSprite;
+			Sprite.SetOrigin(Pivot.Center);
+			Sprite.AnimatedSprite.Play("Idle");
+			
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
+			Body.Size = Vector2.One * 20;
+			Body.Offset = new Vector2(10, 4);
 			Body.OnCollisionEnter += other =>
 			{
 				if(other.Tag == "wall")
@@ -60,31 +64,13 @@ namespace Dolanan.Scene.Object
 					Console.WriteLine("I'm still Triggered!");
 			};
 
-			AnimatedSprite animatedSprite;
-			if(ResAnimatedSprite.Instance.TryGet("player", out animatedSprite))
-				Sprite.AnimatedSprite = animatedSprite;
-			
-			Sprite.AnimatedSprite.Play("Idle");
-			
 			AnimationSequence = new AnimationSequence(1500);
-			
-			// Track<int> t = AnimationSequence.CreateNewValueTrack<int>("SpriteFrame", Sprite, "Frame");
-			// t.AddKey(new Key<int>(0, 0));
-			// t.AddKey(new Key<int>(300, 1));
-			// t.AddKey(new Key<int>(600, 2));
-			// t.AddKey(new Key<int>(900, 3));
-			// t.AddKey(new Key<int>(1200, 4));
-			// t.AddKey(new Key<int>(1500, 5));
-			
+
 			Input.AddInputAxis("Horizontal", 
 				new InputAxis(positiveKey: Keys.D, negativeKey: Keys.A, thumbStick: GamePadThumbStickDetail.LeftHorizontal));
 			Input.AddInputAxis("Vertical", 
 				new InputAxis(positiveKey: Keys.W, negativeKey: Keys.S, thumbStick: GamePadThumbStickDetail.LeftVertical));
 
-			//Body = Layer.GameWorld.CreateBody(Transform, new Vector2(0, 0), new Vector2(32,32));
-			//Body = layer.GameWorld.CreateAABB(Transform.Position, Vector2.One * 32);
-			//Body = layer.GameWorld.Create(Transform, 32, 32, new Vector2(16, 16));
-			
 		}
 
 		#region CYCLE

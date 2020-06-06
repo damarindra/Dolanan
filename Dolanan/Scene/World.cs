@@ -28,7 +28,7 @@ namespace Dolanan.Scene
 		/// </summary>
 		public List<Actor> DynamicActor = new List<Actor>();
 
-		public World(int width, int height, float cellSize = 64)
+		public World()
 		{
 			Initialize();
 
@@ -62,39 +62,10 @@ namespace Dolanan.Scene
 		
 		public virtual void Initialize()
 		{
-			// foreach (Layer layer in Layers)
-			// {
-			// 	layer.Initialize();
-			// }
-			// Camera.Initialize();
-			
 		}
 		
-		/// <summary>
-		/// Do not place any start again in here. In fact start will always called at the beginning of Update
-		/// Layer.Start is allowed since it will called the newest Actor once
-		/// Just don't call Actor.Start at here!. At ALL!
-		/// </summary>
 		public virtual void Start()
 		{
-			// foreach (Layer layer in Layers)
-			// {
-			// 	layer.Start();
-			// }
-			var a = CollisionHelper.CreateColliderActor(new Vector2(165, 0), new Vector2(128, 64));
-			a.GetComponent<Body>().Tag = "wall";
-			a = CollisionHelper.CreateColliderActor(new Vector2(60, 32),new Vector2(128, 128));
-			a.GetComponent<Body>().Tag = "wall";
-			a = CollisionHelper.CreateColliderActor(new Vector2(256, 123),new Vector2(64, 128));
-			a.GetComponent<Body>().Tag = "wall";
-			a = CollisionHelper.CreateColliderActor(new Vector2(70, 326),new Vector2( 128 + 43, 64+76));
-			a.GetComponent<Body>().Tag = "wall";
-			a = CollisionHelper.CreateColliderActor(new Vector2(753, 43),new Vector2( 128+43, 64+65));
-			a.GetComponent<Body>().Tag = "wall";
-
-			var ac = CollisionHelper.CreateColliderActor(new Vector2(0, 128), new Vector2(32, 32));
-			ac.GetComponent<Body>().IsTrigger = true;
-			ac.GetComponent<Body>().Tag = "trigger";
 		}
 
 		public virtual void Update(GameTime gameTime)

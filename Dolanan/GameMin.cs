@@ -80,7 +80,7 @@ namespace Dolanan
 			// Add your initialization logic here
 			GameMgr.Init(this);
 			
-			World = new World(GameSettings.WorldCollisionSize.X, GameSettings.WorldCollisionSize.Y);
+			World = new World();
 			// _scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
 			// _scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
 

@@ -12,13 +12,13 @@ namespace Dolanan.Collision
 	/// </summary>
 	public class AABB : Component
 	{
-		public Vector2 Origin;
+		public Vector2 Offset;
 		public Vector2 Position
 		{
-			get => Owner.Transform.GlobalPosition - Origin;
+			get => Owner.Transform.GlobalPosition - Offset;
 			set
 			{
-				Owner.Transform.GlobalPosition = value + Origin;
+				Owner.Transform.GlobalPosition = value + Offset;
 				// Center = _position + _size / 2f;
 			}
 		}
