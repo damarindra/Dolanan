@@ -15,11 +15,13 @@ namespace Dolanan.Scene.Object
 	public class Player : Actor
 	{
 		public AnimationSequence IdleAnimation { get; private set; }
+		public AnimationSequence RunAnimation { get; private set; }
 		
 		private float _moveSpeed = 160;
 		public Body Body { get; private set; }
 		public Sprite Sprite { get; private set; }
 
+		private Vector2 movementInput;
 		public Player(string name, Layer layer) : base(name, layer) { }
 
 		public override void Start()
@@ -29,12 +31,21 @@ namespace Dolanan.Scene.Object
 			Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("player");
 			Sprite.FrameSize = new Point(32, 32);
 
-			IdleAnimation = new AnimationSequence(1000);
+			IdleAnimation = new AnimationSequence(625);
 			var frameTrack = IdleAnimation.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
 			frameTrack.AddKey(new Key<int>(0, 1));
-			frameTrack.AddKey(new Key<int>(250, 2));
-			frameTrack.AddKey(new Key<int>(500, 3));
-			frameTrack.AddKey(new Key<int>(750, 4));
+			frameTrack.AddKey(new Key<int>(125, 2));
+			frameTrack.AddKey(new Key<int>(250, 3));
+			frameTrack.AddKey(new Key<int>(375, 4));
+			
+			RunAnimation = new AnimationSequence(125 * 6);
+			frameTrack = RunAnimation.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
+			frameTrack.AddKey(new Key<int>(0, 5));
+			frameTrack.AddKey(new Key<int>(125, 6));
+			frameTrack.AddKey(new Key<int>(125 * 2, 7));
+			frameTrack.AddKey(new Key<int>(125 * 3, 8));
+			frameTrack.AddKey(new Key<int>(125 * 4, 9));
+			frameTrack.AddKey(new Key<int>(125 * 5, 10));
 
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
@@ -75,18 +86,20 @@ namespace Dolanan.Scene.Object
 				new InputAxis(positiveKey: Keys.D, negativeKey: Keys.A, thumbStick: GamePadThumbStickDetail.LeftHorizontal));
 			Input.AddInputAxis("Vertical", 
 				new InputAxis(positiveKey: Keys.W, negativeKey: Keys.S, thumbStick: GamePadThumbStickDetail.LeftVertical));
-
+			
+			Input.AddInputAction("NextFrame", new InputAction(Keys.OemCloseBrackets));
+			Input.AddInputAction("PrevFrame", new InputAction(Keys.OemOpenBrackets));
 		}
 
+		private int timeCounter = 0;
 		#region CYCLE
+
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
 
-			Vector2 movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+			movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 			Move(gameTime, movementInput);
-			
-			IdleAnimation.UpdateAnimation(gameTime);
 
 			if (Keyboard.GetState(0).IsKeyDown(Keys.R))
 			{
@@ -96,6 +109,7 @@ namespace Dolanan.Scene.Object
 			{
 				Transform.Rotation -= 0.01f;
 			}
+
 			if (Keyboard.GetState(0).IsKeyDown(Keys.V))
 			{
 				Transform.LocalScale += new Vector2(0.01f);
@@ -104,10 +118,22 @@ namespace Dolanan.Scene.Object
 			{
 				Transform.LocalScale -= new Vector2(0.01f);
 			}
-			
+
+			// if (Input.IsInputActionJustPressed("NextFrame"))
+			// 	Sprite.Frame += 1;
+			// else if (Input.IsInputActionJustPressed("NextFrame"))
+			// 	Sprite.Frame -= 1;
 			Sprite.Update(gameTime);
-			IdleAnimation.UpdateAnimation(gameTime);
+			if (movementInput == Vector2.Zero)
+			{
+				IdleAnimation.UpdateAnimation(gameTime);
+			}
+			else
+			{
+				RunAnimation.UpdateAnimation(gameTime);
+			}
 		}
+	
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
 		{

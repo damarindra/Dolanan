@@ -49,6 +49,8 @@ namespace Dolanan.Animation
 		/// Create new Animation
 		/// </summary>
 		/// <param name="animationLength">animation time in miliseconds</param>
+		/// <param name="isReverse"></param>
+		/// <param name="isLoop"></param>
 		public AnimationSequence(float animationLength, bool isReverse = false, bool isLoop = true)
 		{
 			AnimationLength = animationLength;
@@ -61,12 +63,8 @@ namespace Dolanan.Animation
 		{
 			var newTrack = new ValueTrack<T>(this, trackedObj, trackedField);
 			
-			Console.WriteLine(typeof(T));
 			if (typeof(T) == typeof(Int32))
-			{
 				_intTracks.Add(newTrack as ValueTrack<int>);
-				Console.WriteLine(_intTracks.Count);
-			}
 			else if (typeof(T) == typeof(float))
 				_floatTracks.Add(newTrack as ValueTrack<float>);
 			else if (typeof(T) == typeof(bool))
@@ -84,8 +82,6 @@ namespace Dolanan.Animation
 
 			float positionBeforeUpdate = AnimationData.Position;
 			AnimationData.UpdateAnimationData(gameTime);
-			Console.WriteLine(AnimationData.Position);
-			Console.WriteLine(_intTracks.Count);
 			
 			foreach (var valueTrack in _intTracks)
 			{
@@ -206,7 +202,7 @@ namespace Dolanan.Animation
 		public void UpdateAnimationData(GameTime gameTime)
 		{
 			IsThisFrameLoopBack = false;
-			Position += gameTime.ElapsedGameTime.Milliseconds * Speed;
+			Position += (float)gameTime.ElapsedGameTime.TotalMilliseconds * Speed;
 
 			if (!IsLoop)
 			{
@@ -324,7 +320,10 @@ namespace Dolanan.Animation
 	{
 		private List<Key<T>> Keys = new List<Key<T>>();
 		private int _nextKeyIndex = -1;
-		private int _lastValidKeyIndex = -1;
+		/// <summary>
+		/// Valid key index that inside AnimationTime
+		/// </summary>
+		private int _highestValidIndexKey = -1;
 		
 		public Track(AnimationSequence owner,object recordObject) : base(owner, recordObject) { }
 
@@ -392,12 +391,13 @@ namespace Dolanan.Animation
 			if (Keys.Count == 0)
 				return false;
 
+			int dir = animationData.IsReverse ? -1 : 1;
 			if (_nextKeyIndex == -1)
 			{
 				//initialize for the first time
 				key = Keys[0];
-				_nextKeyIndex = 0;
-				UpdateNextIndex(0, animationData);
+				_nextKeyIndex = TurnToValidKeysIndex(dir);
+				//UpdateNextIndex(0, animationData);
 				return true;
 			}
 			
@@ -406,7 +406,6 @@ namespace Dolanan.Animation
 			float min = Math.Min(positionBeforeUpdate, currentPosition);
 			float max = Math.Max(positionBeforeUpdate, currentPosition);
 			bool isFoundNextKey = min < nextKey.TimeMilisec && nextKey.TimeMilisec <= max;
-			Console.WriteLine(min + " - " + max + " | " + nextKey.TimeMilisec);
 
 			if (!animationData.IsLoop)
 			{
@@ -416,26 +415,30 @@ namespace Dolanan.Animation
 					key = nextKey;
 
 					int lastIndex = _nextKeyIndex;
-					UpdateNextIndex(max - min, animationData);
-					if (lastIndex == _nextKeyIndex)
+					_nextKeyIndex = TurnToValidKeysIndex(_nextKeyIndex + dir);
+					//UpdateNextIndex(max - min, animationData);
+					if ((lastIndex == _nextKeyIndex && dir == 1) || (_nextKeyIndex == 0) && dir == -1)
 						Owner.Stop();
 				}
 			}
 			else
 			{
+				// Console.WriteLine(min + " - " + max + " | " + nextKey.TimeMilisec);
 				// When looped back from the edge of animation frame
 				if (animationData.IsThisFrameLoopBack && (min >= nextKey.TimeMilisec || max < nextKey.TimeMilisec))
 				{
 					key = nextKey;
-					UpdateNextIndex(max - min, animationData);
+					_nextKeyIndex = TurnToValidKeysIndex(_nextKeyIndex + dir);
+					//UpdateNextIndex(max - min, animationData);
 				}
 				// just regular next animation, forward or backward
 				else if (isFoundNextKey)
 				{
 					//yes we found it, next key is trapped inside min and max
 					key = nextKey;
+					_nextKeyIndex = TurnToValidKeysIndex(_nextKeyIndex + dir);
 
-					UpdateNextIndex(max - min, animationData);
+					//UpdateNextIndex(max - min, animationData);
 				}
 			}
 
@@ -446,15 +449,17 @@ namespace Dolanan.Animation
 		/// Update the next index
 		/// Perform delta checking, so we can get accurate next key
 		/// This is stupid to be honest. Who the fuck doing animation frame LESS THAN 16 MILISECONDS...
-		/// But this saves your life when your game frame rate is dropped so much
 		/// </summary>
 		/// <param name="deltaAnimationTime"></param>
 		/// <param name="animationData"></param>
 		/// <returns></returns>
+		[Obsolete()]
 		private int UpdateNextIndex(float deltaAnimationTime, AnimationData animationData)
 		{
 			int dir = animationData.IsReverse ? -1 : 1;
-			int maybeNextIndex = TurnToValidKeysIndex(_nextKeyIndex + dir);
+			int maybeNextIndex = _nextKeyIndex + dir;
+			maybeNextIndex = TurnToValidKeysIndex(maybeNextIndex);
+			
 			float currentKeyDeltaTime = MathF.Abs(Keys[maybeNextIndex].TimeMilisec - Keys[_nextKeyIndex].TimeMilisec);
 			
 			while (currentKeyDeltaTime < deltaAnimationTime)
@@ -462,13 +467,13 @@ namespace Dolanan.Animation
 				maybeNextIndex = TurnToValidKeysIndex(_nextKeyIndex + dir);
 				if (Owner.IsLoop)
 				{
-					if (maybeNextIndex == _lastValidKeyIndex && dir == -1)
+					if (maybeNextIndex == _highestValidIndexKey && dir == -1)
 					{
 						currentKeyDeltaTime += Keys[0].TimeMilisec + Keys[maybeNextIndex].TimeMilisec;
 					}else if (maybeNextIndex == 0 && dir == 1)
 					{
 						currentKeyDeltaTime += Keys[0].TimeMilisec +
-						                       Keys[_lastValidKeyIndex].TimeMilisec;
+						                       Keys[_highestValidIndexKey].TimeMilisec;
 					}
 					else
 					{
@@ -477,8 +482,9 @@ namespace Dolanan.Animation
 				}
 				else
 				{
-					if (maybeNextIndex == 0 || maybeNextIndex == _lastValidKeyIndex)
+					if (maybeNextIndex == 0 || maybeNextIndex == _highestValidIndexKey)
 						break;
+					currentKeyDeltaTime += Keys[maybeNextIndex].TimeMilisec;
 				}
 			}
 			
@@ -487,26 +493,26 @@ namespace Dolanan.Animation
 
 		private int TurnToValidKeysIndex(int i)
 		{
-			if (_lastValidKeyIndex == 0)
+			if (_highestValidIndexKey == 0)
 				return 0;
-			return Owner.IsLoop ? MathEx.PosMod(i, _lastValidKeyIndex) : i < 0 ? 0 : i > _lastValidKeyIndex ? _lastValidKeyIndex : i;
+			return Owner.IsLoop ? MathEx.PosMod(i, _highestValidIndexKey + 1) : i < 0 ? 0 : i > _highestValidIndexKey ? _highestValidIndexKey : i;
 		}
 
 		private int UpdateLastValidKeysIndex(float animationLength)
 		{
 			if (Keys.Count == 0)
-				return _lastValidKeyIndex = -1;
+				return _highestValidIndexKey = -1;
 
 			if (Keys.Count == 1)
-				return _lastValidKeyIndex = 0;
+				return _highestValidIndexKey = 0;
 
 			for (int i = Keys.Count - 1; i >= 0; i--)
 			{
 				if (Keys[i].TimeMilisec <= animationLength)
-					return _lastValidKeyIndex = i;
+					return _highestValidIndexKey = i;
 			}
 
-			return _lastValidKeyIndex = Keys.Count - 1;
+			return _highestValidIndexKey = Keys.Count - 1;
 		}
 	}
 
@@ -561,8 +567,7 @@ namespace Dolanan.Animation
 				_setter(RecordObject, param);
 			else if(_infoType == ReflectionInfoType.Field)
 				_fieldInfo.SetValue(RecordObject, param);
-			
-			Console.WriteLine("uhuy");
+			// Console.WriteLine(param);
 		}
 	}
 
