@@ -13,6 +13,12 @@ namespace Dolanan.Scene
 
 		public SpriteActor(string name, Layer layer) : base(name, layer)
 		{
+			
+		}
+
+		public override void Start()
+		{
+			base.Start();
 			Sprite = AddComponent<Sprite>();
 		}
 	}

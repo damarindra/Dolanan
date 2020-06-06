@@ -8,14 +8,14 @@ namespace Dolanan.Tools
 		public static void Print(string msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
-#if LOG
+#if DEBUG
 			Console.WriteLine("'" + msg + "'" + " (" + path + ")" + " (" + caller + ")" + " line :" + lineNumber);
 #endif
 		}
 		public static void PrintWarning(string msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
-#if LOG
+#if DEBUG
 			Console.ForegroundColor = ConsoleColor.DarkYellow;
 			Console.WriteLine("'" + msg + "'" + " (" + path + ")" + " (" + caller + ")" + " line :" + lineNumber);
 			Console.ResetColor();
@@ -24,7 +24,7 @@ namespace Dolanan.Tools
 		public static void PrintError(string msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
-#if LOG
+#if DEBUG
 			Console.ForegroundColor = ConsoleColor.DarkRed;
 			Console.WriteLine("'" + msg + "'" + " (" + path + ")" + " (" + caller + ")" + " line :" + lineNumber);
 			Console.ResetColor();

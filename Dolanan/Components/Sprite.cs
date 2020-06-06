@@ -33,6 +33,11 @@ namespace Dolanan.Components
 
 		public Sprite(Actor owner) : base(owner)
 		{
+		}
+
+		public override void Start()
+		{
+			base.Start();
 			FrameSize = SrcRectangle.Size;
 		}
 	}

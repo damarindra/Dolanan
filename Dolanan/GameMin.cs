@@ -33,11 +33,10 @@ namespace Dolanan
 		protected RenderTarget2D RenderTarget;
 
 		public World World;
-		private Player p;
-		private SpriteActor spr;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 
 		private bool _debugShowCollision = false;
+		private bool _debugFPS = false;
 
 		public GameMin()
 		{
@@ -45,9 +44,11 @@ namespace Dolanan
 			GameSettings.InitializeGameSettings(_graphics, Window);
 			Window.ClientSizeChanged += OnWindowResize;
 			
+			// Configuration Input
 			Input.AddInputAction("Alt", new InputAction(Keys.LeftAlt, Keys.RightAlt));
 			Input.AddInputAction("Enter", new InputAction(Keys.Enter));
 			Input.AddInputAction("Show Collision", new InputAction(Keys.F4));
+			Input.AddInputAction("Show FPS", new InputAction(Keys.F3));
 
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
@@ -93,45 +94,21 @@ namespace Dolanan
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			GameMgr.Load(SpriteBatch);
-			new ResFont().Load();
 			new ResAnimatedSprite().Load();
+			new ResFont().Load();
 
 			RenderTarget =
 				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportSize.X, World.Camera.ViewportSize.Y);
 
 			// use this.Content to load your game content here
-			Log.Print("Starting Game");
-			Log.PrintError("Starting Game");
-			Log.PrintWarning("Starting Game");
-			
-			p = World.CreateActor<Player>("Player");
-			
-			World.Camera.FollowActor = p;
-			
-			spr = World.CreateActor<SpriteActor>("Sprite");
-			spr.Sprite.Texture2D = Content.Load<Texture2D>("Graphics/square_64x64");
-			spr.Sprite.SrcSize = new Point(64, 64);
-
-			//
-			// var tileTex = Content.Load<Texture2D>("tiles_16x16");
-			// for(int x = -64; x < 64; x++){
-			// 	for (int y = -64; y < 64; y++)
-			// 	{
-			// 		var tile = new SpriteActor();
-			// 		tile.Sprite.Texture2D = tileTex;
-			// 		tile.Sprite.SrcSize = new Point(16, 16);
-			// 		tile.Transform.GlobalPosition = new Vector2(x * 16, y * 16);
-			// 		World.AddActor(tile);
-			// 	}
-			// }
 		}
 
 		protected override void Update(GameTime gameTime)
 		{
-			// Don't worry, World.Start will only called every member (Layers, Actors, Components) once. Whenever we add
-			// new actor at runtime, it will not directly registered to the world. It will wait the end of frame, and
-			// register all of them. Next update frame will call Start (Layers, Actors, Components) only once!
-			World.Start();
+			// // Don't worry, World.Start will only called every member (Layers, Actors, Components) once. Whenever we add
+			// // new actor at runtime, it will not directly registered to the world. It will wait the end of frame, and
+			// // register all of them. Next update frame will call Start (Layers, Actors, Components) only once!
+			// World.Start();
 			
 			//Log.Print(gameTime.ElapsedGameTime.Milliseconds.ToString());
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -147,10 +124,8 @@ namespace Dolanan
 					GameSettings.WindowMode = WindowMode.Borderless;
 			}
 
-			if (Keyboard.GetState().IsKeyDown(Keys.R))
-				spr.Transform.Rotation += 0.01f;
-			
 			if (Input.IsInputActionJustPressed("Show Collision")) _debugShowCollision = !_debugShowCollision;
+			if (Input.IsInputActionJustPressed("Show FPS")) _debugFPS = !_debugFPS;
 
 			// TODO: Use preprocessor for windows only
 			// Read here : https://gamedev.stackexchange.com/questions/55657/monogame-cross-platform-conditional-compilation-symbols
@@ -195,8 +170,15 @@ namespace Dolanan
 				World.DrawCollision();
 			}
 			SpriteBatch.End();
-
+			
 			BackBufferRender();
+
+			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+			if(_debugFPS && ResFont.Instance.TryGet("bitty", out var font))
+				FPSCounter.Draw(gameTime, SpriteBatch, font);
+			//SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(0,0, 128, 128), Color.White);
+			
+			SpriteBatch.End();
 
 			base.Draw(gameTime);
 		}

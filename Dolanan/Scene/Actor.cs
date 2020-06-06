@@ -18,6 +18,7 @@ namespace Dolanan.Scene
 		
 		protected readonly List<Actor> Childs = new List<Actor>();
 
+		public Actor Parent { get; private set; }
 		public Actor[] GetChilds
 		{
 			get => Childs.ToArray();
@@ -32,7 +33,7 @@ namespace Dolanan.Scene
 			Initialize();
 			Name = name;
 			Layer = layer;
-			Transform = Transform2D.Identity;
+			Transform = AddComponent<Transform2D>();
 			layer.AddActor(this);
 			Start();
 		}
@@ -61,15 +62,21 @@ namespace Dolanan.Scene
 			return _components.OfType<T>().ToArray();
 		}
 
+		public void SetParent(Actor parent)
+		{
+			if (Parent != null)
+				Parent.Childs.Remove(this);
+			Parent = parent;
+			Transform.Parent = parent.Transform;
+			Parent.Childs.Add(this);
+		}
+
 		public virtual void Initialize() { }
 		public virtual void Start() { }
 
 		// MonoGame Update
 		public virtual void Update(GameTime gameTime)
 		{
-			// Reinitiate 
-			Start();
-			
 			foreach (var component in _components)
 				component.Update(gameTime);
 		}

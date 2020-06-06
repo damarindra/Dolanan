@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>TRACE;LOG</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,5 +45,7 @@
     </MonoGameContentReference>
   </ItemGroup>
 
-  <Import Project="..\Dolanan\Dolanan.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\Dolanan\Dolanan.csproj" />
+  </ItemGroup>
 </Project>

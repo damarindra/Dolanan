@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Dolanan.Collision;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
 {
 	/// <summary>
-	/// Layer is container for Actors. It also work for physics world.
-	/// IMPORTANT
-	/// 1. Physics can only work non-negative position! (Humper limitation)
-	/// 2. Layer is NOT PHYSIC LAYER!! LayerName used for rendering priority!
+	/// Layer is container for Actors. Layer also act as a Scene / Level. World can have more than one Layer
+	/// Use case:
+	/// 
 	/// </summary>
 	public class Layer : IGameCycle
 	{
+		public bool IsLoaded { get; private set; }
+		
 		/// <summary>
 		/// Initialize layer
 		/// </summary>
@@ -26,6 +28,7 @@ namespace Dolanan.Scene
 			Initialize();
 			GameWorld = gameWorld;
 			LayerName = layerName;
+			LoadLayer();
 			Start();
 		}
 
@@ -49,7 +52,6 @@ namespace Dolanan.Scene
 		public T AddActor<T>(string name) where T : Actor
 		{
 			T actor = (T) Activator.CreateInstance(typeof(T), name, this);
-			
 			return actor;
 		}
 		
@@ -82,6 +84,8 @@ namespace Dolanan.Scene
 		
 		public virtual void Update(GameTime gameTime)
 		{
+			if(!IsLoaded)
+				return;
 			foreach (Actor actor in Actors)
 			{
 				actor.Update(gameTime);
@@ -90,6 +94,8 @@ namespace Dolanan.Scene
 
 		public virtual void LateUpdate(GameTime gameTime)
 		{
+			if(!IsLoaded)
+				return;
 			foreach (Actor actor in Actors)
 			{
 				actor.LateUpdate(gameTime);
@@ -98,12 +104,49 @@ namespace Dolanan.Scene
 
 		public virtual void Draw(GameTime gameTime, float layerZDepth)
 		{
+			if(!IsLoaded)
+				return;
 			foreach (Actor actor in Actors)
 			{
 				actor.Draw(gameTime, AutoYSort ?  actor.Transform.Position.Y * float.Epsilon : (float) LayerName);
 			}
 		}
-		
+
+		public virtual void LoadLayer()
+		{
+			foreach (Actor actor in GameWorld.DynamicActor)
+			{
+				Actors.Add(actor);
+			}
+			// Register the collision into World
+			foreach (Actor actor in Actors)
+			{
+				foreach (Body body in actor.GetComponents<Body>())
+				{
+					GameWorld.Colliders.Add(body);
+				}
+			}
+
+			IsLoaded = true;
+		}
+
+		public virtual void UnloadLayer()
+		{
+			IsLoaded = false;
+			foreach (Actor actor in GameWorld.DynamicActor)
+			{
+				Actors.Remove(actor);
+			}
+			
+			// Remove the collision from World
+			foreach (Actor actor in Actors)
+			{
+				foreach (Body body in actor.GetComponents<Body>())
+				{
+					GameWorld.Colliders.Remove(body);
+				}
+			}
+		}
 	}
 
 	//List enum edit here

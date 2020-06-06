@@ -1,6 +1,7 @@
 ﻿using System;
 using Dolanan.Components;
 using Dolanan.Scene;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Engine
@@ -10,24 +11,19 @@ namespace Dolanan.Engine
 	/// <summary>
 	/// A component that control a Transformation.
 	/// </summary>
-	public class Transform2D : ICloneable
+	public class Transform2D : Component 
 	{
-		public static Transform2D Identity => new Transform2D();
-		
 		public TransformParentChange OnTransformParentChange;
-		
-		public Matrix Matrix { get; private set; }
-		
-		private Transform2D _parent;
-		private Vector2 _position = Vector2.Zero;
-		private float _rotation = 0f;
-		private Vector2 _scale = Vector2.One;
 
-		public Transform2D()
+		public Transform2D(Actor owner) : base(owner){}
+		public override void Start()
 		{
-			Matrix = Matrix.Identity;
+			
 		}
 
+		/// <summary>
+		/// Never set parent! Set parent from Actor instead!
+		/// </summary>
 		public Transform2D Parent
 		{
 			get => _parent;
@@ -46,23 +42,22 @@ namespace Dolanan.Engine
 			{
 				_position = value;
 				UpdateTransform();
+				// Log.Print(_matrix.M41.ToString());
+				// Log.Print(_matrix.M42.ToString());
+				// Log.Print(_matrix.M43.ToString());
+				// Log.Print(_matrix.M44.ToString());
 			}
 		}
 
 		public Vector2 GlobalPosition
 		{
-			get => ParentGlobalPosition + Position;
+			get => _matrix.Translation.ToVector2();
 			set
 			{
 				Position = value - ParentGlobalPosition;
-				UpdateTransform();
 			}
 		}
 
-		private Vector2 ParentGlobalPosition
-		{
-			get => Parent?.GlobalPosition ?? Vector2.Zero;
-		}
 
 		public float Rotation
 		{
@@ -76,67 +71,63 @@ namespace Dolanan.Engine
 		public float GlobalRotation
 		{
 			get => ParentGlobalRotation + Rotation;
+			set => Rotation = value - ParentGlobalRotation;
+		}
+
+
+		public Vector2 LocalScale
+		{
+			get => _localScale;
 			set
 			{
-				Rotation = value - ParentGlobalRotation;
+				_localScale = value;
 				UpdateTransform();
 			}
 		}
+		
+		/// <summary>
+		/// Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
+		/// </summary>
+		private Vector2 ParentGlobalPosition => Parent?.GlobalPosition ?? Vector2.Zero;
+		private float ParentGlobalRotation => Parent?.GlobalRotation ?? 0;
+		public Vector2 GlobalScale => ParentScale * LocalScale;
 
-		private float ParentGlobalRotation
-		{
-			get => Parent?.GlobalRotation ?? 0;
-		}
+		private Vector2 ParentScale => Parent?.GlobalScale ?? Vector2.One;
 
-		public Vector2 Scale
-		{
-			get => _scale;
-			set
-			{
-				_scale = value;
-				UpdateTransform();
-			}
-		}
+		public Matrix Matrix => _matrix;
+		
+		public Vector2 Right => _matrix.Right.ToVector2();
+		public Vector2 Left => -Right;
+		// This actually weird, maybe because matrix using 3D space, so Down is up
+		public Vector2 Down => _matrix.Up.ToVector2();
+		public Vector2 Up => -Down;
 
-		private Vector2 GlobalScale
-		{
-			get => Parent?.GlobalScale * Scale ?? Scale;
-		}
+		private Matrix _matrix = Matrix.Identity;
+		private Transform2D _parent = null;
+		private Vector2 _position = Vector2.Zero;
+		private float _rotation = 0f;
+		private Vector2 _localScale = Vector2.One;
 
-		private void UpdateTransform()
+		public void UpdateTransform()
 		{
-			Matrix = Matrix.CreateScale(new Vector3(GlobalScale, 0)) *
-			          Matrix.CreateRotationZ(GlobalRotation) *
-			          Matrix.CreateTranslation(new Vector3(GlobalPosition, 0));
-		}
+			Matrix matrix = Matrix.CreateScale(new Vector3(LocalScale, 1)) *
+			                     Matrix.CreateRotationZ(Rotation) *
+			                     Matrix.CreateTranslation(new Vector3(Position, 0));
+			if(Parent != null)
+				matrix *= GetParentMatrix();
 
-		public Vector2 Right
-		{
-			get => new Vector2(Matrix.Right.X, Matrix.Right.Y);
-		}
-		public Vector2 Left
-		{
-			get => new Vector2(Matrix.Left.X, Matrix.Left.Y);
-		}
-		public Vector2 Up
-		{
-			get => new Vector2(Matrix.Up.X, Matrix.Up.Y);
-		}
-		public Vector2 Down
-		{
-			get => new Vector2(Matrix.Down.X, Matrix.Down.Y);
+			_matrix = matrix;
+			
+			foreach (Actor actor in Owner.GetChilds)
+				actor.Transform.UpdateTransform();
+			//Log.PrintWarning(GlobalPosition.ToString());
 		}
 
-		public object Clone()
+		public Matrix GetParentMatrix()
 		{
-			Transform2D clone = Transform2D.Identity;
-			clone.Parent = Parent;
-			clone.Position = Position;
-			clone.Rotation = Rotation;
-			clone.Scale = Scale;
-			clone.UpdateTransform();
-
-			return clone;
+			return Matrix.CreateScale(new Vector3(ParentScale, 1)) *
+			       Matrix.CreateRotationZ(ParentGlobalRotation - Rotation) *
+			       Matrix.CreateTranslation(new Vector3(ParentGlobalPosition, 0));
 		}
 	}
 }

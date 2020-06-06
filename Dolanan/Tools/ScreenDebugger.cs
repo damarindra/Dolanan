@@ -12,27 +12,27 @@ namespace Dolanan.Tools
 {
 	public static class ScreenDebugger
 	{
-		private static Texture2D pixel;
+		public static Texture2D Pixel
+		{
+			get
+			{
+				if(_pixel == null){
+					_pixel = new Texture2D(GameMgr.SpriteBatch.GraphicsDevice, 1, 1);
+					_pixel.SetData(new Color[] { Color.White });
+				}
 
+				return _pixel;
+			}
+		}
+		private static Texture2D _pixel;
+		
 		public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Color color)
 		{
-			if (pixel == null)
-			{
-				pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-				pixel.SetData(new Color[] { Color.White });
-			}
-
-			spriteBatch.Draw(pixel, destinationRectangle: rect, color: color);
+			spriteBatch.Draw(Pixel, destinationRectangle: rect, color: color);
 		}
 
 		public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Color stroke, float fillOpacity)
 		{
-			if (pixel == null)
-			{
-				pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-				pixel.SetData(new Color[] { Color.White });
-			}
-
 			var fill = new Color(stroke, fillOpacity);
 			spriteBatch.DrawFill(rect, fill);
 			spriteBatch.DrawStroke(rect, stroke);
@@ -40,32 +40,20 @@ namespace Dolanan.Tools
 
 		public static void DrawFill(this SpriteBatch spriteBatch, Rectangle rect, Color fill)
 		{
-			if (pixel == null)
-			{
-				pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-				pixel.SetData(new Color[] { Color.White });
-			}
-
-			spriteBatch.Draw(pixel, destinationRectangle: rect, color: fill);
+			spriteBatch.Draw(Pixel, destinationRectangle: rect, color: fill);
 		}
 
 		public static void DrawStroke(this SpriteBatch spriteBatch, Rectangle rect, Color stroke)
 		{
-			if (pixel == null)
-			{
-				pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-				pixel.SetData(new Color[] { Color.White });
-			}
-
 			var left = new Rectangle(rect.Left, rect.Top, 1, rect.Height);
 			var right = new Rectangle(rect.Right - 1, rect.Top, 1, rect.Height);
 			var top = new Rectangle(rect.Left, rect.Top, rect.Width, 1);
 			var bottom = new Rectangle(rect.Left, rect.Bottom - 1, rect.Width, 1);
 
-			spriteBatch.Draw(pixel, destinationRectangle: left, color: stroke);
-			spriteBatch.Draw(pixel, destinationRectangle: right, color: stroke);
-			spriteBatch.Draw(pixel, destinationRectangle: top, color: stroke);
-			spriteBatch.Draw(pixel, destinationRectangle: bottom, color: stroke);
+			spriteBatch.Draw(Pixel, destinationRectangle: left, color: stroke);
+			spriteBatch.Draw(Pixel, destinationRectangle: right, color: stroke);
+			spriteBatch.Draw(Pixel, destinationRectangle: top, color: stroke);
+			spriteBatch.Draw(Pixel, destinationRectangle: bottom, color: stroke);
 		}
 
 		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color, float thickness = 1f)
@@ -79,7 +67,7 @@ namespace Dolanan.Tools
 		{
 			var origin = new Vector2(0f, 0.5f);
 			var scale = new Vector2(length, thickness);
-			spriteBatch.Draw(pixel, point, null, color, angle, origin, scale, SpriteEffects.None, 0);
+			spriteBatch.Draw(Pixel, point, null, color, angle, origin, scale, SpriteEffects.None, 0);
 		}
 	}
 }

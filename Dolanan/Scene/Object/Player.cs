@@ -5,6 +5,7 @@ using Dolanan.Collision;
 using Dolanan.Components;
 using Dolanan.Engine;
 using Dolanan.Resources;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Aseprite;
@@ -12,7 +13,6 @@ using Hit = Dolanan.Collision.Hit;
 
 namespace Dolanan.Scene.Object
 {
-	// TODO: Change to pure actor!
 	public class Player : Actor
 	{
 		public AnimationSequence AnimationSequence { get; private set; }
@@ -21,8 +21,11 @@ namespace Dolanan.Scene.Object
 		public Body Body { get; private set; }
 		public AseSprite Sprite { get; private set; }
 
-		public Player(string name, Layer layer) : base(name, layer)
+		public Player(string name, Layer layer) : base(name, layer) { }
+
+		public override void Start()
 		{
+			base.Start();
 			Sprite = AddComponent<AseSprite>();
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
@@ -76,16 +79,11 @@ namespace Dolanan.Scene.Object
 			Input.AddInputAxis("Horizontal", 
 				new InputAxis(positiveKey: Keys.D, negativeKey: Keys.A, thumbStick: GamePadThumbStickDetail.LeftHorizontal));
 			Input.AddInputAxis("Vertical", 
-				new InputAxis(positiveKey: Keys.S, negativeKey: Keys.W, thumbStick: GamePadThumbStickDetail.LeftVertical));
+				new InputAxis(positiveKey: Keys.W, negativeKey: Keys.S, thumbStick: GamePadThumbStickDetail.LeftVertical));
 
 			//Body = Layer.GameWorld.CreateBody(Transform, new Vector2(0, 0), new Vector2(32,32));
 			//Body = layer.GameWorld.CreateAABB(Transform.Position, Vector2.One * 32);
 			//Body = layer.GameWorld.Create(Transform, 32, 32, new Vector2(16, 16));
-		}
-
-		// TODO : Set Body Size in realtime, dunno if allowed
-		public void SetBodySize(Point size)
-		{
 			
 		}
 
@@ -98,6 +96,23 @@ namespace Dolanan.Scene.Object
 			Move(gameTime, movementInput);
 			
 			AnimationSequence.UpdateAnimation(gameTime);
+
+			if (Keyboard.GetState(0).IsKeyDown(Keys.R))
+			{
+				Transform.Rotation += 0.01f;
+			}
+			else if (Keyboard.GetState(0).IsKeyDown(Keys.T))
+			{
+				Transform.Rotation -= 0.01f;
+			}
+			if (Keyboard.GetState(0).IsKeyDown(Keys.V))
+			{
+				Transform.LocalScale += new Vector2(0.01f);
+			}
+			else if (Keyboard.GetState(0).IsKeyDown(Keys.C))
+			{
+				Transform.LocalScale -= new Vector2(0.01f);
+			}
 			
 			Sprite.Update(gameTime);
 		}

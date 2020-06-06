@@ -12,12 +12,13 @@ namespace Dolanan.Collision
 	/// </summary>
 	public class AABB : Component
 	{
+		public Vector2 Origin;
 		public Vector2 Position
 		{
-			get => Owner.Transform.GlobalPosition;
+			get => Owner.Transform.GlobalPosition - Origin;
 			set
 			{
-				Owner.Transform.GlobalPosition = value;
+				Owner.Transform.GlobalPosition = value + Origin;
 				// Center = _position + _size / 2f;
 			}
 		}
@@ -50,14 +51,12 @@ namespace Dolanan.Collision
 
 		private Vector2 _size = Vector2.One * 32;
 
-		public AABB(Actor owner) : base(owner)
-		{
-			Position = Owner.Transform.GlobalPosition;
-		}
+		public AABB(Actor owner) : base(owner) { }
 
 		public override void Start()
 		{
 			base.Start();
+			Position = Owner.Transform.GlobalPosition;
 		}
 
 		public bool Overlaps(AABB other)

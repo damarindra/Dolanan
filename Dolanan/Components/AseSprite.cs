@@ -23,7 +23,7 @@ namespace Dolanan.Components
 
 			AnimatedSprite.Position = Owner.Transform.GlobalPosition;
 			AnimatedSprite.RenderDefinition.Rotation = Owner.Transform.Rotation;
-			AnimatedSprite.RenderDefinition.Scale = Owner.Transform.Scale;
+			AnimatedSprite.RenderDefinition.Scale = Owner.Transform.LocalScale;
 			AnimatedSprite.Update(gameTime);
 		}
 

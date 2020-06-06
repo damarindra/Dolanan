@@ -13,7 +13,19 @@ namespace Dolanan.Components
 {
 	public class Renderer : Component
 	{
-		public Texture2D Texture2D { get; set; }
+		public Texture2D Texture2D
+		{
+			get => _texture;
+			set
+			{
+				if (_texture == null)
+				{
+					SrcLocation = Point.Zero;
+					SrcSize = new Point(value.Width, value.Height);
+				}
+				_texture = value;
+			}
+		}
 
 		/// <summary>
 		/// rectangle texture, cropping the texture with this rect
@@ -47,14 +59,15 @@ namespace Dolanan.Components
 			}
 		}
 
-		private RendererPivot _pivot = RendererPivot.Center;
-		private Vector2 _origin;
-
+		public Vector2 Origin => _origin;
 		public Color ModulatedColor { get; set; } = Color.White;
 
 		public SpriteEffects SpriteEffect = SpriteEffects.None;
+
+		private RendererPivot _pivot = RendererPivot.Center;
+		private Vector2 _origin;
 		private Point _srcSize;
-		public float LayerDepth { get; set; }
+		private Texture2D _texture;
 
 		public Renderer(Actor owner) : base(owner) { }
 
@@ -65,14 +78,9 @@ namespace Dolanan.Components
 
 		public override void Draw(GameTime gameTime, float layerZDepth)
 		{
-			// Please check Game.Draw (https://github.com/MonoGame/MonoGame/issues/3624) 
-			// NumDraws
-			// NumClears
-			// NumTargets
-			// NumTextures
-			// if(GameClient.Instance.World.Camera.BoundingBox2D.Intersects(BoundingBox))
-			GameMgr.SpriteBatch.Draw(Texture2D, Owner.Transform.GlobalPosition, SrcRectangle, ModulatedColor,
-					Owner.Transform.GlobalRotation, _origin, Owner.Transform.Scale, SpriteEffect, layerZDepth);
+			if(Texture2D != null)
+				GameMgr.SpriteBatch.Draw(Texture2D, Owner.Transform.GlobalPosition, SrcRectangle, ModulatedColor,
+					Owner.Transform.GlobalRotation, _origin, Owner.Transform.GlobalScale, SpriteEffect, layerZDepth);
 		}
 	}
 

@@ -12,7 +12,7 @@ namespace Dolanan.Scene
 	/// Camera used for virtually rendering the world.
 	/// It actually shifting the spritebatch matrix to the opposite of camera.
 	/// </summary>
-	public class Camera : IGameCycle
+	public class Camera : Actor
 	{
 		public Transform2D Transform { get; private set; }
 		public Actor FollowActor { get; set; }
@@ -23,15 +23,8 @@ namespace Dolanan.Scene
 
 		private bool _pixelPerfect = false;
 		
-		public Camera()
-		{
-			Initialize();
-			ViewportSize = GameSettings.ViewportSize;
-			Transform = Transform2D.Identity;
-			Transform.Position = new Vector2(ViewportSize.X / 2, ViewportSize.Y / 2);
-			Limit = new Rectangle(0,0, GameSettings.WorldCollisionSize.X, GameSettings.WorldCollisionSize.Y);
-			Start();
-		}
+		public Camera(string name, Layer layer) : base(name, layer){}
+		
 
 		//TODO SpriteBatch with this matrix offsetting a little bit
 		public Matrix GetTopLeftMatrix()
@@ -40,15 +33,15 @@ namespace Dolanan.Scene
 				-(Transform.Position.Y - ViewportSize.Y / 2), 0);
 		}
 
-		public virtual void Initialize() { }
-
-		public virtual void Start() { }
-
-		public virtual void Update(GameTime gameTime)
+		public override void Start()
 		{
+			ViewportSize = GameSettings.ViewportSize;
+			Transform = AddComponent<Transform2D>();
+			Transform.Position = new Vector2(ViewportSize.X / 2, ViewportSize.Y / 2);
+			Limit = new Rectangle(0,0, GameSettings.WorldCollisionSize.X, GameSettings.WorldCollisionSize.Y);
 		}
 
-		public virtual void LateUpdate(GameTime gameTime)
+		public override void LateUpdate(GameTime gameTime)
 		{
 			if(FollowActor == null)
 				return;
@@ -71,16 +64,14 @@ namespace Dolanan.Scene
 					Limit.Y + Limit.Height- (ViewportSize.Y / 2));
 			}
 
-			if (_pixelPerfect)
-				Transform.Position = new Vector2(MathF.Round(position.X),
-					MathF.Round(position.Y));
-			else
-				Transform.Position = position;
-		}
-
-		public void Draw(GameTime gameTime, float layerZDepth = 0)
-		{
-			
+			if (position != Transform.Position)
+			{
+				if (_pixelPerfect)
+					Transform.Position = new Vector2(MathF.Round(position.X),
+						MathF.Round(position.Y));
+				else
+					Transform.Position = position;
+			}
 		}
 	}
 }

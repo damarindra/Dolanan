@@ -42,7 +42,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="v"></param>
 		/// <returns>Angle radian</returns>
-		public static float Angle(this Vector2 v)
+		public static float ToAngle(Vector2 v)
 		{
 			return MathF.Atan2(v.Y, v.X);
 		}
@@ -58,6 +58,11 @@ namespace Dolanan.Engine
 			return MathF.Atan2(v.Y - point.Y, v.X - point.X);
 		}
 
+		public static Vector2 ToDirection(float radian)
+		{
+			return new Vector2(MathF.Cos(radian), MathF.Sin(radian));
+		}
+
 		public static Vector2 Slide(this Vector2 v, Vector2 normal)
 		{
 			return v - normal * Vector2.Dot(v, normal);
@@ -67,5 +72,15 @@ namespace Dolanan.Engine
 		{
 			return 2.0f * normal * Vector2.Dot(v, normal) - v;
 		}
+
+		public static Vector2 ToVector2(this Vector3 v)
+		{
+			return new Vector2(v.X, v.Y);
+		}
+
+		// public static Matrix SetRotationScaleAndSkew(this ref Matrix matrix, float rotation, Vector2 scale, float skew)
+		// {
+		// 	matrix.M11 = 
+		// }
 	}
 }

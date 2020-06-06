@@ -21,16 +21,23 @@ namespace Dolanan.Scene
 		public Camera Camera;
 		protected List<Layer> Layers = new List<Layer>();
 		private LayerName _defaultLayer = LayerName.Default;
+		
+		/// <summary>
+		/// DynamicActor is Actor that can move between layer. Whenever layer call Unload, the DynamicActor will be removed
+		/// from the layer, and if Load called, DynamicActor will be add at it. Useful for player.
+		/// </summary>
+		public List<Actor> DynamicActor = new List<Actor>();
 
 		public World(int width, int height, float cellSize = 64)
 		{
 			Initialize();
-			Camera = new Camera();
 
 			foreach (LayerName name in (LayerName[]) Enum.GetValues(typeof(LayerName)))
 			{
 				Layers.Add(new Layer(this, name));
 			}
+
+			Camera = GetDefaultLayer().AddActor<Camera>("Camera");
 		}
 
 		#region GameCycle
@@ -119,7 +126,6 @@ namespace Dolanan.Scene
 			{
 				layer.Draw(gameTime, layerZDepth);
 			}
-			Camera.Draw(gameTime);
 		}
 		
 		#endregion

@@ -13,7 +13,6 @@ namespace Dolanan.Collision
 	//TODO : Stuck after colliding. AABB only is not stuck
 	public class Body : AABB
 	{
-		public Vector2 Origin;
 		public BodyType BodyType = BodyType.Static;
 		public string Tag = "";
 		public bool IsTrigger = false;
@@ -32,9 +31,13 @@ namespace Dolanan.Collision
 		/// </summary>
 		public HashSet<Body> CollidedBodies { get; private set; } = new HashSet<Body>();
 
-		public Body(Actor owner) : base(owner)
+		public Body(Actor owner) : base(owner) { }
+
+		public override void Start()
 		{
-			GameMgr.Game.World.Colliders.Add(this);
+			base.Start();
+			if(Owner.Layer.IsLoaded)
+				GameMgr.Game.World.Colliders.Add(this);
 		}
 
 		public Hit Move(Vector2 velocity)
