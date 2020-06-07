@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Aseprite" Version="1.1.1" />
     <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.8.*" />
     <PackageReference Include="MonoGame.Content.Builder" Version="3.7.*" />
     <PackageReference Include="Sigil" Version="5.0.0" />

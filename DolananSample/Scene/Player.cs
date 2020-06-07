@@ -4,7 +4,7 @@ using Dolanan.Collision;
 using Dolanan.Components;
 using Dolanan.Controller;
 using Dolanan.Engine;
-using Dolanan.Resources;
+using Dolanan.ThirdParty;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,7 +18,8 @@ namespace Dolanan.Scene.Object
 		public Sprite Sprite { get; private set; }
 		public AnimationPlayer AnimationPlayer { get; private set; }
 
-		private Vector2 movementInput;
+		private Vector2 _movementInput;
+		private Aseprite _aseprite;
 
 		public override void Start()
 		{
@@ -27,22 +28,13 @@ namespace Dolanan.Scene.Object
 			Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("player");
 			Sprite.FrameSize = new Point(32, 32);
 
-			AnimationPlayer = AddComponent<AnimationPlayer>();
-			var anim = AnimationPlayer.CreateNewAnimationSequence("idle", 625);
-			var animTrack = anim.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
-			animTrack.AddKey(new Key<int>(0, 1));
-			animTrack.AddKey(new Key<int>(125, 2));
-			animTrack.AddKey(new Key<int>(250, 3));
-			animTrack.AddKey(new Key<int>(375, 4));
+			_aseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/Aseprites/player_ase");
 			
-			anim = AnimationPlayer.CreateNewAnimationSequence("run", 125 * 6);
-			animTrack = anim.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
-			animTrack.AddKey(new Key<int>(0, 5));
-			animTrack.AddKey(new Key<int>(125, 6));
-			animTrack.AddKey(new Key<int>(125 * 2, 7));
-			animTrack.AddKey(new Key<int>(125 * 3, 8));
-			animTrack.AddKey(new Key<int>(125 * 4, 9));
-			animTrack.AddKey(new Key<int>(125 * 5, 10));
+			AnimationPlayer = AddComponent<AnimationPlayer>();
+			foreach (var asepriteAnimationFrame in _aseprite.AnimationFrames)
+			{
+				AnimationPlayer.AddAnimationSequence(asepriteAnimationFrame.ToAnimationSequence(Sprite, "Frame"));
+			}
 			
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
@@ -93,8 +85,8 @@ namespace Dolanan.Scene.Object
 		{
 			base.Update(gameTime);
 
-			movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-			Move(gameTime, movementInput);
+			_movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+			Move(gameTime, _movementInput);
 
 			if (Keyboard.GetState().IsKeyDown(Keys.R))
 			{
@@ -115,13 +107,13 @@ namespace Dolanan.Scene.Object
 			}
 
 			Sprite.Update(gameTime);
-			if (movementInput == Vector2.Zero)
+			if (_movementInput == Vector2.Zero)
 			{
-				AnimationPlayer.Play("idle");
+				AnimationPlayer.Play("Idle");
 			}
 			else
 			{
-				AnimationPlayer.Play("run");
+				AnimationPlayer.Play("Run");
 			}
 		}
 	

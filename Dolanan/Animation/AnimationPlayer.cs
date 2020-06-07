@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dolanan.Components;
 using Dolanan.Scene;
 using Dolanan.Tools;
@@ -41,6 +42,11 @@ namespace Dolanan.Animation
 			AnimationSequence sequence = new AnimationSequence(name, animationLength, isReverse, isLoop);
 			Animation.Add(sequence);
 			return sequence;
+		}
+
+		public void AddAnimationSequence([NotNull]AnimationSequence animationSequence)
+		{
+			Animation.Add(animationSequence);
 		}
 
 		public void Resume()

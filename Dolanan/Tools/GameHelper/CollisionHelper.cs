@@ -2,7 +2,6 @@
 using Dolanan.Controller;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
-using MonoGame.Aseprite;
 
 namespace Dolanan.Tools.GameHelper
 {

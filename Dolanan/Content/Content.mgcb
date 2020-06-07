@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\..\monogame-aseprite-master\source\MonoGame.Aseprite.ContentPipeline\bin\Release\MonoGame.Aseprite.ContentPipeline.dll
+/reference:..\..\Pipeline\Dolanan.AsepritePipeline\bin\Release\net45\Dolanan.AsepritePipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 

@@ -4,7 +4,6 @@ using Dolanan.Controller;
 using Dolanan.Engine;
 using Dolanan.Resources;
 using Dolanan.Scene;
-using Dolanan.Scene.Object;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -94,7 +93,6 @@ namespace Dolanan
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			GameMgr.Load(SpriteBatch);
-			new ResAnimatedSprite().Load();
 			new ResFont().Load();
 
 			RenderTarget =
