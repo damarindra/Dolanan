@@ -12,8 +12,6 @@ namespace Dolanan.Scene.Object
 {
 	public class PlayerAseprite : Actor
 	{
-		public AnimationSequence AnimationSequence { get; private set; }
-		
 		private float _moveSpeed = 160;
 		public Body Body { get; private set; }
 		public AseSprite Sprite { get; private set; }
@@ -64,8 +62,6 @@ namespace Dolanan.Scene.Object
 					Console.WriteLine("I'm still Triggered!");
 			};
 
-			AnimationSequence = new AnimationSequence(1500);
-
 			Input.AddInputAxis("Horizontal", 
 				new InputAxis(positiveKey: Keys.D, negativeKey: Keys.A, thumbStick: GamePadThumbStickDetail.LeftHorizontal));
 			Input.AddInputAxis("Vertical", 
@@ -80,8 +76,6 @@ namespace Dolanan.Scene.Object
 
 			Vector2 movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 			Move(gameTime, movementInput);
-			
-			AnimationSequence.UpdateAnimation(gameTime);
 
 			if (Keyboard.GetState(0).IsKeyDown(Keys.R))
 			{

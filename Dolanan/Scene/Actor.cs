@@ -27,7 +27,7 @@ namespace Dolanan.Scene
 		// Component stuff
 		// Render
 		private readonly HashSet<Component> _components = new HashSet<Component>();
-
+		
 		public Actor(string name, Layer layer)
 		{
 			Initialize();

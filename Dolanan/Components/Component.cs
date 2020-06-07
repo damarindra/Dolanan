@@ -17,7 +17,7 @@ namespace Dolanan.Components
 			set => _owner = value;
 		}
 
-		public Component(Actor owner)
+		internal Component(Actor owner)
 		{
 			Initialize();
 			Owner = owner;

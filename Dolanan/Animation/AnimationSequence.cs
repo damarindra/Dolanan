@@ -19,6 +19,7 @@ namespace Dolanan.Animation
 	// TODO : Changing Animation value need a delegate to refresh the other value. For now, it can only be set on constructor
 	public class AnimationSequence
 	{
+		public string Name = "";
 		/// <summary>
 		/// Total time animation in miliseconds
 		/// </summary>
@@ -38,7 +39,6 @@ namespace Dolanan.Animation
 
 		public AnimationData AnimationData { get; private set; }
 
-		private List<ValueTrack<object>> _valueTracks = new List<ValueTrack<object>>();
 		List<ValueTrack<int>> _intTracks = new List<ValueTrack<int>>();
 		List<ValueTrack<float>> _floatTracks = new List<ValueTrack<float>>();
 		List<ValueTrack<bool>> _boolTracks = new List<ValueTrack<bool>>();
@@ -48,11 +48,13 @@ namespace Dolanan.Animation
 		/// <summary>
 		/// Create new Animation
 		/// </summary>
+		/// <param name="name"></param>
 		/// <param name="animationLength">animation time in miliseconds</param>
 		/// <param name="isReverse"></param>
 		/// <param name="isLoop"></param>
-		public AnimationSequence(float animationLength, bool isReverse = false, bool isLoop = true)
+		public AnimationSequence(string name, float animationLength, bool isReverse = false, bool isLoop = true)
 		{
+			Name = name;
 			AnimationLength = animationLength;
 			AnimationData = new AnimationData(this);
 			AnimationData.IsLoop = isLoop;
@@ -75,13 +77,13 @@ namespace Dolanan.Animation
 			return newTrack;
 		}
 
-		public void UpdateAnimation(GameTime gameTime)
+		public void UpdateAnimation(float totalElapsedMiliseconds)
 		{
 			if (!IsPlaying)
 				return;
 
 			float positionBeforeUpdate = AnimationData.Position;
-			AnimationData.UpdateAnimationData(gameTime);
+			AnimationData.UpdateAnimationData(totalElapsedMiliseconds);
 			
 			foreach (var valueTrack in _intTracks)
 			{
@@ -110,8 +112,13 @@ namespace Dolanan.Animation
 			}
 		}
 
+		public void Pause()
+		{
+			IsPlaying = false;
+		}
 		public void Stop()
 		{
+			Seek(0);
 			IsPlaying = false;
 		}
 
@@ -199,10 +206,10 @@ namespace Dolanan.Animation
 		/// DONE
 		/// </summary>
 		/// <param name="gameTime"></param>
-		public void UpdateAnimationData(GameTime gameTime)
+		public void UpdateAnimationData(float totalElapsedMiliseconds)
 		{
 			IsThisFrameLoopBack = false;
-			Position += (float)gameTime.ElapsedGameTime.TotalMilliseconds * Speed;
+			Position += totalElapsedMiliseconds * Speed;
 
 			if (!IsLoop)
 			{
@@ -418,7 +425,7 @@ namespace Dolanan.Animation
 					_nextKeyIndex = TurnToValidKeysIndex(_nextKeyIndex + dir);
 					//UpdateNextIndex(max - min, animationData);
 					if ((lastIndex == _nextKeyIndex && dir == 1) || (_nextKeyIndex == 0) && dir == -1)
-						Owner.Stop();
+						Owner.Pause();
 				}
 			}
 			else

@@ -22,9 +22,6 @@ namespace Dolanan.Scene
 		public Rectangle Limit { get; set; }
 
 		private bool _pixelPerfect = false;
-		
-		public Camera(string name, Layer layer) : base(name, layer){}
-		
 
 		//TODO SpriteBatch with this matrix offsetting a little bit
 		public Matrix GetTopLeftMatrix()
@@ -72,6 +69,10 @@ namespace Dolanan.Scene
 				else
 					Transform.Position = position;
 			}
+		}
+
+		public Camera(string name, Layer layer) : base(name, layer)
+		{
 		}
 	}
 }

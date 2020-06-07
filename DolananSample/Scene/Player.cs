@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using Dolanan.Animation;
 using Dolanan.Collision;
 using Dolanan.Components;
@@ -14,15 +13,12 @@ namespace Dolanan.Scene.Object
 {
 	public class Player : Actor
 	{
-		public AnimationSequence IdleAnimation { get; private set; }
-		public AnimationSequence RunAnimation { get; private set; }
-		
 		private float _moveSpeed = 160;
 		public Body Body { get; private set; }
 		public Sprite Sprite { get; private set; }
+		public AnimationPlayer AnimationPlayer { get; private set; }
 
 		private Vector2 movementInput;
-		public Player(string name, Layer layer) : base(name, layer) { }
 
 		public override void Start()
 		{
@@ -31,22 +27,23 @@ namespace Dolanan.Scene.Object
 			Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("player");
 			Sprite.FrameSize = new Point(32, 32);
 
-			IdleAnimation = new AnimationSequence(625);
-			var frameTrack = IdleAnimation.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
-			frameTrack.AddKey(new Key<int>(0, 1));
-			frameTrack.AddKey(new Key<int>(125, 2));
-			frameTrack.AddKey(new Key<int>(250, 3));
-			frameTrack.AddKey(new Key<int>(375, 4));
+			AnimationPlayer = AddComponent<AnimationPlayer>();
+			var anim = AnimationPlayer.CreateNewAnimationSequence("idle", 625);
+			var animTrack = anim.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
+			animTrack.AddKey(new Key<int>(0, 1));
+			animTrack.AddKey(new Key<int>(125, 2));
+			animTrack.AddKey(new Key<int>(250, 3));
+			animTrack.AddKey(new Key<int>(375, 4));
 			
-			RunAnimation = new AnimationSequence(125 * 6);
-			frameTrack = RunAnimation.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
-			frameTrack.AddKey(new Key<int>(0, 5));
-			frameTrack.AddKey(new Key<int>(125, 6));
-			frameTrack.AddKey(new Key<int>(125 * 2, 7));
-			frameTrack.AddKey(new Key<int>(125 * 3, 8));
-			frameTrack.AddKey(new Key<int>(125 * 4, 9));
-			frameTrack.AddKey(new Key<int>(125 * 5, 10));
-
+			anim = AnimationPlayer.CreateNewAnimationSequence("run", 125 * 6);
+			animTrack = anim.CreateNewValueTrack<int>("Frame", Sprite, "Frame");
+			animTrack.AddKey(new Key<int>(0, 5));
+			animTrack.AddKey(new Key<int>(125, 6));
+			animTrack.AddKey(new Key<int>(125 * 2, 7));
+			animTrack.AddKey(new Key<int>(125 * 3, 8));
+			animTrack.AddKey(new Key<int>(125 * 4, 9));
+			animTrack.AddKey(new Key<int>(125 * 5, 10));
+			
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
 			Body.Size = Vector2.One * 20;
@@ -90,8 +87,6 @@ namespace Dolanan.Scene.Object
 			Input.AddInputAction("NextFrame", new InputAction(Keys.OemCloseBrackets));
 			Input.AddInputAction("PrevFrame", new InputAction(Keys.OemOpenBrackets));
 		}
-
-		private int timeCounter = 0;
 		#region CYCLE
 
 		public override void Update(GameTime gameTime)
@@ -101,36 +96,32 @@ namespace Dolanan.Scene.Object
 			movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 			Move(gameTime, movementInput);
 
-			if (Keyboard.GetState(0).IsKeyDown(Keys.R))
+			if (Keyboard.GetState().IsKeyDown(Keys.R))
 			{
 				Transform.Rotation += 0.01f;
 			}
-			else if (Keyboard.GetState(0).IsKeyDown(Keys.T))
+			else if (Keyboard.GetState().IsKeyDown(Keys.T))
 			{
 				Transform.Rotation -= 0.01f;
 			}
 
-			if (Keyboard.GetState(0).IsKeyDown(Keys.V))
+			if (Keyboard.GetState().IsKeyDown(Keys.V))
 			{
 				Transform.LocalScale += new Vector2(0.01f);
 			}
-			else if (Keyboard.GetState(0).IsKeyDown(Keys.C))
+			else if (Keyboard.GetState().IsKeyDown(Keys.C))
 			{
 				Transform.LocalScale -= new Vector2(0.01f);
 			}
 
-			// if (Input.IsInputActionJustPressed("NextFrame"))
-			// 	Sprite.Frame += 1;
-			// else if (Input.IsInputActionJustPressed("NextFrame"))
-			// 	Sprite.Frame -= 1;
 			Sprite.Update(gameTime);
 			if (movementInput == Vector2.Zero)
 			{
-				IdleAnimation.UpdateAnimation(gameTime);
+				AnimationPlayer.Play("idle");
 			}
 			else
 			{
-				RunAnimation.UpdateAnimation(gameTime);
+				AnimationPlayer.Play("run");
 			}
 		}
 	
@@ -160,6 +151,10 @@ namespace Dolanan.Scene.Object
 
 				Body.Move(movement);
 			}
+		}
+
+		public Player(string name, Layer layer) : base(name, layer)
+		{
 		}
 	}
 }

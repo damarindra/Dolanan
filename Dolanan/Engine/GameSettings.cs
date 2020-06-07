@@ -1,4 +1,5 @@
 ﻿using System;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -92,13 +93,12 @@ namespace Dolanan.Engine
 			try
 			{
 				Configure();
-				Console.WriteLine("DONE APPLY");
 				_graphics.ApplyChanges();
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
-				Console.WriteLine("GameSettings.Init() never called, consider call it first");
+				Log.Print(e.ToString());
+				Log.Print("GameSettings.Init() never called, consider call it first");
 				throw;
 			}
 		}
