@@ -43,7 +43,7 @@ namespace Dolanan
 			GameSettings.InitializeGameSettings(_graphics, Window);
 			Window.ClientSizeChanged += OnWindowResize;
 			
-			// Configuration Input
+			// Configuration Input, basic debugging stuff
 			Input.AddInputAction("Alt", new InputAction(Keys.LeftAlt, Keys.RightAlt));
 			Input.AddInputAction("Enter", new InputAction(Keys.Enter));
 			Input.AddInputAction("Show Collision", new InputAction(Keys.F4));
@@ -103,12 +103,6 @@ namespace Dolanan
 
 		protected override void Update(GameTime gameTime)
 		{
-			// // Don't worry, World.Start will only called every member (Layers, Actors, Components) once. Whenever we add
-			// // new actor at runtime, it will not directly registered to the world. It will wait the end of frame, and
-			// // register all of them. Next update frame will call Start (Layers, Actors, Components) only once!
-			// World.Start();
-			
-			//Log.Print(gameTime.ElapsedGameTime.Milliseconds.ToString());
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
 			{
@@ -161,6 +155,8 @@ namespace Dolanan
 			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
 			World.Draw(gameTime);
 			SpriteBatch.End();
+
+			DrawProcess(gameTime);
 			
 			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
 			if (_debugShowCollision)
@@ -168,46 +164,57 @@ namespace Dolanan
 				World.DrawCollision();
 			}
 			SpriteBatch.End();
-			
-			BackBufferRender();
+
+			Rectangle renderDestination;
+			BackBufferRender(out renderDestination);
 
 			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+			BackDraw(gameTime, renderDestination);
 			if(_debugFPS && ResFont.Instance.TryGet("bitty", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
-			//SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(0,0, 128, 128), Color.White);
 			
 			SpriteBatch.End();
 
 			base.Draw(gameTime);
 		}
+		/// <summary>
+		/// DrawProcess is exactly the same as Draw. Dolanan already using the MonoGame.Draw for drawing basic stuff
+		/// If you need the same as MonoGame.Draw, just use override this function! It is exactly the same as Update
+		/// without losing basic Dolanan feature.
+		/// DrawProcess is called right after GameWorld rendered. (Before BackBufferRender)
+		/// </summary>
+		/// <param name="gameTime"></param>
+		protected virtual void DrawProcess(GameTime gameTime){}
+		
+		/// <summary>
+		/// Render after BackBufferRender (Whole game world render). It useful for rendering UI, debug, etc
+		/// </summary>
+		protected virtual void BackDraw(GameTime gameTime, Rectangle renderRect){}
 
 		/// <summary>
 		/// Rendering back into screen with scaling factor
 		/// </summary>
-		void BackBufferRender()
+		void BackBufferRender(out Rectangle renderDestination)
 		{
 			GraphicsDevice.SetRenderTarget(null);
 			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-			//_spriteBatch.Draw(_renderTarget, World.Camera.BoundingBox2D.ToRectangle(), Color.White);
 			// destination is window screen space!
-			Rectangle destination = new Rectangle();
-			destination.Width = (int) (World.Camera.ViewportSize.X * ((GameSettings.WindowKeep == WindowSizeKeep.Width)
+			renderDestination = new Rectangle();
+			renderDestination.Width = (int) (World.Camera.ViewportSize.X * ((GameSettings.WindowKeep == WindowSizeKeep.Width)
 				? _scaleRenderTarget.X
 				: _scaleRenderTarget.Y));
-			destination.Height = (int) (World.Camera.ViewportSize.Y * ((GameSettings.WindowKeep == WindowSizeKeep.Width)
+			renderDestination.Height = (int) (World.Camera.ViewportSize.Y * ((GameSettings.WindowKeep == WindowSizeKeep.Width)
 				? _scaleRenderTarget.X
 				: _scaleRenderTarget.Y));
 
-			destination.X = (int) (((GameSettings.WindowKeep == WindowSizeKeep.Height)
-				                       ? (Window.ClientBounds.Width - destination.Width) / 2
-				                       : 0)); //- ((1 - _scaleRenderTarget) * World.Camera.ViewportSize.X) / 2);
-			destination.Y = (int) (((GameSettings.WindowKeep == WindowSizeKeep.Width)
-				                       ? (Window.ClientBounds.Height - destination.Height) / 2
+			renderDestination.X = (int) (((GameSettings.WindowKeep == WindowSizeKeep.Height)
+				                       ? (Window.ClientBounds.Width - renderDestination.Width) / 2
 				                       : 0));
-			//- ((1 - _scaleRenderTarget) * World.Camera.ViewportSize.Y) / 2);
+			renderDestination.Y = (int) (((GameSettings.WindowKeep == WindowSizeKeep.Width)
+				                       ? (Window.ClientBounds.Height - renderDestination.Height) / 2
+				                       : 0));
 
-			//Console.WriteLine(destination + " ||| " + Window.ClientBounds.Width);
-			SpriteBatch.Draw(RenderTarget, destination,
+			SpriteBatch.Draw(RenderTarget, renderDestination,
 				null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0f);
 			SpriteBatch.End();
 		}

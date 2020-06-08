@@ -2,6 +2,7 @@
 using Dolanan;
 using Dolanan.Collision;
 using Dolanan.Components;
+using Dolanan.Components.UI;
 using Dolanan.Engine;
 using Dolanan.Resources;
 using Dolanan.Scene;
@@ -118,6 +119,7 @@ namespace DolananSample
 
 			Console.WriteLine("Valid");
 			UIActor topLeft = World.CreateActor<UIActor>("TopLeft");
+			topLeft.AddUIComponent<Image>();
 			topLeft.RectTransform.Rectangle = new RectangleF(0,0, 100, 100);
 			topLeft.RectTransform.Anchor = Anchor.TopLeft;
 			// Console.WriteLine(topLeft.RectTransform.Rectangle);
@@ -125,44 +127,52 @@ namespace DolananSample
 			// Console.WriteLine(topLeft.RectTransform.Rectangle);
 
 			UIActor topCenter = World.CreateActor<UIActor>("TopCenter");
+			topCenter.AddUIComponent<Image>();
 			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f -  50, 0, 100, 100);
 			topCenter.RectTransform.Anchor = Anchor.TopCenter;
 			topCenter.SetParent(Canvas);
 			
 			UIActor topRight = World.CreateActor<UIActor>("TopRight");
+			topRight.AddUIComponent<Image>();
 			topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X -100, 0, 100, 100);
 			topRight.RectTransform.Anchor = Anchor.TopRight;
 			topRight.SetParent(Canvas);
 			
 			UIActor middleLeft = World.CreateActor<UIActor>("MiddleLeft");
+			middleLeft.AddUIComponent<Image>();
 			middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
 			middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
 			middleLeft.SetParent(Canvas);
 			
 			UIActor middleCenter = World.CreateActor<UIActor>("MiddleCenter");
+			middleCenter.AddUIComponent<Image>();
 			middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2  - 50, GameSettings.ViewportSize.Y / 2 - 50, 
 				100, 100);
 			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
 			middleCenter.SetParent(Canvas);
 			
 			UIActor middleRight = World.CreateActor<UIActor>("middleRight");
+			middleRight.AddUIComponent<Image>();
 			middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X -100, GameSettings.ViewportSize.Y / 2 - 50, 
 				100, 100);
 			middleRight.RectTransform.Anchor = Anchor.MiddleRight;
 			middleRight.SetParent(Canvas);
 
 			UIActor bottomLeft = World.CreateActor<UIActor>("bottomLeft");
+			bottomLeft.AddUIComponent<Image>();
 			bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
 			bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
 			bottomLeft.SetParent(Canvas);
 			
 			UIActor bottomCenter = World.CreateActor<UIActor>("bottomCenter");
+			bottomCenter.AddUIComponent<Image>();
 			bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50, GameSettings.ViewportSize.Y - 100, 
 				100, 100);
 			bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
 			bottomCenter.SetParent(Canvas);
 			
 			UIActor bottomRight = World.CreateActor<UIActor>("bottomRight");
+			bottomRight.AddUIComponent<Image>();
 			bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X -100, GameSettings.ViewportSize.Y - 100, 
 				100, 100);
 			bottomRight.RectTransform.Anchor = Anchor.BottomRight;
@@ -170,6 +180,7 @@ namespace DolananSample
 
 			
 			UIActor stretchVertical = World.CreateActor<UIActor>("stretchVertical");
+			stretchVertical.AddUIComponent<Image>();
 			stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0, 
 				GameSettings.ViewportSize.X * 0.15f, GameSettings.ViewportSize.Y);
 			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));

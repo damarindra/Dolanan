@@ -1,13 +1,11 @@
-﻿using Dolanan.Engine;
+﻿using Dolanan.Components;
+using Dolanan.Engine;
 
 namespace Dolanan.Scene
 {
-	// TODO : SetParent need to Update the Rectangle
 	public class UIActor : Actor
 	{
-		public UIActor(string name, Layer layer) : base(name, layer)
-		{
-		}
+		public UIActor(string name, Layer layer) : base(name, layer) { }
 
 		public RectTransform RectTransform;
 
@@ -19,6 +17,11 @@ namespace Dolanan.Scene
 			{
 				RectTransform.RefreshParent();
 			};
+		}
+
+		public T AddUIComponent<T>() where T : UIComponent
+		{
+			return AddComponent<T>();
 		}
 	}
 }
