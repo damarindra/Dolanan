@@ -21,12 +21,5 @@ namespace Dolanan.Components
 			base.Start();
 			UIActor = (UIActor) Owner;
 		}
-
-		/// <summary>
-		/// Draw right after BackBufferDraw. Only use this when you want to draw right in front of your screen.
-		/// </summary>
-		/// <param name="gameTime"></param>
-		/// <param name="rectRender"></param>
-		public virtual void BackDraw(GameTime gameTime, Rectangle rectRender) { }
 	}
 }

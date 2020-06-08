@@ -191,6 +191,15 @@ namespace Dolanan.Engine
 				uiActor.RectTransform.UpdateChildsRectTransform();
 			}
 		}
+
+		public void SetRectLocation(Vector2 location)
+		{
+			Rectangle = new RectangleF(location, _rectangle.Size);
+		}
+		public void SetRectSize(Vector2 size)
+		{
+			Rectangle = new RectangleF(_rectangle.Location, size);
+		}
 		
 		#endregion
 

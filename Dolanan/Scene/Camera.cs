@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Drawing;
 using Dolanan.Engine;
-using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Point = Microsoft.Xna.Framework.Point;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace Dolanan.Scene
 {
+	public delegate void ViewportChange(Point viewport);
+	
 	/// <summary>
 	/// Camera used for virtually rendering the world.
 	/// It actually shifting the spritebatch matrix to the opposite of camera.
@@ -18,17 +18,36 @@ namespace Dolanan.Scene
 		public Actor FollowActor { get; set; }
 		public float SmoothSpeed { get; set; }
 		public bool UseSmooth { get; set; }
-		public Point ViewportSize { get; set; }
+
+		public Point ViewportSize
+		{
+			get => _viewportSize;
+			set
+			{
+				_viewportSize = value;
+				OnViewportChanged?.Invoke(_viewportSize);
+			}
+		}
 		public Rectangle Limit { get; set; }
 
+		public ViewportChange OnViewportChanged;
+		
+		private Point _viewportSize;
 		private bool _pixelPerfect = false;
 
-		//TODO SpriteBatch with this matrix offsetting a little bit
+		public Vector2 Min => Transform.GlobalPosition - new Vector2(ViewportSize.X / 2f, ViewportSize.Y / 2f);
+		public Vector2 Max => Transform.GlobalPosition + new Vector2(ViewportSize.X / 2f, ViewportSize.Y / 2f);
+
+		/// <summary>
+		/// Used for shifting the spriteBatch
+		/// </summary>
+		/// <returns></returns>
 		public Matrix GetTopLeftMatrix()
 		{
 			return Matrix.CreateTranslation(-(Transform.Position.X - ViewportSize.X / 2),
 				-(Transform.Position.Y - ViewportSize.Y / 2), 0);
 		}
+
 
 		public override void Start()
 		{

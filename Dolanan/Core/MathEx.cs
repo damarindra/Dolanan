@@ -78,6 +78,10 @@ namespace Dolanan.Engine
 			return new Vector2(v.X, v.Y);
 		}
 
+		public static RectangleF ToRectangleF(this Rectangle r)
+		{
+			return new RectangleF(r.X, r.Y, r.Width, r.Height);
+		}
 		// public static Matrix SetRotationScaleAndSkew(this ref Matrix matrix, float rotation, Vector2 scale, float skew)
 		// {
 		// 	matrix.M11 = 

@@ -239,7 +239,7 @@ namespace DolananSample
 		protected override void BackDraw(GameTime gameTime, Rectangle renderRect)
 		{
 			base.BackDraw(gameTime, renderRect);
-			UILayer.BackDraw(gameTime, renderRect);
+			UILayer.BackDraw(gameTime,renderRect);
 		}
 	}
 

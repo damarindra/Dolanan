@@ -24,18 +24,5 @@ namespace Dolanan.Scene
 		{
 			return base.AddComponent<T>();
 		}
-
-		public virtual void BackDraw(GameTime gameTime, Rectangle rectRender)
-		{
-			foreach (Component component in Components)
-			{
-				if (component.GetType().IsSubclassOf(typeof(UIComponent)))
-				{
-					UIComponent ac = (UIComponent) component;
-					if (ac != null)
-						ac.BackDraw(gameTime, rectRender);
-				}
-			}
-		}
 	}
 }

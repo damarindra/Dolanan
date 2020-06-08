@@ -1,4 +1,5 @@
 ﻿using System;
+using Dolanan.Controller;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
 
@@ -27,6 +28,13 @@ namespace Dolanan.Scene
 			base.Start();
 			ScreenCanvas = AddActor<UIActor>("Canvas");
 			ScreenCanvas.RectTransform.Rectangle = new RectangleF(0,0,GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+			GameMgr.Game.World.Camera.OnViewportChanged += viewport =>
+			{
+				if (_uiSpace == UISpace.Screen)
+				{
+					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0,0,GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+				}
+			};
 		}
 
 		public new T AddActor<T>(string name) where T : UIActor
@@ -34,31 +42,30 @@ namespace Dolanan.Scene
 			return base.AddActor<T>(name);
 		}
 
-		public override void Draw(GameTime gameTime, float layerZDepth)
+		public override void Update(GameTime gameTime)
 		{
-			// Only enable drawing on Draw whne UISpace is in World
-			if (_uiSpace == UISpace.World)
-			{
-				base.Draw(gameTime, layerZDepth);
-				Console.WriteLine("Draw called");
-
-			}
+			base.Update(gameTime);
 		}
 
-		/// <summary>
-		/// Draw right after BackBufferDraw 
-		/// </summary>
-		/// <param name="gameTime"></param>
-		/// <param name="rectRender"></param>
-		public virtual void BackDraw(GameTime gameTime, Rectangle rectRender)
+		public override void LateUpdate(GameTime gameTime)
 		{
-			if(_uiSpace == UISpace.World)
-				return;
-			foreach (Actor actor in Actors)
+			base.LateUpdate(gameTime);
+		}
+
+		public override void Draw(GameTime gameTime, float layerZDepth)
+		{
+			if(UISpace == UISpace.World)
+				base.Draw(gameTime, layerZDepth);
+		}
+
+		public virtual void BackDraw(GameTime gameTime, Rectangle renderRect)
+		{
+			if (UISpace == UISpace.Screen)
 			{
-				UIActor ac = (UIActor) actor;
-				if (ac != null)
-					ac.BackDraw(gameTime, rectRender);
+				if (ScreenCanvas.RectTransform.Rectangle != renderRect.ToRectangleF())
+					ScreenCanvas.RectTransform.Rectangle = renderRect.ToRectangleF();
+				base.Draw(gameTime, LayerZ);
+				Console.WriteLine(ScreenCanvas.RectTransform.Rectangle);
 			}
 		}
 	}

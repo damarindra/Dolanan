@@ -152,7 +152,7 @@ namespace Dolanan
 			GraphicsDevice.SetRenderTarget(RenderTarget);
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
+			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix());
 			World.Draw(gameTime);
 			SpriteBatch.End();
 
@@ -187,8 +187,10 @@ namespace Dolanan
 		protected virtual void DrawProcess(GameTime gameTime){}
 		
 		/// <summary>
-		/// Render after BackBufferRender (Whole game world render). It useful for rendering UI, debug, etc
+		/// Render after BackBufferRender (Whole game world render). It useful for debugging, fixed rendering to screen, etc
 		/// </summary>
+		/// <param name="gameTime"></param>
+		/// <param name="renderRect">Actual size of the full screen</param>
 		protected virtual void BackDraw(GameTime gameTime, Rectangle renderRect){}
 
 		/// <summary>

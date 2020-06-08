@@ -24,13 +24,6 @@ namespace Dolanan.Components.UI
 			base.Draw(gameTime, layerZDepth);
 			
 			GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), Color.White);
-			Console.WriteLine(Owner.Layer.LayerZ);
-		}
-
-		public override void BackDraw(GameTime gameTime, Rectangle rectRender)
-		{
-			base.BackDraw(gameTime, rectRender);
-			GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), Color.White);
 		}
 	}
 }
