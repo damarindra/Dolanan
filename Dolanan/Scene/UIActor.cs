@@ -1,5 +1,6 @@
 ﻿using Dolanan.Components;
 using Dolanan.Engine;
+using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
 {
@@ -12,16 +13,29 @@ namespace Dolanan.Scene
 		public override void Start()
 		{
 			base.Start();
-			RectTransform = AddComponent<RectTransform>();
+			RectTransform = base.AddComponent<RectTransform>();
 			OnParentChange += parent =>
 			{
 				RectTransform.RefreshParent();
 			};
 		}
 
-		public T AddUIComponent<T>() where T : UIComponent
+		public new T AddComponent<T>() where T : UIComponent
 		{
-			return AddComponent<T>();
+			return base.AddComponent<T>();
+		}
+
+		public virtual void BackDraw(GameTime gameTime, Rectangle rectRender)
+		{
+			foreach (Component component in Components)
+			{
+				if (component.GetType().IsSubclassOf(typeof(UIComponent)))
+				{
+					UIComponent ac = (UIComponent) component;
+					if (ac != null)
+						ac.BackDraw(gameTime, rectRender);
+				}
+			}
 		}
 	}
 }

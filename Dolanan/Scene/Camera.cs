@@ -35,7 +35,7 @@ namespace Dolanan.Scene
 			ViewportSize = GameSettings.ViewportSize;
 			Transform = AddComponent<Transform2D>();
 			Transform.Position = new Vector2(ViewportSize.X / 2, ViewportSize.Y / 2);
-			Limit = new Rectangle(0,0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+			Limit = new Rectangle(0,0, GameSettings.ViewportSize.X * 2, GameSettings.ViewportSize.Y * 2);
 		}
 
 		public override void LateUpdate(GameTime gameTime)

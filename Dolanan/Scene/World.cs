@@ -20,7 +20,7 @@ namespace Dolanan.Scene
 	{
 		public Camera Camera;
 		protected List<Layer> Layers = new List<Layer>();
-		private LayerName _defaultLayer = LayerName.Default;
+		private int _defaultLayer = 1;
 		
 		/// <summary>
 		/// DynamicActor is Actor that can move between layer. Whenever layer call Unload, the DynamicActor will be removed
@@ -34,7 +34,7 @@ namespace Dolanan.Scene
 
 			foreach (LayerName name in (LayerName[]) Enum.GetValues(typeof(LayerName)))
 			{
-				Layers.Add(new Layer(this, name));
+				Layers.Add(new Layer(this, (int)name));
 			}
 
 			Camera = GetDefaultLayer().AddActor<Camera>("Camera");
@@ -101,6 +101,25 @@ namespace Dolanan.Scene
 		
 		#endregion
 
+		/// <summary>
+		/// Create new layer, if the layerZ already exist, return it
+		/// </summary>
+		/// <param name="layerZ"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		public T CreateLayer<T>(int layerZ) where T : Layer
+		{
+			foreach (var layer in Layers)
+			{
+				if (layer.LayerZ == layerZ)
+					return (T)layer;
+			}
+
+			T result = (T) Activator.CreateInstance(typeof(T), this, layerZ);
+			Layers.Add(result);
+			return result;
+		}
+		
 		public void DrawCollision()
 		{
 			foreach (Body collisionCollider in Colliders)

@@ -29,7 +29,7 @@ namespace Dolanan.Scene
 		
 		// Component stuff
 		// Render
-		private readonly HashSet<Component> _components = new HashSet<Component>();
+		protected readonly HashSet<Component> Components = new HashSet<Component>();
 		
 		public Actor(string name, Layer layer)
 		{
@@ -45,24 +45,24 @@ namespace Dolanan.Scene
 		public T AddComponent<T>() where T : Component
 		{
 			T t = (T)Activator.CreateInstance(typeof(T), this);
-			_components.Add(t);
+			Components.Add(t);
 			return t;
 		}
 
 		public void RemoveComponent(Component component)
 		{
-			if (_components.Contains(component))
-				_components.Remove(component);
+			if (Components.Contains(component))
+				Components.Remove(component);
 		}
 
 		public T GetComponent<T>()
 		{
-			return _components.OfType<T>().First();
+			return Components.OfType<T>().First();
 		}
 
 		public T[] GetComponents<T>()
 		{
-			return _components.OfType<T>().ToArray();
+			return Components.OfType<T>().ToArray();
 		}
 
 		public void SetParent(Actor parent)
@@ -82,20 +82,20 @@ namespace Dolanan.Scene
 		// MonoGame Update
 		public virtual void Update(GameTime gameTime)
 		{
-			foreach (var component in _components)
+			foreach (var component in Components)
 				component.Update(gameTime);
 		}
 
 		public virtual void Draw(GameTime gameTime, float layerZDepth)
 		{
-			foreach (var component in _components)
+			foreach (var component in Components)
 				component.Draw(gameTime, layerZDepth);
 		}
 
 		// Called after Update
 		public virtual void LateUpdate(GameTime gameTime)
 		{
-			foreach (Components.Component baseComponent in _components)
+			foreach (Components.Component baseComponent in Components)
 			{
 				baseComponent.LateUpdate(gameTime);
 			}

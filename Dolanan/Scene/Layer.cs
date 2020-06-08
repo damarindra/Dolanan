@@ -23,17 +23,17 @@ namespace Dolanan.Scene
 		/// <param name="gameWorld"></param>
 		/// <param name="layerName"></param>
 		/// <param name="useCollision"></param>
-		public Layer(World gameWorld, LayerName layerName)
+		public Layer(World gameWorld, int layerZ)
 		{
 			Initialize();
 			GameWorld = gameWorld;
-			LayerName = layerName;
+			LayerZ = layerZ;
 			LoadLayer();
 			Start();
 		}
 
 		public World GameWorld { get; private set; }
-		public LayerName LayerName { get; private set; }
+		public int LayerZ { get; private set; }
 
 		/// <summary>
 		/// Auto Y Sort only work when Actor Position is positive.
@@ -108,7 +108,7 @@ namespace Dolanan.Scene
 				return;
 			foreach (Actor actor in Actors)
 			{
-				actor.Draw(gameTime, AutoYSort ?  actor.Transform.Position.Y * float.Epsilon : (float) LayerName);
+				actor.Draw(gameTime, AutoYSort ?  actor.Transform.Position.Y * float.Epsilon : (float) LayerZ);
 			}
 		}
 
@@ -148,13 +148,11 @@ namespace Dolanan.Scene
 			}
 		}
 	}
-
 	//List enum edit here
 	public enum LayerName
 	{
 		Background = 0,
 		Default = 1,
 		Foreground = 2,
-		UI = 16
 	}
 }

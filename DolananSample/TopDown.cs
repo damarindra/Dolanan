@@ -18,6 +18,7 @@ namespace DolananSample
 	public class TopDown : GameMin
 	{
 		private Player p;
+		private UILayer UILayer;
 		private UIActor Canvas;
 		private ResTexturesTopDown _texturesTopDown;
 
@@ -114,73 +115,74 @@ namespace DolananSample
 				spr.ModulatedColor = new Color(Color.Aqua, .3f);
 			}
 
-			Canvas = World.CreateActor<UIActor>("Canvas");
+			UILayer = World.CreateLayer<UILayer>(3);
+			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Rectangle = new RectangleF(0,0,GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 
 			Console.WriteLine("Valid");
-			UIActor topLeft = World.CreateActor<UIActor>("TopLeft");
-			topLeft.AddUIComponent<Image>();
+			UIActor topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
+			topLeft.AddComponent<Image>();
 			topLeft.RectTransform.Rectangle = new RectangleF(0,0, 100, 100);
 			topLeft.RectTransform.Anchor = Anchor.TopLeft;
 			// Console.WriteLine(topLeft.RectTransform.Rectangle);
 			topLeft.SetParent(Canvas);
 			// Console.WriteLine(topLeft.RectTransform.Rectangle);
 
-			UIActor topCenter = World.CreateActor<UIActor>("TopCenter");
-			topCenter.AddUIComponent<Image>();
+			UIActor topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
+			topCenter.AddComponent<Image>();
 			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f -  50, 0, 100, 100);
 			topCenter.RectTransform.Anchor = Anchor.TopCenter;
 			topCenter.SetParent(Canvas);
 			
-			UIActor topRight = World.CreateActor<UIActor>("TopRight");
-			topRight.AddUIComponent<Image>();
+			UIActor topRight = World.CreateActor<UIActor>("TopRight", UILayer);
+			topRight.AddComponent<Image>();
 			topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X -100, 0, 100, 100);
 			topRight.RectTransform.Anchor = Anchor.TopRight;
 			topRight.SetParent(Canvas);
 			
-			UIActor middleLeft = World.CreateActor<UIActor>("MiddleLeft");
-			middleLeft.AddUIComponent<Image>();
+			UIActor middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
+			middleLeft.AddComponent<Image>();
 			middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
 			middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
 			middleLeft.SetParent(Canvas);
 			
-			UIActor middleCenter = World.CreateActor<UIActor>("MiddleCenter");
-			middleCenter.AddUIComponent<Image>();
+			UIActor middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			middleCenter.AddComponent<Image>();
 			middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2  - 50, GameSettings.ViewportSize.Y / 2 - 50, 
 				100, 100);
 			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
 			middleCenter.SetParent(Canvas);
 			
-			UIActor middleRight = World.CreateActor<UIActor>("middleRight");
-			middleRight.AddUIComponent<Image>();
+			UIActor middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
+			middleRight.AddComponent<Image>();
 			middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X -100, GameSettings.ViewportSize.Y / 2 - 50, 
 				100, 100);
 			middleRight.RectTransform.Anchor = Anchor.MiddleRight;
 			middleRight.SetParent(Canvas);
 
-			UIActor bottomLeft = World.CreateActor<UIActor>("bottomLeft");
-			bottomLeft.AddUIComponent<Image>();
+			UIActor bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
+			bottomLeft.AddComponent<Image>();
 			bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
 			bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
 			bottomLeft.SetParent(Canvas);
 			
-			UIActor bottomCenter = World.CreateActor<UIActor>("bottomCenter");
-			bottomCenter.AddUIComponent<Image>();
+			UIActor bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
+			bottomCenter.AddComponent<Image>();
 			bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50, GameSettings.ViewportSize.Y - 100, 
 				100, 100);
 			bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
 			bottomCenter.SetParent(Canvas);
 			
-			UIActor bottomRight = World.CreateActor<UIActor>("bottomRight");
-			bottomRight.AddUIComponent<Image>();
+			UIActor bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
+			bottomRight.AddComponent<Image>();
 			bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X -100, GameSettings.ViewportSize.Y - 100, 
 				100, 100);
 			bottomRight.RectTransform.Anchor = Anchor.BottomRight;
 			bottomRight.SetParent(Canvas);
 
 			
-			UIActor stretchVertical = World.CreateActor<UIActor>("stretchVertical");
-			stretchVertical.AddUIComponent<Image>();
+			UIActor stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
+			stretchVertical.AddComponent<Image>();
 			stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0, 
 				GameSettings.ViewportSize.X * 0.15f, GameSettings.ViewportSize.Y);
 			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
@@ -232,6 +234,12 @@ namespace DolananSample
 		protected override void Process(GameTime gameTime)
 		{
 			base.Process(gameTime);
+		}
+
+		protected override void BackDraw(GameTime gameTime, Rectangle renderRect)
+		{
+			base.BackDraw(gameTime, renderRect);
+			UILayer.BackDraw(gameTime, renderRect);
 		}
 	}
 
