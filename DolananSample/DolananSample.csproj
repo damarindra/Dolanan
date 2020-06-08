@@ -28,17 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\" />
+    <ProjectReference Include="..\Dolanan\Dolanan.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <MonoGameContentReference Include="..\Dolanan\Content\Content.mgcb">
       <Link>Content\Content.mgcb</Link>
     </MonoGameContentReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Dolanan\Dolanan.csproj" />
   </ItemGroup>
 
 </Project>

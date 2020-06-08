@@ -25,7 +25,7 @@ namespace Dolanan.Scene.Object
 		{
 			base.Start();
 			Sprite = AddComponent<Sprite>();
-			Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("player");
+			Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("Graphics/Aseprites/player");
 			Sprite.FrameSize = new Point(32, 32);
 
 			_aseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/Aseprites/player_ase");

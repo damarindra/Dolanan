@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
 {
+	public delegate void ParentChange(Actor parent);
+	
 	/// <summary>
 	/// Actor is an Entity.
 	/// </summary>
@@ -18,6 +20,7 @@ namespace Dolanan.Scene
 		
 		protected readonly List<Actor> Childs = new List<Actor>();
 
+		public ParentChange OnParentChange;
 		public Actor Parent { get; private set; }
 		public Actor[] GetChilds
 		{
@@ -69,6 +72,8 @@ namespace Dolanan.Scene
 			Parent = parent;
 			Transform.Parent = parent.Transform;
 			Parent.Childs.Add(this);
+			
+			OnParentChange?.Invoke(parent);
 		}
 
 		public virtual void Initialize() { }

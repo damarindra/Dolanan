@@ -6,10 +6,10 @@ using Microsoft.Xna.Framework;
 namespace Dolanan.Engine
 {
 	/// <summary>Describes a 2D-rectangle.</summary>
-	[DataContract][Obsolete]
-	public struct BoundingBox2D : IEquatable<BoundingBox2D>
+	[DataContract]
+	public struct RectangleF : IEquatable<RectangleF>
 	{
-		private static BoundingBox2D _emptyBoundingBox2D;
+		private static RectangleF _emptyRectangleF;
 
 		/// <summary>
 		/// The x coordinate of the top-left corner of this <see cref="T:Microsoft.Xna.Framework.Rectangle" />.
@@ -34,9 +34,9 @@ namespace Dolanan.Engine
 		/// <summary>
 		/// Returns a <see cref="T:Microsoft.Xna.Framework.Rectangle" /> with X=0, Y=0, Width=0, Height=0.
 		/// </summary>
-		public static BoundingBox2D Empty
+		public static RectangleF Empty
 		{
-			get { return BoundingBox2D._emptyBoundingBox2D; }
+			get { return RectangleF._emptyRectangleF; }
 		}
 
 		/// <summary>
@@ -127,7 +127,7 @@ namespace Dolanan.Engine
 			}
 		}
 
-		public BoundingBox2D(Matrix matrix, Vector2 topLeftOffset, Vector2 topRightOffset, Vector2 bottomLeftOffset,
+		public RectangleF(Matrix matrix, Vector2 topLeftOffset, Vector2 topRightOffset, Vector2 bottomLeftOffset,
 			Vector2 bottomRightOffest)
 		{
 			Vector2 topLeft = Vector2.Transform(topLeftOffset, matrix);
@@ -149,7 +149,7 @@ namespace Dolanan.Engine
 		/// <param name="y">The y coordinate of the top-left corner of the created <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="width">The width of the created <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="height">The height of the created <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
-		public BoundingBox2D(float x, float y, float width, float height)
+		public RectangleF(float x, float y, float width, float height)
 		{
 			this.X = x;
 			this.Y = y;
@@ -163,7 +163,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="location">The x and y coordinates of the top-left corner of the created <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="size">The width and height of the created <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
-		public BoundingBox2D(Vector2 location, Vector2 size)
+		public RectangleF(Vector2 location, Vector2 size)
 		{
 			this.X = location.X;
 			this.Y = location.Y;
@@ -177,7 +177,7 @@ namespace Dolanan.Engine
 		/// <param name="a"><see cref="T:Microsoft.Xna.Framework.Rectangle" /> instance on the left of the equal sign.</param>
 		/// <param name="b"><see cref="T:Microsoft.Xna.Framework.Rectangle" /> instance on the right of the equal sign.</param>
 		/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
-		public static bool operator ==(BoundingBox2D a, BoundingBox2D b)
+		public static bool operator ==(RectangleF a, RectangleF b)
 		{
 			return a.X == b.X && a.Y == b.Y && a.Width == b.Width && a.Height == b.Height;
 		}
@@ -188,7 +188,7 @@ namespace Dolanan.Engine
 		/// <param name="a"><see cref="T:Microsoft.Xna.Framework.Rectangle" /> instance on the left of the not equal sign.</param>
 		/// <param name="b"><see cref="T:Microsoft.Xna.Framework.Rectangle" /> instance on the right of the not equal sign.</param>
 		/// <returns><c>true</c> if the instances are not equal; <c>false</c> otherwise.</returns>
-		public static bool operator !=(BoundingBox2D a, BoundingBox2D b)
+		public static bool operator !=(RectangleF a, RectangleF b)
 		{
 			return !(a == b);
 		}
@@ -232,7 +232,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="value">The <see cref="T:Microsoft.Xna.Framework.Rectangle" /> to check for inclusion in this <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <returns><c>true</c> if the provided <see cref="T:Microsoft.Xna.Framework.Rectangle" />'s bounds lie entirely inside this <see cref="T:Microsoft.Xna.Framework.Rectangle" />; <c>false</c> otherwise.</returns>
-		public bool Contains(BoundingBox2D value)
+		public bool Contains(RectangleF value)
 		{
 			return this.X <= value.X && value.X + value.Width <= this.X + this.Width && this.Y <= value.Y &&
 			       value.Y + value.Height <= this.Y + this.Height;
@@ -243,7 +243,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="value">The <see cref="T:Microsoft.Xna.Framework.Rectangle" /> to check for inclusion in this <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="result"><c>true</c> if the provided <see cref="T:Microsoft.Xna.Framework.Rectangle" />'s bounds lie entirely inside this <see cref="T:Microsoft.Xna.Framework.Rectangle" />; <c>false</c> otherwise. As an output parameter.</param>
-		public void Contains(ref BoundingBox2D value, out bool result)
+		public void Contains(ref RectangleF value, out bool result)
 		{
 			result = this.X <= value.X && value.X + value.Width <= this.X + this.Width && this.Y <= value.Y &&
 			         value.Y + value.Height <= this.Y + this.Height;
@@ -256,7 +256,7 @@ namespace Dolanan.Engine
 		/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
 		public override bool Equals(object obj)
 		{
-			return obj is BoundingBox2D rectangle && this == rectangle;
+			return obj is RectangleF rectangle && this == rectangle;
 		}
 
 		/// <summary>
@@ -264,7 +264,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="other">The <see cref="T:Microsoft.Xna.Framework.Rectangle" /> to compare.</param>
 		/// <returns><c>true</c> if the instances are equal; <c>false</c> otherwise.</returns>
-		public bool Equals(BoundingBox2D other)
+		public bool Equals(RectangleF other)
 		{
 			return this == other;
 		}
@@ -297,7 +297,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="value">The other rectangle for testing.</param>
 		/// <returns><c>true</c> if other <see cref="T:Microsoft.Xna.Framework.Rectangle" /> intersects with this rectangle; <c>false</c> otherwise.</returns>
-		public bool Intersects(BoundingBox2D value)
+		public bool Intersects(RectangleF value)
 		{
 			return value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom &&
 			       this.Top < value.Bottom;
@@ -308,7 +308,7 @@ namespace Dolanan.Engine
 		/// </summary>
 		/// <param name="value">The other rectangle for testing.</param>
 		/// <param name="result"><c>true</c> if other <see cref="T:Microsoft.Xna.Framework.Rectangle" /> intersects with this rectangle; <c>false</c> otherwise. As an output parameter.</param>
-		public void Intersects(ref BoundingBox2D value, out bool result)
+		public void Intersects(ref RectangleF value, out bool result)
 		{
 			result = value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom &&
 			         this.Top < value.Bottom;
@@ -320,10 +320,10 @@ namespace Dolanan.Engine
 		/// <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <returns>Overlapping region of the two rectangles.</returns>
-		public static BoundingBox2D Intersect(BoundingBox2D value1, BoundingBox2D value2)
+		public static RectangleF Intersect(RectangleF value1, RectangleF value2)
 		{
-			BoundingBox2D result;
-			BoundingBox2D.Intersect(ref value1, ref value2, out result);
+			RectangleF result;
+			RectangleF.Intersect(ref value1, ref value2, out result);
 			return result;
 		}
 
@@ -333,7 +333,7 @@ namespace Dolanan.Engine
 		/// <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="result">Overlapping region of the two rectangles as an output parameter.</param>
-		public static void Intersect(ref BoundingBox2D value1, ref BoundingBox2D value2, out BoundingBox2D result)
+		public static void Intersect(ref RectangleF value1, ref RectangleF value2, out RectangleF result)
 		{
 			if (value1.Intersects(value2))
 			{
@@ -341,10 +341,10 @@ namespace Dolanan.Engine
 				float x = Math.Max(value1.X, value2.X);
 				float y = Math.Max(value1.Y, value2.Y);
 				float num2 = Math.Min(value1.Y + value1.Height, value2.Y + value2.Height);
-				result = new BoundingBox2D(x, y, num1 - x, num2 - y);
+				result = new RectangleF(x, y, num1 - x, num2 - y);
 			}
 			else
-				result = new BoundingBox2D(0, 0, 0, 0);
+				result = new RectangleF(0, 0, 0, 0);
 		}
 
 		/// <summary>
@@ -385,11 +385,11 @@ namespace Dolanan.Engine
 		/// <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <returns>The union of the two rectangles.</returns>
-		public static BoundingBox2D Union(BoundingBox2D value1, BoundingBox2D value2)
+		public static RectangleF Union(RectangleF value1, RectangleF value2)
 		{
 			float x = Math.Min(value1.X, value2.X);
 			float y = Math.Min(value1.Y, value2.Y);
-			return new BoundingBox2D(x, y, Math.Max(value1.Right, value2.Right) - x,
+			return new RectangleF(x, y, Math.Max(value1.Right, value2.Right) - x,
 				Math.Max(value1.Bottom, value2.Bottom) - y);
 		}
 
@@ -399,7 +399,7 @@ namespace Dolanan.Engine
 		/// <param name="value1">The first <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="value2">The second <see cref="T:Microsoft.Xna.Framework.Rectangle" />.</param>
 		/// <param name="result">The union of the two rectangles as an output parameter.</param>
-		public static void Union(ref BoundingBox2D value1, ref BoundingBox2D value2, out BoundingBox2D result)
+		public static void Union(ref RectangleF value1, ref RectangleF value2, out RectangleF result)
 		{
 			result.X = Math.Min(value1.X, value2.X);
 			result.Y = Math.Min(value1.Y, value2.Y);
