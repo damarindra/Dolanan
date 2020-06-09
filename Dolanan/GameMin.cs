@@ -18,16 +18,17 @@ namespace Dolanan
 	/// </summary>
 	public class GameMin : Game
 	{
-		private bool _debugFps;
-
-		private bool _debugShowCollision;
-
-		private readonly GraphicsDeviceManager _graphics;
-		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
+		public GraphicsDeviceManager Graphics => _graphics;
+		public bool IsGameFinishedInitialize { get; private set; }
+		public World World;
+		
 		protected RenderTarget2D RenderTarget;
 		protected SpriteBatch SpriteBatch;
-
-		public World World;
+		
+		private bool _debugFps;
+		private bool _debugShowCollision;
+		private readonly GraphicsDeviceManager _graphics;
+		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 
 		public GameMin()
 		{
@@ -44,10 +45,6 @@ namespace Dolanan
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 		}
-
-		public bool IsGameFinishedInitialize { get; private set; }
-
-		public GraphicsDeviceManager Graphics => _graphics;
 
 		private void OnWindowResize(object? sender, EventArgs e)
 		{

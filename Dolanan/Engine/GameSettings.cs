@@ -137,9 +137,9 @@ namespace Dolanan.Engine
 	public enum WindowSizeKeep
 	{
 		Width,
-		Height,
-		// Expand will use the most possible between width or height
-		Expand
+		Height
+		// TODO : Expand will use the most possible between width or height ( we don't really need this actually)
+		//, Expand
 	}
 
 	public enum WindowMode

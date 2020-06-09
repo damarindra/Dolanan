@@ -6,17 +6,16 @@ namespace Dolanan.Scene
 {
 	public class UILayer : Layer
 	{
-		private UISpace _uiSpace = UISpace.Screen;
+		private UISpace _uiSpace = UISpace.Window;
 
-		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ) {
-		}
+		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ) { }
 
 		public UISpace UISpace
 		{
 			get => _uiSpace;
 			set
 			{
-				if (value == UISpace.Screen)
+				if (value == UISpace.Viewport)
 					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X,
 						GameSettings.ViewportSize.Y);
 				_uiSpace = value;
@@ -33,7 +32,7 @@ namespace Dolanan.Scene
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			GameMgr.Game.World.Camera.OnViewportChanged += viewport =>
 			{
-				if (_uiSpace == UISpace.Screen)
+				if (_uiSpace == UISpace.Viewport)
 					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X,
 						GameSettings.ViewportSize.Y);
 			};
@@ -60,18 +59,32 @@ namespace Dolanan.Scene
 				base.Draw(gameTime, layerZDepth);
 		}
 
-		public virtual void BackDraw(GameTime gameTime, Rectangle renderRect)
+		/// <summary>
+		/// Back Draw, occured after BackBufferRendering. Useful for drawing UI, debugging, etc. Always show in front.
+		/// </summary>
+		/// <param name="gameTime"></param>
+		/// <param name="worldRect">BackBuffer Rectangle</param>
+		public virtual void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
-			if (UISpace == UISpace.Screen)
-				if (ScreenCanvas.RectTransform.Rectangle != renderRect.ToRectangleF())
-					ScreenCanvas.RectTransform.Rectangle = renderRect.ToRectangleF();
-				base.Draw(gameTime, LayerZ);
+			if (UISpace == UISpace.World)
+			{
+				// DO NOTHING
+			}
+			else if (UISpace == UISpace.Viewport && ScreenCanvas.RectTransform.Rectangle != worldRect.ToRectangleF())
+				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
+			else if (UISpace == UISpace.Window && ScreenCanvas.RectTransform.Rectangle.Size != GameMgr.Game.Window.ClientBounds.Size.ToVector2())
+				ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
+			base.Draw(gameTime, LayerZ);
 		}
 	}
 
 	public enum UISpace
 	{
-		Screen,
-		World
+		// follow camera viewport
+		Viewport,
+		// place in world
+		World,
+		// follow window size
+		Window
 	}
 }

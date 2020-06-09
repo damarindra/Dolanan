@@ -303,11 +303,16 @@ namespace DolananSample
 			base.Process(gameTime);
 		}
 
+		/// <summary>
+		/// Back Draw, occured after BackBufferRendering. Useful for drawing UI, debugging, etc. Always show in front.
+		/// </summary>
+		/// <param name="gameTime"></param>
+		/// <param name="worldRect">BackBuffer Rectangle</param>
 		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
 			base.BackDraw(gameTime, worldRect);
 			// UILayer.BackDraw(gameTime, worldRect);
-			UILayer.BackDraw(gameTime, new Rectangle(0, 0, GameMgr.Game.Graphics.PreferredBackBufferWidth, GameMgr.Game.Graphics.PreferredBackBufferHeight));
+			UILayer.BackDraw(gameTime, worldRect);
 		}
 	}
 
