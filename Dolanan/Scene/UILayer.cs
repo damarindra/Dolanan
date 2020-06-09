@@ -74,12 +74,12 @@ namespace Dolanan.Scene
 			}
 			else if (UISpace == UISpace.Viewport && ScreenCanvas.RectTransform.Rectangle != worldRect.ToRectangleF())
 			{
-				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
+				//ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
 			}
 			else if (UISpace == UISpace.Window && ScreenCanvas.RectTransform.Rectangle.Size !=
 				GameMgr.Game.Window.ClientBounds.Size.ToVector2())
 			{
-				ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
+				//ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
 			}
 
 			base.Draw(gameTime, LayerZ);

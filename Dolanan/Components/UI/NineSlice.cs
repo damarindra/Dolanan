@@ -128,10 +128,14 @@ namespace Dolanan.Components.UI
 				var heightLeft = size.Y;
 				while (heightLeft > 0)
 				{
-					GameMgr.SpriteBatch.Draw(Texture2D,
-						new Rectangle(x, y,
-							widthLeft > srcRect.Width ? srcRect.Width : widthLeft,
-							heightLeft > srcRect.Height ? srcRect.Height : heightLeft), srcRect, TintColor);
+					Rectangle destination = new Rectangle(x, y,
+						widthLeft > srcRect.Width ? srcRect.Width : widthLeft,
+						heightLeft > srcRect.Height ? srcRect.Height : heightLeft);
+					Rectangle textureRect = new Rectangle(srcRect.X, srcRect.Y,
+						widthLeft > srcRect.Width ? srcRect.Width : widthLeft,
+						heightLeft > srcRect.Height ? srcRect.Height : heightLeft);
+					
+					GameMgr.SpriteBatch.Draw(Texture2D, destination, textureRect, TintColor);
 
 					y += srcRect.Height;
 					heightLeft -= srcRect.Height;
