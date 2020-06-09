@@ -6,6 +6,16 @@ namespace Dolanan.Components
 {
 	public class Component : IGameCycle
 	{
+		public Transform2D Transform
+		{
+			get
+			{
+				if (Owner == null)
+					return null;
+				return Owner.Transform;
+			}
+		}
+		
 		public Component(Actor owner)
 		{
 			Initialize();

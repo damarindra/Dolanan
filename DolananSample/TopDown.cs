@@ -251,6 +251,25 @@ namespace DolananSample
 
 			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
 			stretchVertical.SetParent(Canvas);
+			
+			
+			var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
+			NineSlice ns = stretchHorizontal.AddComponent<NineSlice>();
+			Texture2D tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
+			Aseprite asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
+			ns.Texture2D = tNs;
+			ns.Mode = NineSlice.ResizeMode.Stretch;
+			if (asepriteNs.TryGetSlice("slice", out slice))
+			{
+				ns.SrcTextureRectangle = slice.Bounds;
+				ns.Center = slice.Center;
+				Console.WriteLine(ns.Center);
+				stretchHorizontal.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y * 0.2f,
+					GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y * .5f);
+			}
+
+			stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
+			stretchHorizontal.SetParent(Canvas);
 		}
 
 		protected override void Draw(GameTime gameTime)

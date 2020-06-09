@@ -1,0 +1,28 @@
+{ "frames": [
+   {
+    "filename": "nineslice.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "sourceSize": { "w": 32, "h": 32 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.19.2-x64",
+  "image": "nineslice.png",
+  "format": "RGBA8888",
+  "size": { "w": 32, "h": 32 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+   { "name": "slice", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 5, "y": 7, "w": 22, "h": 18 }, "center": {"x": 4, "y": 4, "w": 14, "h": 10 } }] }
+  ]
+ }
+}

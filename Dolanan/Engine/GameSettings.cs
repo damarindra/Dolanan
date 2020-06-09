@@ -78,7 +78,7 @@ namespace Dolanan.Engine
 		/// <summary>
 		///     Viewport size is the camera that will render the world
 		/// </summary>
-		private static Point _viewportSize = new Point(960, 540);
+		private static Point _viewportSize = new Point(960 / 4, 540 /4);
 
 
 		private static bool _allowWindowResize = true;

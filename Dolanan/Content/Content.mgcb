@@ -194,6 +194,11 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/UI/Ancient/white_pressed.png
 
+#begin Graphics/UI/Colored/blue.json
+/importer:AsepriteImporter
+/processor:AsepriteProcessor
+/build:Graphics/UI/Colored/blue.json;Graphics/UI/Colored/blue_ase.json
+
 #begin Graphics/UI/Colored/blue.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -217,6 +222,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Graphics/UI/Colored/blue_pressed.png
+
+#begin Graphics/UI/Colored/blue-sheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/UI/Colored/blue-sheet.png
 
 #begin Graphics/UI/Colored/green.png
 /importer:TextureImporter
@@ -325,6 +342,23 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Graphics/UI/list.png
+
+#begin Graphics/UI/nineslice.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/UI/nineslice.png
+
+#begin Graphics/UI/nineslice_ase.json
+/importer:AsepriteImporter
+/processor:AsepriteProcessor
+/build:Graphics/UI/nineslice_ase.json
 
 #begin Graphics/UI/Outline/blue.png
 /importer:TextureImporter

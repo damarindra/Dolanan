@@ -1,4 +1,5 @@
-﻿using Dolanan.Scene;
+﻿using Dolanan.Engine;
+using Dolanan.Scene;
 
 namespace Dolanan.Components
 {
@@ -11,6 +12,16 @@ namespace Dolanan.Components
 	public class UIComponent : Component
 	{
 		public UIActor UIActor;
+
+		public new RectTransform Transform
+		{
+			get
+			{
+				if (UIActor == null)
+					return null;
+				return UIActor.RectTransform;
+			}
+		}
 
 		public UIComponent(Actor owner) : base(owner)
 		{
