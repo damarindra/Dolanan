@@ -1,5 +1,5 @@
 # Dolanan
-Is An MonoGame extension contains basic function for creating game, such as sprite, camera, collision etc. Dolanan will focus on
+Is a MonoGame extension contains basic function for creating game, such as sprite, camera, collision etc. Dolanan will focus on
 usability and simplicity for creating 2D game.
 
 ## Dependency
