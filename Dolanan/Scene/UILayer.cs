@@ -63,8 +63,8 @@ namespace Dolanan.Scene
 		public virtual void BackDraw(GameTime gameTime, Rectangle renderRect)
 		{
 			if (UISpace == UISpace.Screen)
-				// if (ScreenCanvas.RectTransform.Rectangle != renderRect.ToRectangleF())
-				// 	ScreenCanvas.RectTransform.Rectangle = renderRect.ToRectangleF();
+				if (ScreenCanvas.RectTransform.Rectangle != renderRect.ToRectangleF())
+					ScreenCanvas.RectTransform.Rectangle = renderRect.ToRectangleF();
 				base.Draw(gameTime, LayerZ);
 		}
 	}

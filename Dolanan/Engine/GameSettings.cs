@@ -9,25 +9,6 @@ namespace Dolanan.Engine
 	{
 		public static bool IsDirty;
 
-		/// <summary>
-		///     Window Size
-		///     Tips : Pixel Art Guide for windowSize
-		///     720p 1440p = 640, 480 (divide / multiply by even number)
-		///     1080p 2160p = 960, 540 (divide / multiply by even number)
-		/// </summary>
-		private static Point _windowSize = new Point(960, 540);
-
-		/// <summary>
-		///     Viewport size is the camera that will render the world
-		/// </summary>
-		private static Point _viewportSize = _windowSize;
-
-		private static bool _allowWindowResize = true;
-		private static WindowMode _windowMode = WindowMode.Window;
-		private static WindowSizeKeep _windowKeep = WindowSizeKeep.Width;
-		private static GraphicsDeviceManager _graphics;
-		private static GameWindow _window;
-
 		public static Point WindowSize
 		{
 			get => _windowSize;
@@ -84,6 +65,28 @@ namespace Dolanan.Engine
 		/// </summary>
 		public static bool ClipCursor { get; set; } = false;
 
+		public static Color BackgroundColor = Color.DimGray;
+		
+		/// <summary>
+		///     Window Size
+		///     Tips : Pixel Art Guide for windowSize
+		///     720p 1440p = 640, 480 (divide / multiply by even number)
+		///     1080p 2160p = 960, 540 (divide / multiply by even number)
+		/// </summary>
+		private static Point _windowSize = new Point(960 / 2, 540 / 2);
+
+		/// <summary>
+		///     Viewport size is the camera that will render the world
+		/// </summary>
+		private static Point _viewportSize = new Point(960, 540);
+
+
+		private static bool _allowWindowResize = true;
+		private static WindowMode _windowMode = WindowMode.Window;
+		private static WindowSizeKeep _windowKeep = WindowSizeKeep.Width;
+		private static GraphicsDeviceManager _graphics;
+		private static GameWindow _window;
+
 		public static void InitializeGameSettings(GraphicsDeviceManager graphics, GameWindow window)
 		{
 			_graphics = graphics;
@@ -134,7 +137,9 @@ namespace Dolanan.Engine
 	public enum WindowSizeKeep
 	{
 		Width,
-		Height
+		Height,
+		// Expand will use the most possible between width or height
+		Expand
 	}
 
 	public enum WindowMode

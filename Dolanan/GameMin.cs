@@ -76,8 +76,8 @@ namespace Dolanan
 			GameMgr.Init(this);
 
 			World = new World();
-			// _scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
-			// _scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
+			_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
+			_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
 
 			base.Initialize();
 
@@ -149,7 +149,7 @@ namespace Dolanan
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.SetRenderTarget(RenderTarget);
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(GameSettings.BackgroundColor);
 
 			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix());
 			World.Draw(gameTime);
@@ -189,8 +189,8 @@ namespace Dolanan
 		///     Render after BackBufferRender (Whole game world render). It useful for debugging, fixed rendering to screen, etc
 		/// </summary>
 		/// <param name="gameTime"></param>
-		/// <param name="renderRect">Actual size of the full screen</param>
-		protected virtual void BackDraw(GameTime gameTime, Rectangle renderRect)
+		/// <param name="worldRect">The back buffer render size</param>
+		protected virtual void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
 		}
 

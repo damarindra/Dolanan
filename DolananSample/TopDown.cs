@@ -303,10 +303,11 @@ namespace DolananSample
 			base.Process(gameTime);
 		}
 
-		protected override void BackDraw(GameTime gameTime, Rectangle renderRect)
+		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
-			base.BackDraw(gameTime, renderRect);
-			UILayer.BackDraw(gameTime, renderRect);
+			base.BackDraw(gameTime, worldRect);
+			// UILayer.BackDraw(gameTime, worldRect);
+			UILayer.BackDraw(gameTime, new Rectangle(0, 0, GameMgr.Game.Graphics.PreferredBackBufferWidth, GameMgr.Game.Graphics.PreferredBackBufferHeight));
 		}
 	}
 
