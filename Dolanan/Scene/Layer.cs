@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dolanan.Collision;
 using Dolanan.Engine;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
@@ -13,7 +14,7 @@ namespace Dolanan.Scene
 	/// </summary>
 	public class Layer : IGameCycle
 	{
-		protected HashSet<Actor> Actors = new HashSet<Actor>();
+		protected List<Actor> Actors = new List<Actor>();
 
 		/// <summary>
 		///     Auto Y Sort only work when Actor Position is positive.
@@ -44,9 +45,6 @@ namespace Dolanan.Scene
 		{
 		}
 
-		/// <summary>
-		///     Iterated the newest Actor
-		/// </summary>
 		public virtual void Start()
 		{
 		}
@@ -74,8 +72,7 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		///     Add Actor to the current layer. When adding at runtime, Actor will not available in the world directly.
-		///     It need to wait to the next frame.
+		///     Add Actor to the current layer.
 		/// </summary>
 		/// <param name="name"></param>
 		/// <typeparam name="T"></typeparam>
@@ -87,12 +84,22 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		///     Adding new actor to world, YOU DON"T NEED TO CALL THIS! ACTOR CONSTRUCTOR ALREADY ADD IT!
+		///     Please use AddActor<T> for creating new actor. This function only useful when you want to move actor to
+		/// 	new layer
 		/// </summary>
 		/// <param name="actor">Actor</param>
 		/// <param name="recursive">add all child actor</param>
 		public void AddActor(Actor actor)
 		{
+			if (actor.Layer != this)
+			{
+				actor.Layer.Actors.Remove(actor);
+			}
+			if (Actors.Contains(actor))
+			{
+				Log.PrintWarning("Trying to add actor that already added : " + actor.Name);
+				return;
+			}
 			Actors.Add(actor);
 		}
 

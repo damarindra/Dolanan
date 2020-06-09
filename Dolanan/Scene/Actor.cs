@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dolanan.Components;
 using Dolanan.Engine;
@@ -18,13 +19,13 @@ namespace Dolanan.Scene
 
 		// Component stuff
 		// Render
-		protected readonly HashSet<Component> Components = new HashSet<Component>();
+		protected readonly List<Component> Components = new List<Component>();
 		public string Name;
 
 		public ParentChange OnParentChange;
 		public Transform2D Transform;
 
-		public Actor(string name, Layer layer)
+		public Actor(string name, [NotNull]Layer layer)
 		{
 			Initialize();
 			Name = name;

@@ -134,7 +134,7 @@ namespace DolananSample
 			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
 			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
 
-			UILayer = World.CreateLayer<UILayer>(3);
+			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
