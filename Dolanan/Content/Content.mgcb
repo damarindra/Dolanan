@@ -422,6 +422,23 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/UI/Outline/yellow_pressed.png
 
+#begin Graphics/UI/rpgItems.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics/UI/rpgItems.png
+
+#begin Graphics/UI/rpgitems_ase.json
+/importer:AsepriteImporter
+/processor:AsepriteProcessor
+/build:Graphics/UI/rpgitems_ase.json
+
 #begin Graphics/UI/space.png
 /importer:TextureImporter
 /processor:TextureProcessor

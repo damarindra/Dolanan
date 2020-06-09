@@ -7,7 +7,8 @@ namespace Dolanan.Engine
 {
 	public static class GameSettings
 	{
-		public static bool IsDirty = false;
+		public static bool IsDirty;
+
 		public static Point WindowSize
 		{
 			get => _windowSize;
@@ -17,6 +18,7 @@ namespace Dolanan.Engine
 				IsDirty = true;
 			}
 		}
+
 		public static Point ViewportSize
 		{
 			get => _viewportSize;
@@ -59,21 +61,26 @@ namespace Dolanan.Engine
 		}
 
 		/// <summary>
-		/// Clipping cursor, no need to apply
+		///     Clipping cursor, no need to apply
 		/// </summary>
 		public static bool ClipCursor { get; set; } = false;
+
+		public static Color BackgroundColor = Color.DimGray;
 		
 		/// <summary>
-		/// Window Size
-		/// Tips : Pixel Art Guide for windowSize
-		/// 720p 1440p = 640, 480 (divide / multiply by even number)
-		/// 1080p 2160p = 960, 540 (divide / multiply by even number)
+		///     Window Size
+		///     Tips : Pixel Art Guide for windowSize
+		///     720p 1440p = 640, 480 (divide / multiply by even number)
+		///     1080p 2160p = 960, 540 (divide / multiply by even number)
 		/// </summary>
-		private static Point _windowSize = new Point(960, 540);
+		private static Point _windowSize = new Point(960 / 2, 540 / 2);
+
 		/// <summary>
-		/// Viewport size is the camera that will render the world
+		///     Viewport size is the camera that will render the world
 		/// </summary>
-		private static Point _viewportSize = _windowSize;
+		private static Point _viewportSize = new Point(960, 540);
+
+
 		private static bool _allowWindowResize = true;
 		private static WindowMode _windowMode = WindowMode.Window;
 		private static WindowSizeKeep _windowKeep = WindowSizeKeep.Width;
@@ -105,8 +112,8 @@ namespace Dolanan.Engine
 
 		private static void Configure()
 		{
-			_graphics.HardwareModeSwitch = GameSettings.WindowMode == WindowMode.FullScreen;
-			
+			_graphics.HardwareModeSwitch = WindowMode == WindowMode.FullScreen;
+
 			//Switch to WIndow
 			if (WindowMode == WindowMode.Window)
 			{
@@ -121,19 +128,24 @@ namespace Dolanan.Engine
 				_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 				_graphics.IsFullScreen = true;
 			}
-				
-			if(_window.AllowUserResizing != GameSettings.AllowWindowResize)
-				_window.AllowUserResizing = GameSettings.AllowWindowResize;
+
+			if (_window.AllowUserResizing != AllowWindowResize)
+				_window.AllowUserResizing = AllowWindowResize;
 		}
 	}
 
 	public enum WindowSizeKeep
 	{
-		Width, Height
+		Width,
+		Height,
+		// Expand will use the most possible between width or height
+		Expand
 	}
 
 	public enum WindowMode
 	{
-		FullScreen, Borderless, Window
+		FullScreen,
+		Borderless,
+		Window
 	}
 }

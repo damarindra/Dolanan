@@ -1,34 +1,31 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System;
 using Dolanan.Controller;
-using Dolanan.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Dolanan.Tools
 {
 	public static class ScreenDebugger
 	{
+		private static Texture2D _pixel;
+
 		public static Texture2D Pixel
 		{
 			get
 			{
-				if(_pixel == null){
+				if (_pixel == null)
+				{
 					_pixel = new Texture2D(GameMgr.SpriteBatch.GraphicsDevice, 1, 1);
-					_pixel.SetData(new Color[] { Color.White });
+					_pixel.SetData(new[] {Color.White});
 				}
 
 				return _pixel;
 			}
 		}
-		private static Texture2D _pixel;
-		
+
 		public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Color color)
 		{
-			spriteBatch.Draw(Pixel, destinationRectangle: rect, color: color);
+			spriteBatch.Draw(Pixel, rect, color);
 		}
 
 		public static void Draw(this SpriteBatch spriteBatch, Rectangle rect, Color stroke, float fillOpacity)
@@ -40,7 +37,7 @@ namespace Dolanan.Tools
 
 		public static void DrawFill(this SpriteBatch spriteBatch, Rectangle rect, Color fill)
 		{
-			spriteBatch.Draw(Pixel, destinationRectangle: rect, color: fill);
+			spriteBatch.Draw(Pixel, rect, fill);
 		}
 
 		public static void DrawStroke(this SpriteBatch spriteBatch, Rectangle rect, Color stroke)
@@ -50,20 +47,22 @@ namespace Dolanan.Tools
 			var top = new Rectangle(rect.Left, rect.Top, rect.Width, 1);
 			var bottom = new Rectangle(rect.Left, rect.Bottom - 1, rect.Width, 1);
 
-			spriteBatch.Draw(Pixel, destinationRectangle: left, color: stroke);
-			spriteBatch.Draw(Pixel, destinationRectangle: right, color: stroke);
-			spriteBatch.Draw(Pixel, destinationRectangle: top, color: stroke);
-			spriteBatch.Draw(Pixel, destinationRectangle: bottom, color: stroke);
+			spriteBatch.Draw(Pixel, left, stroke);
+			spriteBatch.Draw(Pixel, right, stroke);
+			spriteBatch.Draw(Pixel, top, stroke);
+			spriteBatch.Draw(Pixel, bottom, stroke);
 		}
 
-		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color, float thickness = 1f)
+		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point1, Vector2 point2, Color color,
+			float thickness = 1f)
 		{
 			var distance = Vector2.Distance(point1, point2);
-			var angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
+			var angle = (float) Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
 			DrawLine(spriteBatch, point1, distance, angle, color, thickness);
 		}
 
-		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point, float length, float angle, Color color, float thickness = 1f)
+		public static void DrawLine(this SpriteBatch spriteBatch, Vector2 point, float length, float angle, Color color,
+			float thickness = 1f)
 		{
 			var origin = new Vector2(0f, 0.5f);
 			var scale = new Vector2(length, thickness);

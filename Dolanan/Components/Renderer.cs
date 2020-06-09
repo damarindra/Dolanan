@@ -1,9 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
-using Dolanan.Engine;
-using Dolanan.Tools;
 using Dolanan.Controller;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
@@ -13,6 +9,18 @@ namespace Dolanan.Components
 {
 	public class Renderer : Component
 	{
+		private Vector2 _origin;
+
+		private Pivot _pivot = Pivot.Center;
+		private Point _srcSize;
+		private Texture2D _texture;
+
+		public SpriteEffects SpriteEffect = SpriteEffects.None;
+
+		public Renderer(Actor owner) : base(owner)
+		{
+		}
+
 		public Texture2D Texture2D
 		{
 			get => _texture;
@@ -23,17 +31,15 @@ namespace Dolanan.Components
 					SrcLocation = Point.Zero;
 					SrcSize = new Point(value.Width, value.Height);
 				}
+
 				_texture = value;
 			}
 		}
 
 		/// <summary>
-		/// rectangle texture, cropping the texture with this rect
+		///     rectangle texture, cropping the texture with this rect
 		/// </summary>
-		public Rectangle SrcRectangle
-		{
-			get => new Rectangle(SrcLocation, _srcSize);
-		}
+		public Rectangle SrcRectangle => new Rectangle(SrcLocation, _srcSize);
 
 		public Point SrcLocation { get; set; }
 
@@ -47,7 +53,7 @@ namespace Dolanan.Components
 				_srcSize = value;
 			}
 		}
-		
+
 		public Pivot Pivot
 		{
 			get => _pivot;
@@ -62,15 +68,6 @@ namespace Dolanan.Components
 		public Vector2 Origin => _origin;
 		public Color ModulatedColor { get; set; } = Color.White;
 
-		public SpriteEffects SpriteEffect = SpriteEffects.None;
-
-		private Pivot _pivot = Pivot.Center;
-		private Vector2 _origin;
-		private Point _srcSize;
-		private Texture2D _texture;
-
-		public Renderer(Actor owner) : base(owner) { }
-
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
@@ -78,7 +75,7 @@ namespace Dolanan.Components
 
 		public override void Draw(GameTime gameTime, float layerZDepth)
 		{
-			if(Texture2D != null)
+			if (Texture2D != null)
 				GameMgr.SpriteBatch.Draw(Texture2D, Owner.Transform.GlobalPosition, SrcRectangle, ModulatedColor,
 					Owner.Transform.GlobalRotation, _origin, Owner.Transform.GlobalScale, SpriteEffect, layerZDepth);
 		}
@@ -90,11 +87,11 @@ namespace Dolanan.Components
 	{
 		static Pivot()
 		{
-			Pivot.Center = new Pivot(.5f, .5f);
-			Pivot.TopLeft = new Pivot(0, 0);
-			Pivot.TopRight = new Pivot(1, 0);
-			Pivot.BottomLeft = new Pivot(0, 1);
-			Pivot.BottomRight = new Pivot(1, 1);
+			Center = new Pivot(.5f, .5f);
+			TopLeft = new Pivot(0, 0);
+			TopRight = new Pivot(1, 0);
+			BottomLeft = new Pivot(0, 1);
+			BottomRight = new Pivot(1, 1);
 		}
 
 		public float X;
@@ -112,15 +109,15 @@ namespace Dolanan.Components
 			Y = value;
 		}
 
-		public static Pivot Center { get; private set; }
-		public static Pivot TopLeft { get; private set; }
-		public static Pivot TopRight { get; private set; }
-		public static Pivot BottomLeft { get; private set; }
-		public static Pivot BottomRight { get; private set; }
+		public static Pivot Center { get; }
+		public static Pivot TopLeft { get; }
+		public static Pivot TopRight { get; }
+		public static Pivot BottomLeft { get; }
+		public static Pivot BottomRight { get; }
 
 		public bool Equals(Vector2 other)
 		{
-			return (double) this.X == (double) other.X && (double) this.Y == (double) other.Y;
+			return X == (double) other.X && Y == (double) other.Y;
 		}
 
 		public override bool Equals(object obj)
@@ -130,12 +127,12 @@ namespace Dolanan.Components
 
 		public override int GetHashCode()
 		{
-			return this.X.GetHashCode() * 397 ^ this.Y.GetHashCode();
+			return (X.GetHashCode() * 397) ^ Y.GetHashCode();
 		}
 
 		public bool Equals(Pivot other)
 		{
-			return (double) this.X == (double) other.X && (double) this.Y == (double) other.Y;
+			return X == (double) other.X && Y == (double) other.Y;
 		}
 
 		public static Pivot operator -(Pivot value)
@@ -189,7 +186,7 @@ namespace Dolanan.Components
 
 		public static Pivot operator /(Pivot value1, float divider)
 		{
-			float num = 1f / divider;
+			var num = 1f / divider;
 			value1.X *= num;
 			value1.Y *= num;
 			return value1;
@@ -197,12 +194,12 @@ namespace Dolanan.Components
 
 		public static bool operator ==(Pivot value1, Vector2 value2)
 		{
-			return (double) value1.X == (double) value2.X && (double) value1.Y == (double) value2.Y;
+			return value1.X == (double) value2.X && value1.Y == (double) value2.Y;
 		}
 
 		public static bool operator !=(Pivot value1, Vector2 value2)
 		{
-			return (double) value1.X != (double) value2.X || (double) value1.Y != (double) value2.Y;
+			return value1.X != (double) value2.X || value1.Y != (double) value2.Y;
 		}
 
 		public static implicit operator Vector2(Pivot val)

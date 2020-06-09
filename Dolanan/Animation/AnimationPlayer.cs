@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dolanan.Components;
 using Dolanan.Scene;
@@ -10,52 +9,53 @@ namespace Dolanan.Animation
 {
 	public class AnimationPlayer : Component
 	{
-		public AnimationPlayer(Actor owner) : base(owner) { }
-		
-		public List<AnimationSequence> Animation { get; private set; } = new List<AnimationSequence>();
-		public bool IsPlaying { get; private set; }
-
-		public AnimationSequence CurrentAnimation
+		public AnimationPlayer(Actor owner) : base(owner)
 		{
-			get;
-			set;
 		}
 
+		public List<AnimationSequence> Animation { get; } = new List<AnimationSequence>();
+		public bool IsPlaying { get; private set; }
+
+		public AnimationSequence CurrentAnimation { get; set; }
+
 		public float Speed { get; set; } = 1;
-		
+
 		/// <summary>
-		/// Create new Animation Sequence
+		///     Create new Animation Sequence
 		/// </summary>
 		/// <param name="name">The name of animation, must be unique</param>
 		/// <param name="animationLength">Animation Length in Milisec</param>
 		/// <param name="isReverse"></param>
 		/// <param name="isLoop"></param>
 		/// <returns></returns>
-		public AnimationSequence CreateNewAnimationSequence(string name, float animationLength = 2000, bool isReverse = false,
+		public AnimationSequence CreateNewAnimationSequence(string name, float animationLength = 2000,
+			bool isReverse = false,
 			bool isLoop = true)
 		{
 			if (TryGetAnimationSequence(name, out var a))
 			{
-				Log.PrintWarning("Abort creating new Animation with name : " + name + ". Return existing animation instead");
+				Log.PrintWarning("Abort creating new Animation with name : " + name +
+				                 ". Return existing animation instead");
 				return a;
 			}
-			AnimationSequence sequence = new AnimationSequence(name, animationLength, isReverse, isLoop);
+
+			var sequence = new AnimationSequence(name, animationLength, isReverse, isLoop);
 			Animation.Add(sequence);
 			return sequence;
 		}
 
-		public void AddAnimationSequence([NotNull]AnimationSequence animationSequence)
+		public void AddAnimationSequence([NotNull] AnimationSequence animationSequence)
 		{
 			Animation.Add(animationSequence);
 		}
 
 		public void Resume()
 		{
-			if(Animation.Count == 0)
+			if (Animation.Count == 0)
 				return;
 			if (CurrentAnimation == null)
 				CurrentAnimation = Animation[0];
-			
+
 			IsPlaying = true;
 		}
 
@@ -73,7 +73,8 @@ namespace Dolanan.Animation
 				IsPlaying = true;
 				return;
 			}
-			Log.PrintWarning("Animation with name : " + name +" is not available");
+
+			Log.PrintWarning("Animation with name : " + name + " is not available");
 		}
 
 		public void PlayAt(string name, float positionMilisec)
@@ -92,7 +93,8 @@ namespace Dolanan.Animation
 				IsPlaying = true;
 				return;
 			}
-			Log.PrintWarning("Animation with name : " + name +" is not available");
+
+			Log.PrintWarning("Animation with name : " + name + " is not available");
 		}
 
 		public void Stop()
@@ -105,21 +107,20 @@ namespace Dolanan.Animation
 		private bool TryGetAnimationSequence(string name, out AnimationSequence animationSequence)
 		{
 			animationSequence = null;
-			for (int i = 0; i < Animation.Count; i++)
-			{
+			for (var i = 0; i < Animation.Count; i++)
 				if (Animation[i].Name == name)
 				{
 					animationSequence = Animation[i];
 					return true;
 				}
-			}
+
 			return false;
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			// Console.WriteLine(IsPlaying);
-			if(!IsPlaying || Animation.Count == 0)
+			if (!IsPlaying || Animation.Count == 0)
 				return;
 			CurrentAnimation.UpdateAnimation((float) gameTime.ElapsedGameTime.TotalMilliseconds * Speed);
 		}

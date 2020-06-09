@@ -7,16 +7,15 @@ namespace Dolanan.Tools
 {
 	public static class FPSCounter
 	{
-		static long TotalFrames { get; set; }
-		static float TotalSeconds { get; set; }
-		static float AverageFramesPerSecond { get; set; }
-		static float CurrentFramesPerSecond { get; set; }
-
 		public const int MAXIMUM_SAMPLES = 100;
 
-		static Queue<float> _sampleBuffer = new Queue<float>();
+		private static readonly Queue<float> _sampleBuffer = new Queue<float>();
+		private static long TotalFrames { get; set; }
+		private static float TotalSeconds { get; set; }
+		private static float AverageFramesPerSecond { get; set; }
+		private static float CurrentFramesPerSecond { get; set; }
 
-		static void Update(float deltaTime)
+		private static void Update(float deltaTime)
 		{
 			CurrentFramesPerSecond = 1.0f / deltaTime;
 
@@ -26,7 +25,7 @@ namespace Dolanan.Tools
 			{
 				_sampleBuffer.Dequeue();
 				AverageFramesPerSecond = _sampleBuffer.Average(i => i);
-			} 
+			}
 			else
 			{
 				AverageFramesPerSecond = CurrentFramesPerSecond;
@@ -35,9 +34,10 @@ namespace Dolanan.Tools
 			TotalFrames++;
 			TotalSeconds += deltaTime;
 		}
+
 		public static void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteFont font)
 		{
-			var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+			var deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
 			Update(deltaTime);
 
@@ -46,5 +46,4 @@ namespace Dolanan.Tools
 			spriteBatch.DrawString(font, fps, new Vector2(1, 1), Color.Black);
 		}
 	}
-	
 }

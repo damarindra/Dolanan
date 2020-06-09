@@ -1,10 +1,12 @@
-﻿using Dolanan.Engine;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Dolanan.Controller
 {
 	public static class GameMgr
 	{
+		public static GameMin Game { get; private set; }
+		public static SpriteBatch SpriteBatch { get; private set; }
+
 		public static void Init(GameMin game)
 		{
 			Game = game;
@@ -14,8 +16,5 @@ namespace Dolanan.Controller
 		{
 			SpriteBatch = spriteBatch;
 		}
-		
-		public static GameMin Game { get; private set; }
-		public static SpriteBatch SpriteBatch { get; private set; }
 	}
 }
