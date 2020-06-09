@@ -18,22 +18,18 @@ namespace Dolanan
 	/// </summary>
 	public class GameMin : Game
 	{
-		public GraphicsDeviceManager Graphics => _graphics;
-		public bool IsGameFinishedInitialize { get; private set; }
-		public World World;
-		
-		protected RenderTarget2D RenderTarget;
-		protected SpriteBatch SpriteBatch;
-		
 		private bool _debugFps;
 		private bool _debugShowCollision;
-		private readonly GraphicsDeviceManager _graphics;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
+
+		protected RenderTarget2D RenderTarget;
+		protected SpriteBatch SpriteBatch;
+		public World World;
 
 		public GameMin()
 		{
-			_graphics = new GraphicsDeviceManager(this);
-			GameSettings.InitializeGameSettings(_graphics, Window);
+			Graphics = new GraphicsDeviceManager(this);
+			GameSettings.InitializeGameSettings(Graphics, Window);
 			Window.ClientSizeChanged += OnWindowResize;
 
 			// Configuration Input, basic debugging stuff
@@ -46,6 +42,10 @@ namespace Dolanan
 			IsMouseVisible = true;
 		}
 
+		public GraphicsDeviceManager Graphics { get; }
+
+		public bool IsGameFinishedInitialize { get; private set; }
+
 		private void OnWindowResize(object? sender, EventArgs e)
 		{
 			WindowChanged();
@@ -57,12 +57,12 @@ namespace Dolanan
 			{
 				_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
 				_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
-				if (!_graphics.IsFullScreen && _graphics.PreferredBackBufferHeight != Window.ClientBounds.Height &&
-				    _graphics.PreferredBackBufferWidth != Window.ClientBounds.Width)
+				if (!Graphics.IsFullScreen && Graphics.PreferredBackBufferHeight != Window.ClientBounds.Height &&
+				    Graphics.PreferredBackBufferWidth != Window.ClientBounds.Width)
 				{
-					_graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
-					_graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-					_graphics.ApplyChanges();
+					Graphics.PreferredBackBufferHeight = Window.ClientBounds.Height;
+					Graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+					Graphics.ApplyChanges();
 				}
 			}
 		}
@@ -97,11 +97,11 @@ namespace Dolanan
 
 		protected override void Update(GameTime gameTime)
 		{
-			#if DEBUG
+#if DEBUG
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
-			#endif
+#endif
 			if (Input.IsInputActionPressed("Alt") && Input.IsInputActionJustPressed("Enter"))
 			{
 				if (GameSettings.WindowMode == WindowMode.Borderless)
@@ -148,20 +148,20 @@ namespace Dolanan
 			GraphicsDevice.SetRenderTarget(RenderTarget);
 			GraphicsDevice.Clear(GameSettings.BackgroundColor);
 
-			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix());
+			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), blendState: BlendState.AlphaBlend);
 			World.Draw(gameTime);
 			SpriteBatch.End();
 
 			DrawProcess(gameTime);
 
-			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), samplerState: SamplerState.PointClamp);
+			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(),
+				samplerState: GameSettings.DefaultSamplerState);
 			if (_debugShowCollision) World.DrawCollision();
 			SpriteBatch.End();
 
-			Rectangle renderDestination;
-			BackBufferRender(out renderDestination);
+			BackBufferRender(out var renderDestination);
 
-			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+			SpriteBatch.Begin(samplerState: GameSettings.DefaultSamplerState);
 			BackDraw(gameTime, renderDestination);
 			if (_debugFps && ResFont.Instance.TryGet("bitty", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);

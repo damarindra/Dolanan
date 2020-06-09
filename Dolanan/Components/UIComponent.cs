@@ -13,6 +13,10 @@ namespace Dolanan.Components
 	{
 		public UIActor UIActor;
 
+		public UIComponent(Actor owner) : base(owner)
+		{
+		}
+
 		public new RectTransform Transform
 		{
 			get
@@ -21,10 +25,6 @@ namespace Dolanan.Components
 					return null;
 				return UIActor.RectTransform;
 			}
-		}
-
-		public UIComponent(Actor owner) : base(owner)
-		{
 		}
 
 		public override void Start()

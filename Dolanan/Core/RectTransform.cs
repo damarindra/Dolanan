@@ -83,6 +83,9 @@ namespace Dolanan.Engine
 			}
 		}
 
+		public Vector2 Location => Rectangle.Location;
+		public Vector2 Size => Rectangle.Size;
+
 		public float Left
 		{
 			get => Rectangle.Left;

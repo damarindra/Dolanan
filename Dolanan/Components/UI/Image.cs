@@ -8,9 +8,14 @@ namespace Dolanan.Components.UI
 {
 	public class Image : UIComponent
 	{
+		private Texture2D _texture2D;
 		public Color ColorTint = Color.White;
 		public Rectangle SrcTextureRectangle = Rectangle.Empty;
 		public bool Stretch = true;
+
+		public Image(Actor owner) : base(owner)
+		{
+		}
 
 		public Texture2D Texture2D
 		{
@@ -21,12 +26,6 @@ namespace Dolanan.Components.UI
 				if (SrcTextureRectangle == Rectangle.Empty)
 					SrcTextureRectangle = _texture2D.Bounds;
 			}
-		}
-
-		private Texture2D _texture2D;
-
-		public Image(Actor owner) : base(owner)
-		{
 		}
 
 		public override void Start()
@@ -45,7 +44,8 @@ namespace Dolanan.Components.UI
 			base.Draw(gameTime, layerZDepth);
 
 			if (Stretch)
-				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), SrcTextureRectangle, ColorTint);
+				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), SrcTextureRectangle,
+					ColorTint);
 			else
 				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), SrcTextureRectangle,
 					ColorTint);

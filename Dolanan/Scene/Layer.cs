@@ -84,22 +84,22 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		///     Please use AddActor<T> for creating new actor. This function only useful when you want to move actor to
-		/// 	new layer
+		///     Please use AddActor
+		///     <T>
+		///         for creating new actor. This function only useful when you want to move actor to
+		///         new layer
 		/// </summary>
 		/// <param name="actor">Actor</param>
 		/// <param name="recursive">add all child actor</param>
 		public void AddActor(Actor actor)
 		{
-			if (actor.Layer != this)
-			{
-				actor.Layer.Actors.Remove(actor);
-			}
+			if (actor.Layer != this) actor.Layer.Actors.Remove(actor);
 			if (Actors.Contains(actor))
 			{
 				Log.PrintWarning("Trying to add actor that already added : " + actor.Name);
 				return;
 			}
+
 			Actors.Add(actor);
 		}
 

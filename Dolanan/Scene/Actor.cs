@@ -25,7 +25,7 @@ namespace Dolanan.Scene
 		public ParentChange OnParentChange;
 		public Transform2D Transform;
 
-		public Actor(string name, [NotNull]Layer layer)
+		public Actor(string name, [NotNull] Layer layer)
 		{
 			Initialize();
 			Name = name;

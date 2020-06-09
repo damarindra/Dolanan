@@ -6,7 +6,7 @@ namespace Dolanan.Resources
 	{
 		public static ResFont Instance;
 
-		public ResFont() : base()
+		public ResFont()
 		{
 			if (Instance == null)
 				Instance = this;

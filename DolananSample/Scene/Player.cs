@@ -13,10 +13,10 @@ namespace Dolanan.Scene.Object
 {
 	public class Player : Actor
 	{
+		private readonly float _moveSpeed = 160;
 		private Aseprite _aseprite;
 
 		private Vector2 _movementInput;
-		private readonly float _moveSpeed = 160;
 
 		public Player(string name, Layer layer) : base(name, layer)
 		{

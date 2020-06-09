@@ -60,7 +60,13 @@ namespace Dolanan.Engine
 			return MathF.Atan2(v.Y - point.Y, v.X - point.X);
 		}
 
+		public static RectangleF ToRectangleF(this Rectangle r)
+		{
+			return new RectangleF(r.X, r.Y, r.Width, r.Height);
+		}
+
 		#region Vector2
+
 		public static Vector2 ToDirection(float radian)
 		{
 			return new Vector2(MathF.Cos(radian), MathF.Sin(radian));
@@ -81,32 +87,27 @@ namespace Dolanan.Engine
 			return new Vector2(v.X, v.Y);
 		}
 
-
 		#endregion
-		
+
 		#region Point
-		
+
 		public static Point Min(Point v1, Point v2)
 		{
 			Point vector2 = default;
-			vector2.X = (v1.X < v2.X) ? v1.X : v2.X;
-			vector2.Y = (v1.Y < v2.Y) ? v1.Y : v2.Y;
+			vector2.X = v1.X < v2.X ? v1.X : v2.X;
+			vector2.Y = v1.Y < v2.Y ? v1.Y : v2.Y;
 			return vector2;
 		}
+
 		public static Point Max(Point v1, Point v2)
 		{
 			Point vector2 = default;
-			vector2.X = (v1.X > v2.X) ? v1.X : v2.X;
-			vector2.Y = (v1.Y > v2.Y) ? v1.Y : v2.Y;
+			vector2.X = v1.X > v2.X ? v1.X : v2.X;
+			vector2.Y = v1.Y > v2.Y ? v1.Y : v2.Y;
 			return vector2;
 		}
-		
+
 		#endregion
-		
-		public static RectangleF ToRectangleF(this Rectangle r)
-		{
-			return new RectangleF(r.X, r.Y, r.Width, r.Height);
-		}
 
 		// public static Matrix SetRotationScaleAndSkew(this ref Matrix matrix, float rotation, Vector2 scale, float skew)
 		// {

@@ -8,7 +8,9 @@ namespace Dolanan.Scene
 	{
 		private UISpace _uiSpace = UISpace.Window;
 
-		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ) { }
+		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ)
+		{
+		}
 
 		public UISpace UISpace
 		{
@@ -60,7 +62,7 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		/// Back Draw, occured after BackBufferRendering. Useful for drawing UI, debugging, etc. Always show in front.
+		///     Back Draw, occured after BackBufferRendering. Useful for drawing UI, debugging, etc. Always show in front.
 		/// </summary>
 		/// <param name="gameTime"></param>
 		/// <param name="worldRect">BackBuffer Rectangle</param>
@@ -71,9 +73,15 @@ namespace Dolanan.Scene
 				// DO NOTHING
 			}
 			else if (UISpace == UISpace.Viewport && ScreenCanvas.RectTransform.Rectangle != worldRect.ToRectangleF())
+			{
 				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
-			else if (UISpace == UISpace.Window && ScreenCanvas.RectTransform.Rectangle.Size != GameMgr.Game.Window.ClientBounds.Size.ToVector2())
+			}
+			else if (UISpace == UISpace.Window && ScreenCanvas.RectTransform.Rectangle.Size !=
+				GameMgr.Game.Window.ClientBounds.Size.ToVector2())
+			{
 				ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
+			}
+
 			base.Draw(gameTime, LayerZ);
 		}
 	}
@@ -82,8 +90,10 @@ namespace Dolanan.Scene
 	{
 		// follow camera viewport
 		Viewport,
+
 		// place in world
 		World,
+
 		// follow window size
 		Window
 	}
