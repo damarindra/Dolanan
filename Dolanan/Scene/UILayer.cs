@@ -8,8 +8,7 @@ namespace Dolanan.Scene
 	{
 		private UISpace _uiSpace = UISpace.Screen;
 
-		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ)
-		{
+		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ) {
 		}
 
 		public UISpace UISpace

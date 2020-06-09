@@ -18,11 +18,11 @@ namespace Dolanan
 	/// </summary>
 	public class GameMin : Game
 	{
-		private bool _debugFPS;
+		private bool _debugFps;
 
 		private bool _debugShowCollision;
 
-		protected GraphicsDeviceManager _graphics;
+		private readonly GraphicsDeviceManager _graphics;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 		protected RenderTarget2D RenderTarget;
 		protected SpriteBatch SpriteBatch;
@@ -100,9 +100,11 @@ namespace Dolanan
 
 		protected override void Update(GameTime gameTime)
 		{
+			#if DEBUG
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
+			#endif
 			if (Input.IsInputActionPressed("Alt") && Input.IsInputActionJustPressed("Enter"))
 			{
 				if (GameSettings.WindowMode == WindowMode.Borderless)
@@ -112,7 +114,7 @@ namespace Dolanan
 			}
 
 			if (Input.IsInputActionJustPressed("Show Collision")) _debugShowCollision = !_debugShowCollision;
-			if (Input.IsInputActionJustPressed("Show FPS")) _debugFPS = !_debugFPS;
+			if (Input.IsInputActionJustPressed("Show FPS")) _debugFps = !_debugFps;
 
 			// TODO: Use preprocessor for windows only
 			// Read here : https://gamedev.stackexchange.com/questions/55657/monogame-cross-platform-conditional-compilation-symbols
@@ -164,7 +166,7 @@ namespace Dolanan
 
 			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 			BackDraw(gameTime, renderDestination);
-			if (_debugFPS && ResFont.Instance.TryGet("bitty", out var font))
+			if (_debugFps && ResFont.Instance.TryGet("bitty", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
 
 			SpriteBatch.End();
