@@ -12,6 +12,7 @@ namespace Dolanan.Tools
 			Console.WriteLine("'" + msg + "'" + " (" + path + ")" + " (" + caller + ")" + " line :" + lineNumber);
 #endif
 		}
+
 		public static void PrintWarning(string msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
@@ -21,6 +22,7 @@ namespace Dolanan.Tools
 			Console.ResetColor();
 #endif
 		}
+
 		public static void PrintError(string msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{

@@ -8,29 +8,22 @@ using Microsoft.Xna.Framework;
 namespace Dolanan.Scene
 {
 	public delegate void ParentChange(Actor parent);
-	
+
 	/// <summary>
-	/// Actor is an Entity.
+	///     Actor is an Entity.
 	/// </summary>
 	public class Actor : IGameCycle
 	{
-		public string Name;
-		public Transform2D Transform;
-		public Layer Layer { get; private set; }
-		
 		protected readonly List<Actor> Childs = new List<Actor>();
 
-		public ParentChange OnParentChange;
-		public Actor Parent { get; private set; }
-		public Actor[] GetChilds
-		{
-			get => Childs.ToArray();
-		}
-		
 		// Component stuff
 		// Render
 		protected readonly HashSet<Component> Components = new HashSet<Component>();
-		
+		public string Name;
+
+		public ParentChange OnParentChange;
+		public Transform2D Transform;
+
 		public Actor(string name, Layer layer)
 		{
 			Initialize();
@@ -41,10 +34,42 @@ namespace Dolanan.Scene
 			Start();
 		}
 
+		public Layer Layer { get; }
+		public Actor Parent { get; private set; }
+
+		public Actor[] GetChilds => Childs.ToArray();
+
+		public virtual void Initialize()
+		{
+		}
+
+		public virtual void Start()
+		{
+		}
+
+		// MonoGame Update
+		public virtual void Update(GameTime gameTime)
+		{
+			foreach (var component in Components)
+				component.Update(gameTime);
+		}
+
+		public virtual void Draw(GameTime gameTime, float layerZDepth)
+		{
+			foreach (var component in Components)
+				component.Draw(gameTime, layerZDepth);
+		}
+
+		// Called after Update
+		public virtual void LateUpdate(GameTime gameTime)
+		{
+			foreach (var baseComponent in Components) baseComponent.LateUpdate(gameTime);
+		}
+
 		//Extension stuff
 		public T AddComponent<T>() where T : Component
 		{
-			T t = (T)Activator.CreateInstance(typeof(T), this);
+			var t = (T) Activator.CreateInstance(typeof(T), this);
 			Components.Add(t);
 			return t;
 		}
@@ -72,33 +97,8 @@ namespace Dolanan.Scene
 			Parent = parent;
 			Transform.Parent = parent.Transform;
 			Parent.Childs.Add(this);
-			
+
 			OnParentChange?.Invoke(parent);
-		}
-
-		public virtual void Initialize() { }
-		public virtual void Start() { }
-
-		// MonoGame Update
-		public virtual void Update(GameTime gameTime)
-		{
-			foreach (var component in Components)
-				component.Update(gameTime);
-		}
-
-		public virtual void Draw(GameTime gameTime, float layerZDepth)
-		{
-			foreach (var component in Components)
-				component.Draw(gameTime, layerZDepth);
-		}
-
-		// Called after Update
-		public virtual void LateUpdate(GameTime gameTime)
-		{
-			foreach (Components.Component baseComponent in Components)
-			{
-				baseComponent.LateUpdate(gameTime);
-			}
 		}
 	}
 }

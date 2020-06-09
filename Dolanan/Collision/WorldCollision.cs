@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Collision
@@ -10,7 +9,7 @@ namespace Dolanan.Collision
 		public List<Body> Colliders = new List<Body>();
 
 		/// <summary>
-		/// Check collision between A and B, A is the moving body that uses velo. This only check, not moving the AABB a
+		///     Check collision between A and B, A is the moving body that uses velo. This only check, not moving the AABB a
 		/// </summary>
 		/// <param name="a">A moving body</param>
 		/// <param name="b">B checker body</param>
@@ -32,18 +31,19 @@ namespace Dolanan.Collision
 				a.Position -= velo;
 				return false;
 			}
+
 			a.Position -= velo;
 
 			hitInfo.Actor = b.Owner;
 			hitInfo.Body = b;
-			
+
 			// fuck off, it just trigger
 			if (a.IsTrigger || b.IsTrigger)
 				return true;
-			
+
 			// 0 means invalid, no check required. displacement is closest space between box
-			Vector2 displacement = Vector2.Zero;
-			
+			var displacement = Vector2.Zero;
+
 			// This basically check if there is any space between box.
 			if (!(a.Min.X <= b.Max.X && a.Max.X >= b.Min.X))
 				displacement.X = MathF.Min(MathF.Abs(a.Min.X - b.Max.X), MathF.Abs(a.Max.X - b.Min.X));
@@ -52,25 +52,26 @@ namespace Dolanan.Collision
 
 			if (displacement != Vector2.Zero)
 			{
-				Vector2 delta = new Vector2(velo.X != 0 ? displacement.X / velo.X : 0, velo.Y != 0 ? displacement.Y / velo.Y : 0);
-				float timeDelta = MathF.Max(MathF.Abs(delta.X), MathF.Abs(delta.Y));
+				var delta = new Vector2(velo.X != 0 ? displacement.X / velo.X : 0,
+					velo.Y != 0 ? displacement.Y / velo.Y : 0);
+				var timeDelta = MathF.Max(MathF.Abs(delta.X), MathF.Abs(delta.Y));
 				outVel = timeDelta * velo;
 				outRemainder = (1 - timeDelta) * velo;
 
 				if (velo.X < 0)
-					hitInfo.Normal.X = Math.Abs(a.Min.X + outVel.X - b.Max.X) < Single.Epsilon ? 1 : 0;
+					hitInfo.Normal.X = Math.Abs(a.Min.X + outVel.X - b.Max.X) < float.Epsilon ? 1 : 0;
 				else if (velo.X > 0)
-					hitInfo.Normal.X = Math.Abs(a.Max.X + outVel.X - b.Min.X) < Single.Epsilon ? -1 : 0;
-				
-				if (velo.Y < 0 && Math.Abs(hitInfo.Normal.X) < Single.Epsilon)
-					hitInfo.Normal.Y = Math.Abs(a.Min.Y + outVel.Y - b.Max.Y) < Single.Epsilon ? 1 : 0;
-				else if (velo.Y > 0 && Math.Abs(hitInfo.Normal.X) < Single.Epsilon)
-					hitInfo.Normal.Y = Math.Abs(a.Max.Y + outVel.Y - b.Min.Y) < Single.Epsilon ? -1 : 0;
+					hitInfo.Normal.X = Math.Abs(a.Max.X + outVel.X - b.Min.X) < float.Epsilon ? -1 : 0;
+
+				if (velo.Y < 0 && Math.Abs(hitInfo.Normal.X) < float.Epsilon)
+					hitInfo.Normal.Y = Math.Abs(a.Min.Y + outVel.Y - b.Max.Y) < float.Epsilon ? 1 : 0;
+				else if (velo.Y > 0 && Math.Abs(hitInfo.Normal.X) < float.Epsilon)
+					hitInfo.Normal.Y = Math.Abs(a.Max.Y + outVel.Y - b.Min.Y) < float.Epsilon ? -1 : 0;
 			}
 			// between box already touching
 			else
 			{
-				Vector2 plane = new Vector2(a.Min.Y == b.Max.Y || a.Max.Y == b.Min.Y ? 1 : 0,
+				var plane = new Vector2(a.Min.Y == b.Max.Y || a.Max.Y == b.Min.Y ? 1 : 0,
 					a.Min.X == b.Max.X || a.Max.X == b.Min.X ? 1 : 0);
 				outVel = plane * velo;
 				outRemainder = velo - outVel;
@@ -80,15 +81,14 @@ namespace Dolanan.Collision
 				else if (plane.Y != 0 && velo.X != 0)
 					hitInfo.Normal.X = MathF.Sign(-velo.X);
 			}
-			
+
 			// TODO: Create stuck handler. Just push out from it! This just for safety. Need a lot of testing tbh. But I'm sure it is fine.
-			
+
 			return true;
 		}
-		
-		
+
+
 		/// <summary>
-		/// 
 		/// </summary>
 		/// <param name="body"></param>
 		/// <param name="velo"></param>
@@ -96,21 +96,22 @@ namespace Dolanan.Collision
 		/// <param name="remainder"></param>
 		/// <param name="hit"></param>
 		/// <param name="bounce"></param>
-		public void CheckCollision(Body body, Vector2 velo, out Vector2 resultVelo, out Vector2 remainder, out Hit hit, int bounce = 3)
+		public void CheckCollision(Body body, Vector2 velo, out Vector2 resultVelo, out Vector2 remainder, out Hit hit,
+			int bounce = 3)
 		{
 			resultVelo = Vector2.Zero;
 			remainder = Vector2.Zero;
 			hit = new Hit();
 
-			bool isAlreadyFoundSolidBody = false;
+			var isAlreadyFoundSolidBody = false;
 
-			int bounceCounter = 0;
+			var bounceCounter = 0;
 
-			HashSet<Body> newCollidedBody = new HashSet<Body>();
-			
-			foreach (Body b in Colliders)
+			var newCollidedBody = new HashSet<Body>();
+
+			foreach (var b in Colliders)
 			{
-				if(b == body)
+				if (b == body)
 					continue;
 
 				if (Check(body, b, velo, out var rVelo, out var rRemain, out var rHit))
@@ -129,7 +130,7 @@ namespace Dolanan.Collision
 						hit.Body = b;
 						isAlreadyFoundSolidBody = true;
 					}
-					
+
 					// Register collision for delegate Collison
 					body.RegisterCollision(b);
 					b.RegisterCollision(body);
@@ -141,25 +142,21 @@ namespace Dolanan.Collision
 					if (b.IsTrigger)
 					{
 						bounceCounter++;
-						if (bounceCounter >= bounce)
-						{
-							break;
-						}
+						if (bounceCounter >= bounce) break;
 					}
 				}
 			}
-			
+
 			// no collision
 			if (bounceCounter == 0)
 				resultVelo = velo;
 
 			// Exiting the collision
-			HashSet<Body> bodyExit = new HashSet<Body>(body.CollidedBodies);
+			var bodyExit = new HashSet<Body>(body.CollidedBodies);
 			bodyExit.ExceptWith(newCollidedBody);
-			
+
 			if (bodyExit.Count > 0)
-			{
-				foreach (Body b in bodyExit)
+				foreach (var b in bodyExit)
 				{
 					if (b.IsTrigger || body.IsTrigger)
 					{
@@ -171,10 +168,10 @@ namespace Dolanan.Collision
 						b.OnCollisionExit?.Invoke(body);
 						body.OnCollisionExit?.Invoke(b);
 					}
+
 					b.CollidedBodies.Remove(body);
 					body.CollidedBodies.Remove(b);
 				}
-			}
 		}
 	}
 }

@@ -1,21 +1,20 @@
-﻿using Dolanan.Controller;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Dolanan.Resources
 {
 	public class ResFont : ResourceBox<SpriteFont>
 	{
 		public static ResFont Instance;
-		
+
+		public ResFont() : base()
+		{
+			if (Instance == null)
+				Instance = this;
+			else Unload();
+		}
+
 		protected override string ContentDirectory => "Fonts/";
 
-		public ResFont() : base(true)
-		{
-			if(Instance == null)
-				Instance = this;
-			else Unload(true);
-		}
-		
 		public override ResourceBox<SpriteFont> Load()
 		{
 			base.Load();
@@ -26,7 +25,7 @@ namespace Dolanan.Resources
 			return this;
 		}
 
-		void TryAddToResource(string key, SpriteFont font)
+		private void TryAddToResource(string key, SpriteFont font)
 		{
 			ResourceHolder.Add(key, font);
 		}

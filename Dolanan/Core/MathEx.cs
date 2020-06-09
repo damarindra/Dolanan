@@ -8,16 +8,17 @@ namespace Dolanan.Engine
 	{
 		public static int PosMod(int i1, int i2)
 		{
-			int i = i1 % i2;
-			if ((i < 0 && i2 > 0) || (i > 0 && i2 < 0))
+			var i = i1 % i2;
+			if (i < 0 && i2 > 0 || i > 0 && i2 < 0)
 				i += i2;
 
 			return i;
 		}
+
 		public static float FPosMod(float f1, float f2)
 		{
-			float i = f1 % f2;
-			if ((i < 0 && f2 > 0) || (i > 0 && f2 < 0))
+			var i = f1 % f2;
+			if (i < 0 && f2 > 0 || i > 0 && f2 < 0)
 				i += f2;
 
 			return i;
@@ -27,18 +28,19 @@ namespace Dolanan.Engine
 		{
 			return MathF.Min(MathF.Max(val, min), max);
 		}
-		
+
 		public static float Min(params float[] floats)
 		{
 			return floats.Min();
 		}
+
 		public static float Max(params float[] floats)
 		{
 			return floats.Max();
 		}
 
 		/// <summary>
-		/// Turn vector direction to Angle radian
+		///     Turn vector direction to Angle radian
 		/// </summary>
 		/// <param name="v"></param>
 		/// <returns>Angle radian</returns>
@@ -48,7 +50,7 @@ namespace Dolanan.Engine
 		}
 
 		/// <summary>
-		/// Similar to LookAt
+		///     Similar to LookAt
 		/// </summary>
 		/// <param name="v"></param>
 		/// <param name="point"></param>
@@ -82,6 +84,7 @@ namespace Dolanan.Engine
 		{
 			return new RectangleF(r.X, r.Y, r.Width, r.Height);
 		}
+
 		// public static Matrix SetRotationScaleAndSkew(this ref Matrix matrix, float rotation, Vector2 scale, float skew)
 		// {
 		// 	matrix.M11 = 

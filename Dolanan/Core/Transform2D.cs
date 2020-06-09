@@ -1,28 +1,30 @@
-﻿using System;
-using Dolanan.Components;
+﻿using Dolanan.Components;
 using Dolanan.Scene;
-using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Engine
 {
 	public delegate void TransformParentChange(Transform2D parent);
-	
+
 	/// <summary>
-	/// A component that control a Transformation.
+	///     A component that control a Transformation.
 	/// </summary>
-	public class Transform2D : Component 
+	public class Transform2D : Component
 	{
+		private Vector2 _localScale = Vector2.One;
+
+		private Matrix _matrix = Matrix.Identity;
+		private Transform2D _parent;
+		private Vector2 _position = Vector2.Zero;
+		private float _rotation;
 		public TransformParentChange OnTransformParentChange;
 
-		public Transform2D(Actor owner) : base(owner){}
-		public override void Start()
+		public Transform2D(Actor owner) : base(owner)
 		{
-			
 		}
 
 		/// <summary>
-		/// Never set parent! Set parent from Actor instead!
+		///     Never set parent! Set parent from Actor instead!
 		/// </summary>
 		public Transform2D Parent
 		{
@@ -52,10 +54,7 @@ namespace Dolanan.Engine
 		public Vector2 GlobalPosition
 		{
 			get => _matrix.Translation.ToVector2();
-			set
-			{
-				Position = value - ParentGlobalPosition;
-			}
+			set => Position = value - ParentGlobalPosition;
 		}
 
 
@@ -68,6 +67,7 @@ namespace Dolanan.Engine
 				UpdateTransform();
 			}
 		}
+
 		public float GlobalRotation
 		{
 			get => ParentGlobalRotation + Rotation;
@@ -84,41 +84,42 @@ namespace Dolanan.Engine
 				UpdateTransform();
 			}
 		}
-		
+
 		/// <summary>
-		/// Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
+		///     Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
 		/// </summary>
 		private Vector2 ParentGlobalPosition => Parent?.GlobalPosition ?? Vector2.Zero;
+
 		private float ParentGlobalRotation => Parent?.GlobalRotation ?? 0;
 		public Vector2 GlobalScale => ParentScale * LocalScale;
 
 		private Vector2 ParentScale => Parent?.GlobalScale ?? Vector2.One;
 
 		public Matrix Matrix => _matrix;
-		
+
 		public Vector2 Right => _matrix.Right.ToVector2();
+
 		public Vector2 Left => -Right;
+
 		// This actually weird, maybe because matrix using 3D space, so Down is up
 		public Vector2 Down => _matrix.Up.ToVector2();
 		public Vector2 Up => -Down;
 
-		private Matrix _matrix = Matrix.Identity;
-		private Transform2D _parent = null;
-		private Vector2 _position = Vector2.Zero;
-		private float _rotation = 0f;
-		private Vector2 _localScale = Vector2.One;
+		public override void Start()
+		{
+		}
 
 		public void UpdateTransform()
 		{
-			Matrix matrix = Matrix.CreateScale(new Vector3(LocalScale, 1)) *
-			                     Matrix.CreateRotationZ(Rotation) *
-			                     Matrix.CreateTranslation(new Vector3(Position, 0));
-			if(Parent != null)
+			var matrix = Matrix.CreateScale(new Vector3(LocalScale, 1)) *
+			             Matrix.CreateRotationZ(Rotation) *
+			             Matrix.CreateTranslation(new Vector3(Position, 0));
+			if (Parent != null)
 				matrix *= GetParentMatrix();
 
 			_matrix = matrix;
-			
-			foreach (Actor actor in Owner.GetChilds)
+
+			foreach (var actor in Owner.GetChilds)
 				actor.Transform.UpdateTransform();
 			//Log.PrintWarning(GlobalPosition.ToString());
 		}

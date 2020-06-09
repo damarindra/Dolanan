@@ -1,5 +1,4 @@
-﻿using System;
-using Dolanan.Controller;
+﻿using Dolanan.Controller;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
 
@@ -7,33 +6,37 @@ namespace Dolanan.Scene
 {
 	public class UILayer : Layer
 	{
-		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ) { }
+		private UISpace _uiSpace = UISpace.Screen;
+
+		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ)
+		{
+		}
 
 		public UISpace UISpace
 		{
 			get => _uiSpace;
 			set
 			{
-				if(value == UISpace.Screen)
-					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0,0,GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+				if (value == UISpace.Screen)
+					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X,
+						GameSettings.ViewportSize.Y);
 				_uiSpace = value;
 			}
 		}
+
 		public UIActor ScreenCanvas { get; private set; }
 
-		private UISpace _uiSpace = UISpace.Screen;
-		
 		public override void Start()
 		{
 			base.Start();
 			ScreenCanvas = AddActor<UIActor>("Canvas");
-			ScreenCanvas.RectTransform.Rectangle = new RectangleF(0,0,GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+			ScreenCanvas.RectTransform.Rectangle =
+				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			GameMgr.Game.World.Camera.OnViewportChanged += viewport =>
 			{
 				if (_uiSpace == UISpace.Screen)
-				{
-					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0,0,GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
-				}
+					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X,
+						GameSettings.ViewportSize.Y);
 			};
 		}
 
@@ -54,24 +57,22 @@ namespace Dolanan.Scene
 
 		public override void Draw(GameTime gameTime, float layerZDepth)
 		{
-			if(UISpace == UISpace.World)
+			if (UISpace == UISpace.World)
 				base.Draw(gameTime, layerZDepth);
 		}
 
 		public virtual void BackDraw(GameTime gameTime, Rectangle renderRect)
 		{
 			if (UISpace == UISpace.Screen)
-			{
-				if (ScreenCanvas.RectTransform.Rectangle != renderRect.ToRectangleF())
-					ScreenCanvas.RectTransform.Rectangle = renderRect.ToRectangleF();
+				// if (ScreenCanvas.RectTransform.Rectangle != renderRect.ToRectangleF())
+				// 	ScreenCanvas.RectTransform.Rectangle = renderRect.ToRectangleF();
 				base.Draw(gameTime, LayerZ);
-				Console.WriteLine(ScreenCanvas.RectTransform.Rectangle);
-			}
 		}
 	}
 
 	public enum UISpace
 	{
-		Screen, World
+		Screen,
+		World
 	}
 }
