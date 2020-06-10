@@ -109,21 +109,19 @@ namespace Dolanan.Scene
 
 		public static Point ScreenToWorld(Point position)
 		{
-			Vector2 posScreenPercentage = position.ToVector2() / GameMgr.Game.Window.ClientBounds.Size.ToVector2();
-			Vector2 posRenderDest = -GameMgr.Game.RenderDestination.Location.ToVector2() +
-			                        GameMgr.Game.RenderDestination.Size.ToVector2() * posScreenPercentage;
-			Console.WriteLine(posRenderDest);
 			Vector2 deltaScale = GameMgr.Game.World.Camera.ViewportSize.ToVector2() / GameMgr.Game.Window.ClientBounds.Size.ToVector2();
-			//deltaScale = new Vector2(GameMgr.Game.ScaleRenderTarget) / deltaScale;
-			// Vector2 deltaScale = new Vector2(GameMgr.Game.ScaleRenderTarget);
 
-			Matrix m = Matrix.CreateTranslation(new Vector3((posRenderDest), 0)) *
+			// give an offset on mouse position, our render x and y location not always 0
+			position -= GameMgr.Game.RenderDestination.Location;
+			// scale size between window size and render size
+			Vector2 scaleOffset = GameMgr.Game.Window.ClientBounds.Size.ToVector2() / GameMgr.Game.RenderDestination.Size.ToVector2();
+
+			Matrix m = Matrix.CreateTranslation(new Vector3((position.ToVector2()), 0)) *
+			           Matrix.CreateScale(new Vector3(scaleOffset, 1)) *
 			           Matrix.Invert(GameMgr.Game.World.Camera.GetTopLeftMatrix())* 
 			           Matrix.CreateScale(new Vector3(deltaScale, 1)) ;
 
-			Vector2 result = m.Translation.ToVector2();
 			return m.Translation.ToVector2().ToPoint(); 
-			//return m.Translation.ToVector2().ToPoint() - GameMgr.Game.RenderDestination.Location / new Point(2); 
 		}
 
 		public static float Aspect =>
