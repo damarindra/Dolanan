@@ -108,7 +108,6 @@ namespace Dolanan.Scene
 			Point mousePos = Mouse.GetState().Position;
 			
 			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(ScreenToWorld(mousePos).ToPoint(), new Point(5, 5)), Color.Red);
-			Console.WriteLine(ScreenToWorld(mousePos));
 		}
 
 		/// <summary>
@@ -145,6 +144,11 @@ namespace Dolanan.Scene
 			Matrix m = Matrix.CreateTranslation(new Vector3(worldPosition, 0)) * GameMgr.Game.World.Camera.GetTopLeftMatrix();
 			return (m.Translation.ToVector2() * GameMgr.Game.ScaleRenderTarget +
 			       GameMgr.Game.RenderDestination.Location.ToVector2()).ToPoint();
+		}
+
+		public static Vector2 WorldToViewport(Vector2 position)
+		{
+			return ScreenToViewport(WorldToScreen(position));
 		}
 
 		public static float Aspect =>
