@@ -44,231 +44,231 @@ namespace DolananSample
 
 			if (_texturesTopDown.TryGet("square", out var texture2D))
 			{
-				var wall = CollisionHelper.CreateColliderActor(new Vector2(0, GameSettings.ViewportSize.Y / 2f),
-					new Vector2(64, GameSettings.ViewportSize.Y));
-				wall.Transform.LocalScale = new Vector2(1, GameSettings.ViewportSize.Y / 64f);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				                                   new Vector2(0, GameSettings.ViewportSize.Y / 2f - 32f);
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(GameSettings.ViewportSize.X / 2f, 0),
-					new Vector2(GameSettings.ViewportSize.X, 64));
-				wall.Transform.LocalScale = new Vector2(GameSettings.ViewportSize.X / 64f, 1);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				                                   new Vector2(GameSettings.ViewportSize.X / 2f - 32f, 0);
-
-				wall = CollisionHelper.CreateColliderActor(
-					new Vector2(GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y / 2f),
-					new Vector2(64, GameSettings.ViewportSize.Y));
-				wall.Transform.LocalScale = new Vector2(1, GameSettings.ViewportSize.Y / 64f);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				                                   new Vector2(0, GameSettings.ViewportSize.Y / 2f - 32f);
-
-				wall = CollisionHelper.CreateColliderActor(
-					new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y),
-					new Vector2(GameSettings.ViewportSize.X, 64));
-				wall.Transform.LocalScale = new Vector2(GameSettings.ViewportSize.X / 64f, 1);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				                                   new Vector2(GameSettings.ViewportSize.X / 2f - 32f, 0);
-
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(64, 64), new Vector2(64, 64));
-				wall.Transform.LocalScale = new Vector2(1, 1);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(254, 129), new Vector2(64, 64));
-				wall.Transform.LocalScale = new Vector2(1, 1);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(154, 229), new Vector2(64, 64));
-				wall.Transform.LocalScale = new Vector2(1, 1);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(457, 365), Vector2.One * 64 * 2);
-				wall.Transform.LocalScale = new Vector2(2, 2);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(763, 456), new Vector2(64, 64));
-				wall.Transform.LocalScale = new Vector2(1, 1);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-
-
-				wall = CollisionHelper.CreateColliderActor(new Vector2(765, 180), Vector2.One * 64 * 3);
-				wall.Transform.LocalScale = new Vector2(3, 3);
-				wall.AddComponent<Renderer>().Texture2D = texture2D;
-				wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-
-				var trigger = World.CreateActor<SpriteActor>("trigger");
-				trigger.Transform.Position = new Vector2(128, 400);
-				var body = trigger.AddComponent<Body>();
-				body.IsTrigger = true;
-				body.Tag = "trigger";
-				body.Size = Vector2.One * 128;
-				var spr = trigger.GetComponent<Sprite>();
-				spr.Pivot = Pivot.TopLeft;
-				spr.Texture2D = texture2D;
-				trigger.Transform.LocalScale *= 2;
-				spr.ModulatedColor = new Color(Color.Aqua, .3f);
+				// var wall = CollisionHelper.CreateColliderActor(new Vector2(0, GameSettings.ViewportSize.Y / 2f),
+				// 	new Vector2(64, GameSettings.ViewportSize.Y));
+				// wall.Transform.LocalScale = new Vector2(1, GameSettings.ViewportSize.Y / 64f);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
+				//                                    new Vector2(0, GameSettings.ViewportSize.Y / 2f - 32f);
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(GameSettings.ViewportSize.X / 2f, 0),
+				// 	new Vector2(GameSettings.ViewportSize.X, 64));
+				// wall.Transform.LocalScale = new Vector2(GameSettings.ViewportSize.X / 64f, 1);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
+				//                                    new Vector2(GameSettings.ViewportSize.X / 2f - 32f, 0);
+				//
+				// wall = CollisionHelper.CreateColliderActor(
+				// 	new Vector2(GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y / 2f),
+				// 	new Vector2(64, GameSettings.ViewportSize.Y));
+				// wall.Transform.LocalScale = new Vector2(1, GameSettings.ViewportSize.Y / 64f);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
+				//                                    new Vector2(0, GameSettings.ViewportSize.Y / 2f - 32f);
+				//
+				// wall = CollisionHelper.CreateColliderActor(
+				// 	new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y),
+				// 	new Vector2(GameSettings.ViewportSize.X, 64));
+				// wall.Transform.LocalScale = new Vector2(GameSettings.ViewportSize.X / 64f, 1);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
+				//                                    new Vector2(GameSettings.ViewportSize.X / 2f - 32f, 0);
+				//
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(64, 64), new Vector2(64, 64));
+				// wall.Transform.LocalScale = new Vector2(1, 1);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
+				//
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(254, 129), new Vector2(64, 64));
+				// wall.Transform.LocalScale = new Vector2(1, 1);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(154, 229), new Vector2(64, 64));
+				// wall.Transform.LocalScale = new Vector2(1, 1);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
+				//
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(457, 365), Vector2.One * 64 * 2);
+				// wall.Transform.LocalScale = new Vector2(2, 2);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(763, 456), new Vector2(64, 64));
+				// wall.Transform.LocalScale = new Vector2(1, 1);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
+				//
+				//
+				// wall = CollisionHelper.CreateColliderActor(new Vector2(765, 180), Vector2.One * 64 * 3);
+				// wall.Transform.LocalScale = new Vector2(3, 3);
+				// wall.AddComponent<Renderer>().Texture2D = texture2D;
+				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
+				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
+				//
+				// var trigger = World.CreateActor<SpriteActor>("trigger");
+				// trigger.Transform.Position = new Vector2(128, 400);
+				// var body = trigger.AddComponent<Body>();
+				// body.IsTrigger = true;
+				// body.Tag = "trigger";
+				// body.Size = Vector2.One * 128;
+				// var spr = trigger.GetComponent<Sprite>();
+				// spr.Pivot = Pivot.TopLeft;
+				// spr.Texture2D = texture2D;
+				// trigger.Transform.LocalScale *= 2;
+				// spr.ModulatedColor = new Color(Color.Aqua, .3f);
 			}
 
 			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
 			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
-
+			
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
-
-			Console.WriteLine("Valid");
-			var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
-			var img = topLeft.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			Slice slice;
-			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
-			topLeft.RectTransform.Anchor = Anchor.TopLeft;
-			// Console.WriteLine(topLeft.RectTransform.Rectangle);
-			topLeft.SetParent(Canvas);
-			// Console.WriteLine(topLeft.RectTransform.Rectangle);
-
-			var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
-			img = topCenter.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 4", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
-			topCenter.RectTransform.Anchor = Anchor.TopCenter;
-			topCenter.SetParent(Canvas);
-
-			var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
-			img = topRight.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 2", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100, 0, 100, 100);
-			topRight.RectTransform.Anchor = Anchor.TopRight;
-			topRight.SetParent(Canvas);
-
-			var middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
-			img = middleLeft.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 3", out slice))
-				img.TextureRectangle = slice.Bounds;
-			middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
-			middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
-			middleLeft.SetParent(Canvas);
-
-			var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
-			img = middleCenter.AddComponent<Image>();
-			middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
-				GameSettings.ViewportSize.Y / 2 - 50,
-				100, 100);
-			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
-			middleCenter.SetParent(Canvas);
-
-			var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
-			img = middleRight.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 5", out slice))
-				img.TextureRectangle = slice.Bounds;
-			middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
-				GameSettings.ViewportSize.Y / 2 - 50,
-				100, 100);
-			middleRight.RectTransform.Anchor = Anchor.MiddleRight;
-			middleRight.SetParent(Canvas);
-
-			var bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
-			img = bottomLeft.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 6", out slice))
-				img.TextureRectangle = slice.Bounds;
-			bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
-			bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
-			bottomLeft.SetParent(Canvas);
-
-			var bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
-			img = bottomCenter.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 7", out slice))
-				img.TextureRectangle = slice.Bounds;
-			bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
-				GameSettings.ViewportSize.Y - 100,
-				100, 100);
-			bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
-			bottomCenter.SetParent(Canvas);
-
-			var bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
-			img = bottomRight.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 8", out slice))
-				img.TextureRectangle = slice.Bounds;
-			bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
-				GameSettings.ViewportSize.Y - 100,
-				100, 100);
-			bottomRight.RectTransform.Anchor = Anchor.BottomRight;
-			bottomRight.SetParent(Canvas);
-
-
-			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
-			img = stretchVertical.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 9", out slice))
-			{
-				img.TextureRectangle = slice.Bounds;
-				stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
-					slice.Bounds.Width, slice.Bounds.Height);
-			}
-
-			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
-			stretchVertical.SetParent(Canvas);
-
-
-			var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
-			var ns = stretchHorizontal.AddComponent<NineSlice>();
-			var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
-			var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
-			ns.Texture2D = tNs;
-			if (asepriteNs.TryGetSlice("slice", out slice))
-			{
-				ns.TextureRectangle = slice.Bounds;
-				ns.Center = slice.Center;
-				Console.WriteLine(ns.Center);
-				stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
-					GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
-			}
-
-			stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
-			stretchHorizontal.SetParent(Canvas);
+			
+			// Console.WriteLine("Valid");
+			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
+			// var img = topLeft.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// Slice slice;
+			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
+			// topLeft.RectTransform.Anchor = Anchor.TopLeft;
+			// // Console.WriteLine(topLeft.RectTransform.Rectangle);
+			// topLeft.SetParent(Canvas);
+			// // Console.WriteLine(topLeft.RectTransform.Rectangle);
+			//
+			// var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
+			// img = topCenter.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 4", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
+			// topCenter.RectTransform.Anchor = Anchor.TopCenter;
+			// topCenter.SetParent(Canvas);
+			//
+			// var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
+			// img = topRight.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 2", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100, 0, 100, 100);
+			// topRight.RectTransform.Anchor = Anchor.TopRight;
+			// topRight.SetParent(Canvas);
+			//
+			// var middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
+			// img = middleLeft.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 3", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
+			// middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
+			// middleLeft.SetParent(Canvas);
+			//
+			// var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			// img = middleCenter.AddComponent<Image>();
+			// middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
+			// 	GameSettings.ViewportSize.Y / 2 - 50,
+			// 	100, 100);
+			// middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
+			// middleCenter.SetParent(Canvas);
+			//
+			// var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
+			// img = middleRight.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 5", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
+			// 	GameSettings.ViewportSize.Y / 2 - 50,
+			// 	100, 100);
+			// middleRight.RectTransform.Anchor = Anchor.MiddleRight;
+			// middleRight.SetParent(Canvas);
+			//
+			// var bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
+			// img = bottomLeft.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 6", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
+			// bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
+			// bottomLeft.SetParent(Canvas);
+			//
+			// var bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
+			// img = bottomCenter.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 7", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
+			// 	GameSettings.ViewportSize.Y - 100,
+			// 	100, 100);
+			// bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
+			// bottomCenter.SetParent(Canvas);
+			//
+			// var bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
+			// img = bottomRight.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 8", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
+			// 	GameSettings.ViewportSize.Y - 100,
+			// 	100, 100);
+			// bottomRight.RectTransform.Anchor = Anchor.BottomRight;
+			// bottomRight.SetParent(Canvas);
+			//
+			//
+			// var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
+			// img = stretchVertical.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 9", out slice))
+			// {
+			// 	img.TextureRectangle = slice.Bounds;
+			// 	stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
+			// 		slice.Bounds.Width, slice.Bounds.Height);
+			// }
+			//
+			// stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
+			// stretchVertical.SetParent(Canvas);
+			//
+			//
+			// var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
+			// var ns = stretchHorizontal.AddComponent<NineSlice>();
+			// var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
+			// var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
+			// ns.Texture2D = tNs;
+			// if (asepriteNs.TryGetSlice("slice", out slice))
+			// {
+			// 	ns.TextureRectangle = slice.Bounds;
+			// 	ns.Center = slice.Center;
+			// 	Console.WriteLine(ns.Center);
+			// 	stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
+			// 		GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
+			// }
+			//
+			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
+			// stretchHorizontal.SetParent(Canvas);
 		}
 
 		protected override void Draw(GameTime gameTime)

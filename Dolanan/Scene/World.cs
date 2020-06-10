@@ -60,6 +60,8 @@ namespace Dolanan.Scene
 					(int) collisionCollider.Size.X, (int) collisionCollider.Size.Y), Color.White);
 		}
 
+		public int LayerCount => Layers.Count;
+
 		#region GameCycle
 
 		public Layer GetLayer(LayerName layerName)

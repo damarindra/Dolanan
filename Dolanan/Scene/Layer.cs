@@ -39,6 +39,7 @@ namespace Dolanan.Scene
 		public bool IsLoaded { get; private set; }
 
 		public World GameWorld { get; }
+		// TODO : LayerZ used for layerDepth spriteBatch.Draw, the range only between 0 - 1, so fix this!
 		public int LayerZ { get; }
 
 		public virtual void Initialize()
@@ -68,7 +69,7 @@ namespace Dolanan.Scene
 			if (!IsLoaded)
 				return;
 			foreach (var actor in Actors)
-				actor.Draw(gameTime, AutoYSort ? actor.Transform.Position.Y * float.Epsilon : LayerZ);
+				actor.Draw(gameTime, AutoYSort ? actor.Transform.Position.Y * float.Epsilon : LayerZ / (float)GameWorld.LayerCount);
 		}
 
 		/// <summary>

@@ -1,7 +1,9 @@
 ﻿using System;
+using Dolanan.Controller;
 using Dolanan.Engine;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
-using Rectangle = System.Drawing.Rectangle;
+using Microsoft.Xna.Framework.Input;
 
 namespace Dolanan.Scene
 {
@@ -67,7 +69,7 @@ namespace Dolanan.Scene
 			if (FollowActor == null)
 				return;
 
-			var position = Transform.Position;
+			Vector2 position;
 			if (UseSmooth)
 			{
 				var s = (float) gameTime.ElapsedGameTime.TotalSeconds * SmoothSpeed;
@@ -96,5 +98,35 @@ namespace Dolanan.Scene
 					Transform.Position = position;
 			}
 		}
+
+		public override void Draw(GameTime gameTime, float layerZDepth)
+		{
+			base.Draw(gameTime, layerZDepth);
+			Point mousePos = Mouse.GetState().Position;
+			
+			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(ScreenToWorld(mousePos), new Point(5, 5)), Color.Red);
+		}
+
+		public static Point ScreenToWorld(Point position)
+		{
+			Vector2 posScreenPercentage = position.ToVector2() / GameMgr.Game.Window.ClientBounds.Size.ToVector2();
+			Vector2 posRenderDest = -GameMgr.Game.RenderDestination.Location.ToVector2() +
+			                        GameMgr.Game.RenderDestination.Size.ToVector2() * posScreenPercentage;
+			Console.WriteLine(posRenderDest);
+			Vector2 deltaScale = GameMgr.Game.World.Camera.ViewportSize.ToVector2() / GameMgr.Game.Window.ClientBounds.Size.ToVector2();
+			//deltaScale = new Vector2(GameMgr.Game.ScaleRenderTarget) / deltaScale;
+			// Vector2 deltaScale = new Vector2(GameMgr.Game.ScaleRenderTarget);
+
+			Matrix m = Matrix.CreateTranslation(new Vector3((posRenderDest), 0)) *
+			           Matrix.Invert(GameMgr.Game.World.Camera.GetTopLeftMatrix())* 
+			           Matrix.CreateScale(new Vector3(deltaScale, 1)) ;
+
+			Vector2 result = m.Translation.ToVector2();
+			return m.Translation.ToVector2().ToPoint(); 
+			//return m.Translation.ToVector2().ToPoint() - GameMgr.Game.RenderDestination.Location / new Point(2); 
+		}
+
+		public static float Aspect =>
+			GameMgr.Game.World.Camera.ViewportSize.X / (float)GameMgr.Game.World.Camera.ViewportSize.Y;
 	}
 }

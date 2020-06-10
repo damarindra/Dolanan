@@ -19,12 +19,12 @@ namespace Dolanan.Engine
 		///     720p 1440p = 640, 480 (divide / multiply by even number)
 		///     1080p 2160p = 960, 540 (divide / multiply by even number)
 		/// </summary>
-		private static Point _windowSize = new Point(960 / 2, 540 / 2);
+		private static Point _windowSize = new Point(960, 540);
 
 		/// <summary>
 		///     Viewport size is the camera that will render the world
 		/// </summary>
-		private static Point _viewportSize = new Point(960 / 4, 540 / 4);
+		private static Point _viewportSize = new Point(960, 540);
 
 
 		private static bool _allowWindowResize = true;
@@ -142,7 +142,7 @@ namespace Dolanan.Engine
 
 		Height
 		// TODO : Expand will use the most possible between width or height ( we don't really need this actually)
-		//, Expand
+		, Expand
 	}
 
 	public enum WindowMode

@@ -1,5 +1,7 @@
 ﻿using System;
+using Dolanan.Collision;
 using Dolanan.Controller;
+using Dolanan.Engine.Attributes;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +29,7 @@ namespace Dolanan.Components.UI
 
 		public NineSlice(Actor owner) : base(owner)
 		{
+			Console.WriteLine("Nine");
 		}
 
 		public new Texture2D Texture2D

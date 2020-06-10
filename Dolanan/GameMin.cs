@@ -22,10 +22,15 @@ namespace Dolanan
 		private bool _debugShowCollision;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 
+		
 		protected RenderTarget2D RenderTarget;
 		protected SpriteBatch SpriteBatch;
 		public World World;
 
+		public float ScaleRenderTarget => GameSettings.WindowKeep == WindowSizeKeep.Width ? _scaleRenderTarget.X : _scaleRenderTarget.Y;
+
+		public Rectangle RenderDestination { get; private set; }
+		
 		public GameMin()
 		{
 			Graphics = new GraphicsDeviceManager(this);
@@ -159,10 +164,10 @@ namespace Dolanan
 			if (_debugShowCollision) World.DrawCollision();
 			SpriteBatch.End();
 
-			BackBufferRender(out var renderDestination);
+			BackBufferRender();
 
 			SpriteBatch.Begin(samplerState: GameSettings.DefaultSamplerState);
-			BackDraw(gameTime, renderDestination);
+			BackDraw(gameTime, RenderDestination);
 			if (_debugFps && ResFont.Instance.TryGet("bitty", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
 
@@ -189,34 +194,32 @@ namespace Dolanan
 		/// <param name="worldRect">The back buffer render size</param>
 		protected virtual void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
+			// SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.ScreenToCameraSpace(Mouse.GetState().Position),
+			// 	new Point(5, 5)), Color.Yellow);
+
 		}
 
 		/// <summary>
 		///     Rendering back into screen with scaling factor
 		/// </summary>
-		private void BackBufferRender(out Rectangle renderDestination)
+		private void BackBufferRender()
 		{
 			GraphicsDevice.SetRenderTarget(null);
 			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 			// destination is window screen space!
-			renderDestination = new Rectangle();
-			renderDestination.Width = (int) (World.Camera.ViewportSize.X *
-			                                 (GameSettings.WindowKeep == WindowSizeKeep.Width
-				                                 ? _scaleRenderTarget.X
-				                                 : _scaleRenderTarget.Y));
-			renderDestination.Height = (int) (World.Camera.ViewportSize.Y *
-			                                  (GameSettings.WindowKeep == WindowSizeKeep.Width
-				                                  ? _scaleRenderTarget.X
-				                                  : _scaleRenderTarget.Y));
+			Rectangle _rectangle = new Rectangle();
+			_rectangle.Width = (int) (World.Camera.ViewportSize.X * ScaleRenderTarget);
+			_rectangle.Height = (int) (World.Camera.ViewportSize.Y * ScaleRenderTarget);
 
-			renderDestination.X = GameSettings.WindowKeep == WindowSizeKeep.Height
-				? (Window.ClientBounds.Width - renderDestination.Width) / 2
+			_rectangle.X = GameSettings.WindowKeep == WindowSizeKeep.Height
+				? (Window.ClientBounds.Width - _rectangle.Width) / 2
 				: 0;
-			renderDestination.Y = GameSettings.WindowKeep == WindowSizeKeep.Width
-				? (Window.ClientBounds.Height - renderDestination.Height) / 2
+			_rectangle.Y = GameSettings.WindowKeep == WindowSizeKeep.Width
+				? (Window.ClientBounds.Height - _rectangle.Height) / 2
 				: 0;
 
-			SpriteBatch.Draw(RenderTarget, renderDestination,
+			RenderDestination = _rectangle;
+			SpriteBatch.Draw(RenderTarget, RenderDestination,
 				null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0f);
 			SpriteBatch.End();
 		}

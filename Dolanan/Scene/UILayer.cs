@@ -74,12 +74,12 @@ namespace Dolanan.Scene
 			}
 			else if (UISpace == UISpace.Viewport && ScreenCanvas.RectTransform.Rectangle != worldRect.ToRectangleF())
 			{
-				//ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
+				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
 			}
 			else if (UISpace == UISpace.Window && ScreenCanvas.RectTransform.Rectangle.Size !=
 				GameMgr.Game.Window.ClientBounds.Size.ToVector2())
 			{
-				//ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
+				ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
 			}
 
 			base.Draw(gameTime, LayerZ);
@@ -88,13 +88,13 @@ namespace Dolanan.Scene
 
 	public enum UISpace
 	{
-		// follow camera viewport
+		// follow camera viewport (best for UI screen if your game window is consistent)
 		Viewport,
 
 		// place in world
 		World,
 
-		// follow window size
+		// follow window size (best for UI screen)
 		Window
 	}
 }
