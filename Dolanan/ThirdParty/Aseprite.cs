@@ -1,4 +1,7 @@
 ﻿using Dolanan.Animation;
+using Dolanan.Collision;
+using Dolanan.Components.UI;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.ThirdParty
@@ -95,5 +98,35 @@ namespace Dolanan.ThirdParty
 		public bool IsBoundValid => (Bit & 1) != 0;
 		public bool IsCenterValid => (Bit & 2) != 0;
 		public bool IsPivotValid => (Bit & 4) != 0;
+	}
+
+	public static class AsepriteConverter
+	{
+		public static void ToBody(this Slice slice, ref Body body, bool usePivotAsCenter)
+		{
+			if (!slice.IsBoundValid)
+			{
+				Log.PrintWarning("Slice doesn't have a Bounds : " + slice.Name);
+				return;
+			}
+
+			body.Size = slice.Bounds.Size.ToVector2();
+			if (slice.IsPivotValid && usePivotAsCenter)
+			{
+				body.Offset = slice.Pivot.ToVector2();
+			}
+		}
+
+		public static void ToNineSlice(this Slice slice, ref NineSlice nineSlice)
+		{
+			if (!slice.IsBoundValid || !slice.IsCenterValid)
+			{
+				Log.PrintWarning("Slice doesn't have a valid nineslice support :" + slice.Name);
+				return;
+			}
+			
+			nineSlice.Transform.SetRectSize(slice.Bounds.Size.ToVector2());
+			nineSlice.Center = slice.Center;
+		}
 	}
 }

@@ -8,9 +8,9 @@ namespace Dolanan.Components.UI
 {
 	public class Image : UIComponent
 	{
-		private Texture2D _texture2D;
-		public Color ColorTint = Color.White;
-		public Rectangle SrcTextureRectangle = Rectangle.Empty;
+		protected Texture2D Texture;
+		public Color TintColor = Color.White;
+		public Rectangle TextureRectangle = Rectangle.Empty;
 		public bool Stretch = true;
 
 		public Image(Actor owner) : base(owner)
@@ -19,12 +19,12 @@ namespace Dolanan.Components.UI
 
 		public Texture2D Texture2D
 		{
-			get => _texture2D;
+			get => Texture;
 			set
 			{
-				_texture2D = value;
-				if (SrcTextureRectangle == Rectangle.Empty)
-					SrcTextureRectangle = _texture2D.Bounds;
+				Texture = value;
+				if (TextureRectangle == Rectangle.Empty)
+					TextureRectangle = Texture.Bounds;
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace Dolanan.Components.UI
 
 		public void FitRectangleToImage()
 		{
-			UIActor.RectTransform.SetRectSize(SrcTextureRectangle.Size.ToVector2());
+			UIActor.RectTransform.SetRectSize(TextureRectangle.Size.ToVector2());
 		}
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
@@ -44,11 +44,11 @@ namespace Dolanan.Components.UI
 			base.Draw(gameTime, layerZDepth);
 
 			if (Stretch)
-				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), SrcTextureRectangle,
-					ColorTint);
+				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), TextureRectangle,
+					TintColor);
 			else
-				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), SrcTextureRectangle,
-					ColorTint);
+				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), TextureRectangle,
+					TintColor);
 		}
 	}
 }

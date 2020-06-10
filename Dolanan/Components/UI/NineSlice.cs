@@ -9,7 +9,7 @@ namespace Dolanan.Components.UI
 	/// <summary>
 	///     NineSlice texture. RectTransform stretching might be not working
 	/// </summary>
-	public class NineSlice : UIComponent
+	public class NineSlice : Image
 	{
 		/// <summary>
 		///     Resize Mode, IMPORTANT, Tile mode only works when the texture size is Power of 2
@@ -22,26 +22,24 @@ namespace Dolanan.Components.UI
 
 		private Rectangle _center = Rectangle.Empty;
 
-		private Texture2D _texture;
+
 		public ResizeMode Mode = ResizeMode.Tile;
-		public Rectangle SrcTextureRectangle = Rectangle.Empty;
-		public Color TintColor = Color.White;
 
 		public NineSlice(Actor owner) : base(owner)
 		{
 		}
 
-		public Texture2D Texture2D
+		public new Texture2D Texture2D
 		{
-			get => _texture;
+			get => Texture;
 			set
 			{
-				_texture = value;
-				if (SrcTextureRectangle == Rectangle.Empty)
+				Texture = value;
+				if (TextureRectangle == Rectangle.Empty)
 				{
-					SrcTextureRectangle = _texture.Bounds;
+					TextureRectangle = Texture.Bounds;
 					Center = new Rectangle(1, 1,
-						SrcTextureRectangle.Width - 2, SrcTextureRectangle.Height - 2);
+						TextureRectangle.Width - 2, TextureRectangle.Height - 2);
 				}
 			}
 		}
@@ -51,8 +49,8 @@ namespace Dolanan.Components.UI
 			get => _center;
 			set =>
 				_center = new Rectangle((int) MathF.Max(1, value.X), (int) MathF.Max(1, value.Y),
-					(int) MathF.Min(SrcTextureRectangle.Width - 2, value.Width),
-					(int) MathF.Min(SrcTextureRectangle.Height - 2, value.Height));
+					(int) MathF.Min(TextureRectangle.Width - 2, value.Width),
+					(int) MathF.Min(TextureRectangle.Height - 2, value.Height));
 		}
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
@@ -65,7 +63,7 @@ namespace Dolanan.Components.UI
 
 			// used for intersect to the slices, so we still get valid rectangle for the texture
 			var transformToSrcRect = Transform.Rectangle.ToRectangle();
-			transformToSrcRect.Location = SrcTextureRectangle.Location;
+			transformToSrcRect.Location = TextureRectangle.Location;
 
 			var drawLocation = transformRectangle.Location;
 
@@ -128,13 +126,13 @@ namespace Dolanan.Components.UI
 				var heightLeft = size.Y;
 				while (heightLeft > 0)
 				{
-					Rectangle destination = new Rectangle(x, y,
+					var destination = new Rectangle(x, y,
 						widthLeft > srcRect.Width ? srcRect.Width : widthLeft,
 						heightLeft > srcRect.Height ? srcRect.Height : heightLeft);
-					Rectangle textureRect = new Rectangle(srcRect.X, srcRect.Y,
+					var textureRect = new Rectangle(srcRect.X, srcRect.Y,
 						widthLeft > srcRect.Width ? srcRect.Width : widthLeft,
 						heightLeft > srcRect.Height ? srcRect.Height : heightLeft);
-					
+
 					GameMgr.SpriteBatch.Draw(Texture2D, destination, textureRect, TintColor);
 
 					y += srcRect.Height;
@@ -154,7 +152,7 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X, SrcTextureRectangle.Y, Center.X, Center.Y);
+				return new Rectangle(TextureRectangle.X, TextureRectangle.Y, Center.X, Center.Y);
 			}
 		}
 
@@ -164,7 +162,7 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X + Center.X, SrcTextureRectangle.Y,
+				return new Rectangle(TextureRectangle.X + Center.X, TextureRectangle.Y,
 					Center.Width, Center.Y);
 			}
 		}
@@ -175,8 +173,8 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X + Center.X + Center.Width, SrcTextureRectangle.Y,
-					SrcTextureRectangle.Width - (Center.X + Center.Width), Center.Y);
+				return new Rectangle(TextureRectangle.X + Center.X + Center.Width, TextureRectangle.Y,
+					TextureRectangle.Width - (Center.X + Center.Width), Center.Y);
 			}
 		}
 
@@ -186,7 +184,7 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X, SrcTextureRectangle.Y + Center.Y,
+				return new Rectangle(TextureRectangle.X, TextureRectangle.Y + Center.Y,
 					Center.X, Center.Height);
 			}
 		}
@@ -197,7 +195,7 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X + Center.X, SrcTextureRectangle.Y + Center.Y,
+				return new Rectangle(TextureRectangle.X + Center.X, TextureRectangle.Y + Center.Y,
 					Center.Width, Center.Height);
 			}
 		}
@@ -208,8 +206,8 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X + Center.X + Center.Width, SrcTextureRectangle.Y + Center.Y,
-					SrcTextureRectangle.Width - (Center.X + Center.Width), Center.Height);
+				return new Rectangle(TextureRectangle.X + Center.X + Center.Width, TextureRectangle.Y + Center.Y,
+					TextureRectangle.Width - (Center.X + Center.Width), Center.Height);
 			}
 		}
 
@@ -219,8 +217,8 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X, SrcTextureRectangle.Y + Center.Y + Center.Height,
-					Center.X, SrcTextureRectangle.Height - (_center.Y + Center.Height));
+				return new Rectangle(TextureRectangle.X, TextureRectangle.Y + Center.Y + Center.Height,
+					Center.X, TextureRectangle.Height - (_center.Y + Center.Height));
 			}
 		}
 
@@ -230,8 +228,8 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X + Center.X, SrcTextureRectangle.Y + Center.Y + Center.Height,
-					Center.Width, SrcTextureRectangle.Height - (_center.Y + Center.Height));
+				return new Rectangle(TextureRectangle.X + Center.X, TextureRectangle.Y + Center.Y + Center.Height,
+					Center.Width, TextureRectangle.Height - (_center.Y + Center.Height));
 			}
 		}
 
@@ -241,10 +239,10 @@ namespace Dolanan.Components.UI
 			{
 				if (Texture2D == null)
 					return default;
-				return new Rectangle(SrcTextureRectangle.X + Center.X + Center.Width,
-					SrcTextureRectangle.Y + Center.Y + Center.Height,
-					SrcTextureRectangle.Width - (Center.X + Center.Width),
-					SrcTextureRectangle.Height - (_center.Y + Center.Height));
+				return new Rectangle(TextureRectangle.X + Center.X + Center.Width,
+					TextureRectangle.Y + Center.Y + Center.Height,
+					TextureRectangle.Width - (Center.X + Center.Width),
+					TextureRectangle.Height - (_center.Y + Center.Height));
 			}
 		}
 
