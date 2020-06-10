@@ -60,8 +60,8 @@ namespace Dolanan
 		{
 			if (World != null)
 			{
-				_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
-				_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
+				_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportRectSize.X;
+				_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportRectSize.Y;
 				if (!Graphics.IsFullScreen && Graphics.PreferredBackBufferHeight != Window.ClientBounds.Height &&
 				    Graphics.PreferredBackBufferWidth != Window.ClientBounds.Width)
 				{
@@ -78,8 +78,8 @@ namespace Dolanan
 			GameMgr.Init(this);
 
 			World = new World();
-			_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportSize.X;
-			_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportSize.Y;
+			_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportRectSize.X;
+			_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportRectSize.Y;
 
 			base.Initialize();
 
@@ -95,7 +95,7 @@ namespace Dolanan
 			new ResFont().Load();
 
 			RenderTarget =
-				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportSize.X, World.Camera.ViewportSize.Y);
+				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportRectSize.X, World.Camera.ViewportRectSize.Y);
 
 			// use this.Content to load your game content here
 		}
@@ -208,8 +208,8 @@ namespace Dolanan
 			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 			// destination is window screen space!
 			Rectangle _rectangle = new Rectangle();
-			_rectangle.Width = (int) (World.Camera.ViewportSize.X * ScaleRenderTarget);
-			_rectangle.Height = (int) (World.Camera.ViewportSize.Y * ScaleRenderTarget);
+			_rectangle.Width = (int) (World.Camera.ViewportRectSize.X * ScaleRenderTarget);
+			_rectangle.Height = (int) (World.Camera.ViewportRectSize.Y * ScaleRenderTarget);
 
 			_rectangle.X = GameSettings.WindowKeep == WindowSizeKeep.Height
 				? (Window.ClientBounds.Width - _rectangle.Width) / 2

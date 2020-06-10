@@ -329,8 +329,8 @@ namespace DolananSample
 		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
 			base.BackDraw(gameTime, worldRect);
-			// UILayer.BackDraw(gameTime, worldRect);
 			UILayer.BackDraw(gameTime, worldRect);
+			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.WorldToScreen(p.Transform.Position), new Point(5, 5)), null, Color.Yellow);
 		}
 	}
 
