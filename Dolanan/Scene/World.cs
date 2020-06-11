@@ -17,12 +17,6 @@ namespace Dolanan.Scene
 		private int _defaultLayer = 1;
 		public Camera Camera;
 
-		/// <summary>
-		///     DynamicActor is Actor that can move between layer. Whenever layer call Unload, the DynamicActor will be removed
-		///     from the layer, and if Load called, DynamicActor will be add at it. Useful for player.
-		/// </summary>
-		public List<Actor> DynamicActor = new List<Actor>();
-
 		protected List<Layer> Layers = new List<Layer>();
 
 		public World()

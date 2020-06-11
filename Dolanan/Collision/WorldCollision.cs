@@ -6,7 +6,7 @@ namespace Dolanan.Collision
 {
 	public class WorldCollision
 	{
-		public List<Body> Colliders = new List<Body>();
+		public readonly List<Body> Colliders = new List<Body>();
 
 		/// <summary>
 		///     Check collision between A and B, A is the moving body that uses velo. This only check, not moving the AABB a

@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dolanan.Components;
 using Dolanan.Engine;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
@@ -20,6 +21,8 @@ namespace Dolanan.Scene
 		// Component stuff
 		// Render
 		protected readonly List<Component> Components = new List<Component>();
+
+		private Actor _parent;
 		public string Name;
 
 		public ParentChange OnParentChange;
@@ -35,8 +38,29 @@ namespace Dolanan.Scene
 			Start();
 		}
 
-		public Layer Layer { get; }
-		public Actor Parent { get; private set; }
+		public Layer Layer { get; internal set; }
+
+		public Actor Parent
+		{
+			get => _parent;
+			private set
+			{
+				if (_parent != null)
+				{
+					_parent.Childs.Remove(this);
+					Transform.Parent = null;
+				}
+
+				_parent = value;
+				if (_parent != null)
+				{
+					Transform.Parent = _parent.Transform;
+					_parent.Childs.Add(this);
+					if (_parent.Layer != Layer)
+						SetLayer(_parent.Layer);
+				}
+			}
+		}
 
 		public Actor[] GetChilds => Childs.ToArray();
 
@@ -78,7 +102,20 @@ namespace Dolanan.Scene
 		public void RemoveComponent(Component component)
 		{
 			if (Components.Contains(component))
+			{
+				component.Owner = null;
 				Components.Remove(component);
+			}
+		}
+
+		/// <summary>
+		/// Remove parent and layer references.
+		/// </summary>
+		public void Detach()
+		{
+			Parent = null;
+
+			Layer.RemoveActorRecursive(this);
 		}
 
 		public T GetComponent<T>()
@@ -91,15 +128,27 @@ namespace Dolanan.Scene
 			return Components.OfType<T>().ToArray();
 		}
 
+		/// <summary>
+		///     Set parent. If parent in different layer, layer on this automatically changed
+		/// </summary>
+		/// <param name="parent"></param>
 		public void SetParent(Actor parent)
 		{
-			if (Parent != null)
-				Parent.Childs.Remove(this);
 			Parent = parent;
-			Transform.Parent = parent.Transform;
-			Parent.Childs.Add(this);
-
 			OnParentChange?.Invoke(parent);
+		}
+
+		public void SetLayer([NotNull ]Layer layer)
+		{
+			if (Parent != null)
+			{
+				// Set layer from child is forbidden!
+				Log.PrintError("Trying to set layer on Child actor. Do it from the root Node!");
+				return;
+			}
+
+			// set the new layer, take care everything needs to be done.
+			layer.AddActor(this);
 		}
 	}
 }

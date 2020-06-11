@@ -139,19 +139,16 @@ namespace DolananSample
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			
-			// Console.WriteLine("Valid");
 			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
 			// var img = topLeft.AddComponent<Image>();
 			// img.Texture2D = _uiTexture;
 			// img.Stretch = false;
-			// Slice slice;
+			Slice slice;
 			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
 			// 	img.TextureRectangle = slice.Bounds;
 			// topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
 			// topLeft.RectTransform.Anchor = Anchor.TopLeft;
-			// // Console.WriteLine(topLeft.RectTransform.Rectangle);
 			// topLeft.SetParent(Canvas);
-			// // Console.WriteLine(topLeft.RectTransform.Rectangle);
 			//
 			// var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
 			// img = topCenter.AddComponent<Image>();
@@ -261,14 +258,14 @@ namespace DolananSample
 			// if (asepriteNs.TryGetSlice("slice", out slice))
 			// {
 			// 	ns.TextureRectangle = slice.Bounds;
-			// 	ns.Center = slice.Center;
-			// 	Console.WriteLine(ns.Center);
+			// // 	ns.Center = slice.Center;
 			// 	stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
 			// 		GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
 			// }
-			//
+			// //
 			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
 			// stretchHorizontal.SetParent(Canvas);
+
 		}
 
 		protected override void Draw(GameTime gameTime)

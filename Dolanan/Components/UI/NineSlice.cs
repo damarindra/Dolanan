@@ -1,7 +1,5 @@
 ﻿using System;
-using Dolanan.Collision;
 using Dolanan.Controller;
-using Dolanan.Engine.Attributes;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,7 +27,6 @@ namespace Dolanan.Components.UI
 
 		public NineSlice(Actor owner) : base(owner)
 		{
-			Console.WriteLine("Nine");
 		}
 
 		public new Texture2D Texture2D
@@ -49,7 +46,17 @@ namespace Dolanan.Components.UI
 
 		public Rectangle Center
 		{
-			get => _center;
+			get
+			{
+				if (_center == Rectangle.Empty)
+				{
+					_center = new Rectangle((int) 1, (int) 1,
+						(int) TextureRectangle.Width - 2,
+						(int) TextureRectangle.Height - 2);
+				}
+
+				return _center;
+			}
 			set =>
 				_center = new Rectangle((int) MathF.Max(1, value.X), (int) MathF.Max(1, value.Y),
 					(int) MathF.Min(TextureRectangle.Width - 2, value.Width),
@@ -67,8 +74,6 @@ namespace Dolanan.Components.UI
 			// used for intersect to the slices, so we still get valid rectangle for the texture
 			var transformToSrcRect = Transform.Rectangle.ToRectangle();
 			transformToSrcRect.Location = TextureRectangle.Location;
-
-			var drawLocation = transformRectangle.Location;
 
 			var x1 = transformRectangle.Location.X;
 			var x2 = transformRectangle.Location.X + Center.Location.X;

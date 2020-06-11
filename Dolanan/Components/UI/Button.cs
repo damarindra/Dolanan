@@ -1,4 +1,5 @@
-﻿using Dolanan.Scene;
+﻿using System;
+using Dolanan.Scene;
 
 namespace Dolanan.Components.UI
 {
@@ -18,7 +19,14 @@ namespace Dolanan.Components.UI
 		{
 			Image = image;
 		}
-		
-		
+
+		public override void Start()
+		{
+			base.Start();
+			if (Image == null)
+			{
+				Image = UIActor.GetComponent<Image>();
+			}
+		}
 	}
 }

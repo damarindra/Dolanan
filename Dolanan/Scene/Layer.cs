@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dolanan.Collision;
 using Dolanan.Engine;
@@ -71,7 +72,7 @@ namespace Dolanan.Scene
 			foreach (var actor in Actors)
 				actor.Draw(gameTime, AutoYSort ? actor.Transform.Position.Y * float.Epsilon : LayerZ / (float)GameWorld.LayerCount);
 		}
-
+		
 		/// <summary>
 		///     Add Actor to the current layer.
 		/// </summary>
@@ -85,16 +86,13 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		///     Please use AddActor
-		///     <T>
-		///         for creating new actor. This function only useful when you want to move actor to
-		///         new layer
+		///     Internal use only, please use <see cref="AddActor{T}"/> for creating new actor.
+		/// 	This function only useful when you want to move actor to new layer. All childs will move to this layer too
 		/// </summary>
 		/// <param name="actor">Actor</param>
-		/// <param name="recursive">add all child actor</param>
-		public void AddActor(Actor actor)
+		internal void AddActor([NotNull]Actor actor)
 		{
-			if (actor.Layer != this) actor.Layer.Actors.Remove(actor);
+			if (actor.Layer != null && actor.Layer != this) actor.Layer.Actors.Remove(actor);
 			if (Actors.Contains(actor))
 			{
 				Log.PrintWarning("Trying to add actor that already added : " + actor.Name);
@@ -102,6 +100,10 @@ namespace Dolanan.Scene
 			}
 
 			Actors.Add(actor);
+			foreach (var child in actor.GetChilds)
+			{
+				AddActor(child);
+			}
 		}
 
 		public T GetActor<T>()
@@ -114,9 +116,38 @@ namespace Dolanan.Scene
 			return Actors.OfType<T>().ToArray();
 		}
 
+		/// <summary>
+		/// Removing actor from layer. Only allowed root actor. Use Actor.Detach, it is safer
+		/// </summary>
+		/// <param name="actor"></param>
+		public void RemoveActor(Actor actor)
+		{
+			if (actor.Parent != null)
+			{
+				Log.PrintError("Trying to remove non-root Actor from layer : " + LayerZ + ". This is not allowed. Use Actor.RemoveChild.");
+				return;
+			}
+			
+			Actors.Remove(actor);
+			actor.Layer = null;
+			
+			RemoveActorRecursive(actor);
+		}
+
+		internal void RemoveActorRecursive(Actor actor)
+		{
+			Actors.Remove(actor);
+			actor.Layer = null;
+			foreach (var child in actor.GetChilds)
+			{
+				Actors.Remove(child);
+				child.Layer = null;
+				RemoveActorRecursive(child);
+			}
+		}
+
 		public virtual void LoadLayer()
 		{
-			foreach (var actor in GameWorld.DynamicActor) Actors.Add(actor);
 			// Register the collision into World
 			foreach (var actor in Actors)
 			foreach (var body in actor.GetComponents<Body>())
@@ -128,7 +159,6 @@ namespace Dolanan.Scene
 		public virtual void UnloadLayer()
 		{
 			IsLoaded = false;
-			foreach (var actor in GameWorld.DynamicActor) Actors.Remove(actor);
 
 			// Remove the collision from World
 			foreach (var actor in Actors)
