@@ -1,4 +1,5 @@
-﻿using Dolanan.Components;
+﻿using System.Collections.Generic;
+using Dolanan.Components;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 
@@ -17,7 +18,8 @@ namespace Dolanan.Engine
 		private Transform2D _parent;
 		private Vector2 _position = Vector2.Zero;
 		private float _rotation;
-		public TransformParentChange OnTransformParentChange;
+		public TransformParentChange OnParentChange;
+		internal List<Transform2D> Childs = new List<Transform2D>();
 
 		public Transform2D(Actor owner) : base(owner)
 		{
@@ -29,10 +31,21 @@ namespace Dolanan.Engine
 		public Transform2D Parent
 		{
 			get => _parent;
-			set
+			internal set
 			{
+				if (_parent != null)
+				{
+					_parent.Childs.Remove(this);
+					_parent = null;
+				}
 				_parent = value;
-				OnTransformParentChange?.Invoke(value);
+				if (_parent != null)
+				{
+					_parent.Childs.Add(Transform);
+					if (_parent.Owner.Layer != Owner.Layer)
+						Owner.SetLayer(_parent.Owner.Layer);
+				}
+				OnParentChange?.Invoke(value);
 			}
 		}
 
@@ -44,10 +57,6 @@ namespace Dolanan.Engine
 			{
 				_position = value;
 				UpdateTransform();
-				// Log.Print(_matrix.M41.ToString());
-				// Log.Print(_matrix.M42.ToString());
-				// Log.Print(_matrix.M43.ToString());
-				// Log.Print(_matrix.M44.ToString());
 			}
 		}
 
@@ -119,8 +128,8 @@ namespace Dolanan.Engine
 
 			_matrix = matrix;
 
-			foreach (var actor in Owner.GetChilds)
-				actor.Transform.UpdateTransform();
+			foreach (var actor in Childs)
+				actor.UpdateTransform();
 			//Log.PrintWarning(GlobalPosition.ToString());
 		}
 

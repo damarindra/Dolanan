@@ -18,13 +18,10 @@ namespace Dolanan.Scene
 	/// </summary>
 	public class Actor : IGameCycle
 	{
-		protected readonly List<Actor> Childs = new List<Actor>();
-
 		// Component stuff
 		// Render
 		protected readonly List<Component> Components = new List<Component>();
 
-		private Actor _parent;
 		public string Name;
 
 		public ParentState OnParentChange;
@@ -68,30 +65,6 @@ namespace Dolanan.Scene
 		}
 
 		public Layer Layer { get; internal set; }
-
-		public Actor Parent
-		{
-			get => _parent;
-			private set
-			{
-				if (_parent != null)
-				{
-					_parent.Childs.Remove(this);
-					Transform.Parent = null;
-				}
-
-				_parent = value;
-				if (_parent != null)
-				{
-					Transform.Parent = _parent.Transform;
-					_parent.Childs.Add(this);
-					if (_parent.Layer != Layer)
-						SetLayer(_parent.Layer);
-				}
-			}
-		}
-
-		public Actor[] GetChilds => Childs.ToArray();
 
 		public virtual void Initialize()
 		{
@@ -142,7 +115,7 @@ namespace Dolanan.Scene
 		/// </summary>
 		public void Detach()
 		{
-			Parent = null;
+			Transform.Parent = null;
 
 			Layer.RemoveActorRecursive(this);
 		}
@@ -161,17 +134,17 @@ namespace Dolanan.Scene
 		///     Set parent. If parent in different layer, layer on this automatically changed
 		/// </summary>
 		/// <param name="parent"></param>
-		public void SetParent(Actor parent)
+		public void SetParent([NotNull]Actor parent)
 		{
-			if(parent == this)
+			if(parent == this || Transform.Parent == parent.Transform)
 				return;
-			Parent = parent;
+			Transform.Parent = parent.Transform;
 			OnParentChange?.Invoke(parent);
 		}
 
 		public void SetLayer([NotNull ]Layer layer)
 		{
-			if (Parent != null)
+			if (Transform.Parent != null)
 			{
 				// Set layer from child is forbidden!
 				Log.PrintError("Trying to set layer on Child actor. Do it from the root Node!");

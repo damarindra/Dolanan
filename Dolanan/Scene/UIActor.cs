@@ -52,7 +52,8 @@ namespace Dolanan.Scene
 		public override void Start()
 		{
 			base.Start();
-			RectTransform = base.AddComponent<RectTransform>();
+			base.Transform = RectTransform = base.AddComponent<RectTransform>();
+
 			OnParentChange += parent =>
 			{
 				RectTransform.RefreshParent();
@@ -62,6 +63,11 @@ namespace Dolanan.Scene
 						UIParent = (UIActor) parent;
 				}
 			};
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
 		}
 
 		public new T AddComponent<T>() where T : UIComponent

@@ -7,7 +7,11 @@ using Microsoft.Xna.Framework;
 
 namespace Dolanan.Engine
 {
-	public class RectTransform : Component
+	/// <summary>
+	/// RectTransform is used for UI Transforming stuff. Parent of UITransform can be Transform2D or RectTransform itself
+	/// Anchoring only work when parent are RectTransform
+	/// </summary>
+	public class RectTransform : Transform2D
 	{
 		public RectTransform(Actor owner) : base(owner)
 		{
@@ -23,10 +27,10 @@ namespace Dolanan.Engine
 				// Snapping to parent rectangle if ui
 				if (ParentUI != null)
 				{
-					_rectangle.X = MathF.Max(_rectangle.X, _parentUIActor.RectTransform.Left);
-					_rectangle.Y = MathF.Max(_rectangle.Y, _parentUIActor.RectTransform.Top);
-					_rectangle.Width = MathF.Min(_rectangle.Width, _parentUIActor.RectTransform.Rectangle.Width);
-					_rectangle.Height = MathF.Min(_rectangle.Height, _parentUIActor.RectTransform.Rectangle.Height);
+					_rectangle.X = MathF.Max(_rectangle.X, ParentUI.RectTransform.Left);
+					_rectangle.Y = MathF.Max(_rectangle.Y, ParentUI.RectTransform.Top);
+					_rectangle.Width = MathF.Min(_rectangle.Width, ParentUI.RectTransform.Rectangle.Width);
+					_rectangle.Height = MathF.Min(_rectangle.Height, ParentUI.RectTransform.Rectangle.Height);
 				}
 				else
 				{
@@ -76,10 +80,10 @@ namespace Dolanan.Engine
 					return _rectangle;
 				}
 
-				var min = Anchor.Min * _parentUIActor.RectTransform.Rectangle.Size;
-				var max = Anchor.Max * _parentUIActor.RectTransform.Rectangle.Size;
+				var min = Anchor.Min * ParentUI.RectTransform.Rectangle.Size;
+				var max = Anchor.Max * ParentUI.RectTransform.Rectangle.Size;
 
-				return new RectangleF(_parentUIActor.RectTransform.Rectangle.Location + min, max - min);
+				return new RectangleF(ParentUI.RectTransform.Rectangle.Location + min, max - min);
 			}
 		}
 
@@ -127,15 +131,7 @@ namespace Dolanan.Engine
 			}
 		}
 
-		public UIActor ParentUI
-		{
-			get
-			{
-				if (_parentUIActor == null && Owner.Parent != null && Owner.Parent.GetType().IsSubclassOf(typeof(UIActor)))
-					_parentUIActor = (UIActor) Owner.Parent;
-				return _parentUIActor;
-			}
-		}
+		public UIActor ParentUI { get; set; }
 		
 		#endregion
 
@@ -156,7 +152,6 @@ namespace Dolanan.Engine
 		/// </summary>
 		private Vector2 _offsetMax;
 
-		private UIActor _parentUIActor;
 		private RectangleF _rectangle;
 		private Anchor _anchor;
 
@@ -178,34 +173,29 @@ namespace Dolanan.Engine
 			if (ParentUI != null)
 			{
 				var anchorRect = AnchorRect;
-				// Console.WriteLine(anchorRect);
 
 				var left = anchorRect.Left + _offsetMin.X;
 				var top = anchorRect.Top + _offsetMin.Y;
 				var right = anchorRect.Right + _offsetMax.X;
 				var bottom = anchorRect.Bottom + _offsetMax.Y;
-				// Console.WriteLine(_offsetMin.X);
-				// Console.WriteLine(_offsetMin.Y);
-				// Console.WriteLine(_offsetMax.X);
-				// Console.WriteLine(_offsetMax.Y);
-				//
 				_rectangle = new RectangleF(left, top, right - left, bottom - top);
-				// Console.WriteLine(Owner.Name);
-				// Console.WriteLine(_rectangle);
 			}
 		}
 
 		protected void UpdateChildsRectTransform()
 		{
-			foreach (var child in Owner.GetChilds)
+			foreach (var child in Childs)
 			{
-				var uiActor = (UIActor) child;
+				if (child.GetType() == typeof(RectTransform) || child.GetType().IsSubclassOf(typeof(RectTransform)))
+				{
+					if (child.Owner.GetType() == typeof(UIActor) || child.Owner.GetType().IsSubclassOf(typeof(UIActor)))
+					{
+						var uiActor = (UIActor) child.Owner;
 
-				if (uiActor == null)
-					continue;
-
-				uiActor.RectTransform.UpdateRectTransform();
-				uiActor.RectTransform.UpdateChildsRectTransform();
+						uiActor.RectTransform.UpdateRectTransform();
+						uiActor.RectTransform.UpdateChildsRectTransform();
+					}
+				}
 			}
 		}
 
@@ -226,6 +216,17 @@ namespace Dolanan.Engine
 		public override void Start()
 		{
 			base.Start();
+			OnParentChange += parent =>
+			{
+				if (parent != null)
+				{
+					if (parent.Owner.GetType() == (typeof(UIActor)) ||
+					    parent.Owner.GetType().IsSubclassOf(typeof(UIActor)))
+					{
+						ParentUI = (UIActor) parent.Owner;
+					}
+				}
+			};
 		}
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)

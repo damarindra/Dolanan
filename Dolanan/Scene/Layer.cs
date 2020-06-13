@@ -101,9 +101,9 @@ namespace Dolanan.Scene
 
 			Actors.Add(actor);
 			actor.OnLayerChange?.Invoke(this);
-			foreach (var child in actor.GetChilds)
+			foreach (var child in actor.Transform.Childs)
 			{
-				AddActor(child);
+				AddActor(child.Owner);
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace Dolanan.Scene
 		/// <param name="actor"></param>
 		public void RemoveActor(Actor actor)
 		{
-			if (actor.Parent != null)
+			if (actor.Transform.Parent != null)
 			{
 				Log.PrintError("Trying to remove non-root Actor from layer : " + LayerZ + ". This is not allowed. Use Actor.RemoveChild.");
 				return;
@@ -139,11 +139,11 @@ namespace Dolanan.Scene
 		{
 			Actors.Remove(actor);
 			actor.Layer = null;
-			foreach (var child in actor.GetChilds)
+			foreach (var child in actor.Transform.Childs)
 			{
-				Actors.Remove(child);
-				child.Layer = null;
-				RemoveActorRecursive(child);
+				Actors.Remove(child.Owner);
+				child.Owner.Layer = null;
+				RemoveActorRecursive(child.Owner);
 			}
 		}
 
