@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using Dolanan.Controller;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
@@ -48,7 +50,17 @@ namespace Dolanan.Scene
 
 		public override void Update(GameTime gameTime)
 		{
-			base.Update(gameTime);
+			if (!IsLoaded)
+				return;
+			foreach (var actor in Actors)
+			{
+				actor.Update(gameTime);
+				if (actor.GetType().IsSubclassOf(typeof(UIActor)))
+				{
+					UIActor ac = (UIActor) actor;
+					ac.RectTransform = ac.RectTransform;
+				}
+			}
 		}
 
 		public override void LateUpdate(GameTime gameTime)

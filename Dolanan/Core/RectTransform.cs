@@ -83,8 +83,9 @@ namespace Dolanan.Engine
 			}
 		}
 
-		public Vector2 Location => Rectangle.Location;
-		public Vector2 Size => Rectangle.Size;
+		public Vector2 RectLocation => Rectangle.Location;
+		public Vector2 RectSize => Rectangle.Size;
+		public Vector2 OriginLocation => Rectangle.Location + Pivot * Rectangle.Size;
 
 		public float Left
 		{
@@ -130,17 +131,20 @@ namespace Dolanan.Engine
 		{
 			get
 			{
-				if (_parentUIActor == null && Owner.Parent != null)
+				if (_parentUIActor == null && Owner.Parent != null && Owner.Parent.GetType().IsSubclassOf(typeof(UIActor)))
 					_parentUIActor = (UIActor) Owner.Parent;
 				return _parentUIActor;
 			}
 		}
-
+		
 		#endregion
 
 		#region Fields
 
-		public Pivot Pivot;
+		/// <summary>
+		/// Pivot / Center of the rect location
+		/// </summary>
+		public Pivot Pivot = Pivot.TopLeft;
 
 		/// <summary>
 		///     Offset Left and Top

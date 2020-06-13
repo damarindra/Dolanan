@@ -9,7 +9,9 @@ using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
 {
-	public delegate void ParentChange(Actor parent);
+	public delegate void ParentState(Actor parent);
+
+	public delegate void LayerState(Layer layer);
 
 	/// <summary>
 	///     Actor is an Entity.
@@ -25,8 +27,35 @@ namespace Dolanan.Scene
 		private Actor _parent;
 		public string Name;
 
-		public ParentChange OnParentChange;
+		public ParentState OnParentChange;
+		public LayerState OnLayerChange;
 		public Transform2D Transform;
+
+		public virtual Vector2 Location
+		{
+			get => Transform.Position;
+			set => Transform.Position = value;
+		}
+		public virtual Vector2 GlobalLocation
+		{
+			get => Transform.GlobalPosition;
+			set => Transform.GlobalPosition = value;
+		}
+		public virtual float Rotation
+		{
+			get => Transform.Rotation;
+			set => Transform.Rotation = value;
+		}
+		public virtual float GlobalRotation
+		{
+			get => Transform.GlobalRotation;
+			set => Transform.GlobalRotation = value;
+		}
+		public virtual Vector2 Scale
+		{
+			get => Transform.LocalScale;
+			set => Transform.LocalScale = value;
+		}
 
 		public Actor(string name, [NotNull] Layer layer)
 		{

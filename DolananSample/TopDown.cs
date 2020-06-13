@@ -38,8 +38,18 @@ namespace DolananSample
 			p = World.CreateActor<Player>("Player");
 			p.Transform.GlobalPosition =
 				new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y / 2f);
-			Log.Print(p.Transform.GlobalPosition.ToString());
-
+			
+			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
+			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
+			Slice slice;
+			Image img;
+			var ui = World.CreateActor<UIActor>("PlayerUI");
+			ui.RectTransform.Rectangle = new RectangleF(0, 0, 100, 25);
+			img = ui.AddComponent<Image>();
+			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+				img.TextureRectangle = slice.Bounds;
+			ui.SetParent(p);
+			
 			World.Camera.FollowActor = p;
 
 			if (_texturesTopDown.TryGet("square", out var texture2D))
@@ -131,8 +141,6 @@ namespace DolananSample
 				// spr.ModulatedColor = new Color(Color.Aqua, .3f);
 			}
 
-			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
-			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
 			
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
@@ -140,10 +148,9 @@ namespace DolananSample
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			
 			var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
-			var img = topLeft.AddComponent<Image>();
+			img = topLeft.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
 			img.Stretch = false;
-			Slice slice;
 			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
 				img.TextureRectangle = slice.Bounds;
 			topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
@@ -157,7 +164,7 @@ namespace DolananSample
 			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
 				img.TextureRectangle = slice.Bounds;
-			topLeft2.RectTransform.Rectangle = new RectangleF(50, 50, 100, 100);
+			topLeft2.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
 			topLeft2.RectTransform.Anchor = Anchor.TopLeft;
 			topLeft2.SetParent(topLeft);
 			

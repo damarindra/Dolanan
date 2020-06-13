@@ -100,6 +100,7 @@ namespace Dolanan.Scene
 			}
 
 			Actors.Add(actor);
+			actor.OnLayerChange?.Invoke(this);
 			foreach (var child in actor.GetChilds)
 			{
 				AddActor(child);
