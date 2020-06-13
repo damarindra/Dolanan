@@ -91,8 +91,34 @@ namespace Dolanan.Core
 			}
 		}
 
+		public UISpace UISpace
+		{
+			get
+			{
+				//just force to world ui if the layer is type`Layer`
+				if (Owner.Layer.GetType() == typeof(Layer))
+					return UISpace.World;
+				
+				UILayer layer = (UILayer) Owner.Layer;
+				return layer.UISpace;
+			}
+		}
+
 		public Vector2 RectLocation => Rectangle.Location;
 		public Vector2 RectSize => Rectangle.Size;
+
+		public Point ScreenLocation
+		{
+			get
+			{
+				if (UISpace == UISpace.World)
+				{
+					Camera.WorldToScreen(GlobalLocation);
+				}
+
+				return GlobalLocation.ToPoint();
+			}
+		}
 
 		/// <summary>
 		/// Location by Pivot
@@ -119,6 +145,19 @@ namespace Dolanan.Core
 					loc -= Parent.GlobalLocation;
 				SetRectLocation(loc);
 				//Rectangle = new RectangleF(, _rectangle.Size);
+			}
+		}
+
+		public Point ScreenLocationByPivot
+		{
+			get
+			{
+				if (UISpace == UISpace.World)
+				{
+					Camera.WorldToScreen(GlobalLocationByPivot);
+				}
+
+				return GlobalLocationByPivot.ToPoint();
 			}
 		}
 

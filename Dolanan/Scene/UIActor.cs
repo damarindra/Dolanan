@@ -1,16 +1,21 @@
-﻿using Dolanan.Components;
+﻿using System;
+using Dolanan.Components;
 using Dolanan.Controller;
 using Dolanan.Core;
 using Dolanan.Engine;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Dolanan.Scene
 {
 	public delegate void UIMouseState();
 	
 	/// <summary>
-	/// Rotation and scale will never work on UIActor!
+	/// UIActor, container for all UIComponent.
+	/// Rotation and scale is not supported yet, so don't use it please.
+	/// Why not supported yet? Are we actually use it, that was my question.
+	/// Rotation actually useful tho, but, the problem is capturing mouse
 	/// </summary>
 	public class UIActor : Actor
 	{
@@ -20,21 +25,14 @@ namespace Dolanan.Scene
 		
 		public UIActor UIParent { get; private set; }
 
-		public RectangleF RectTransformToScreen => new RectangleF(GlobalLocation, RectTransform.RectSize);
-
-		protected Vector2 ParentLocation
+		public bool ReceiveMouseInput = true;
+		public UIMouseState OnMouseEnter, OnMouseExit;
+		private bool isMouseInside = false;
+		
+		private enum MouseState
 		{
-			get
-			{
-				Vector2 r = Vector2.Zero;
-				if (UIParent != null)
-					r += UIParent.ParentLocation + UIParent.RectTransform.RectLocation;
-				
-				return r;
-			}
+			Inside, Outside
 		}
-
-		public UIMouseState OnMouseEnter, OnMouseExit, OnMouseStay;
 		
 		public UIActor(string name, Layer layer) : base(name, layer)
 		{
@@ -59,6 +57,22 @@ namespace Dolanan.Scene
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
+			if (ReceiveMouseInput)
+			{
+				Vector2 mouseP = Mouse.GetState().Position.ToVector2()
+					.RotateAround(Transform.ScreenLocationByPivot.ToVector2(), Transform.GlobalRotation);
+				bool isMouseEntering = Transform.Rectangle.Contains(mouseP);
+				if (!isMouseInside && isMouseEntering)
+				{
+					OnMouseEnter?.Invoke();
+					isMouseInside = true;
+				}
+				else if(isMouseInside && !isMouseEntering)
+				{
+					OnMouseExit?.Invoke();
+					isMouseInside = false;
+				}
+			}
 		}
 
 		public override void Draw(GameTime gameTime, float layerZDepth)

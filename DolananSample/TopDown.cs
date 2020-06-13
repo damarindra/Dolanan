@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Dolanan;
 using Dolanan.Collision;
 using Dolanan.Components;
@@ -149,6 +150,7 @@ namespace DolananSample
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+			Canvas.ReceiveMouseInput = false;
 			
 			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
 			// img = topLeft.AddComponent<Image>();
@@ -168,7 +170,8 @@ namespace DolananSample
 			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
 			topCenter.RectTransform.Anchor = Anchor.TopCenter;
 			topCenter.SetParent(Canvas);
-			
+			topCenter.ReceiveMouseInput = true;
+
 			var topCenter2 = World.CreateActor<UIActor>("TopCenter2", UILayer);
 			img = topCenter2.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -177,8 +180,8 @@ namespace DolananSample
 			topCenter2.RectTransform.Rectangle = new RectangleF(0, 0, 150, 150);
 			topCenter2.RectTransform.Anchor = Anchor.MiddleCenter;
 			topCenter2.SetParent(topCenter);
-			Console.WriteLine(topCenter2.Transform.Rectangle);
-			
+			topCenter2.ReceiveMouseInput = true;
+
 			var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
 			img = topRight.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -187,7 +190,8 @@ namespace DolananSample
 			topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100, 0, 100, 100);
 			topRight.RectTransform.Anchor = Anchor.TopRight;
 			topRight.SetParent(Canvas);
-			
+			topRight.ReceiveMouseInput = true;
+
 			var middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
 			img = middleLeft.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -196,7 +200,8 @@ namespace DolananSample
 			middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
 			middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
 			middleLeft.SetParent(Canvas);
-			
+			middleLeft.ReceiveMouseInput = true;
+
 			var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
 			img = middleCenter.AddComponent<Image>();
 			middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
@@ -204,7 +209,8 @@ namespace DolananSample
 				100, 100);
 			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
 			middleCenter.SetParent(Canvas);
-			
+			middleCenter.ReceiveMouseInput = true;
+
 			var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
 			img = middleRight.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -215,7 +221,8 @@ namespace DolananSample
 				100, 100);
 			middleRight.RectTransform.Anchor = Anchor.MiddleRight;
 			middleRight.SetParent(Canvas);
-			
+			middleRight.ReceiveMouseInput = true;
+
 			var bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
 			img = bottomLeft.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -224,7 +231,8 @@ namespace DolananSample
 			bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
 			bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
 			bottomLeft.SetParent(Canvas);
-			
+			bottomLeft.ReceiveMouseInput = true;
+
 			var bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
 			img = bottomCenter.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -235,7 +243,8 @@ namespace DolananSample
 				100, 100);
 			bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
 			bottomCenter.SetParent(Canvas);
-			
+			bottomCenter.ReceiveMouseInput = true;
+
 			var bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
 			img = bottomRight.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -246,7 +255,8 @@ namespace DolananSample
 				100, 100);
 			bottomRight.RectTransform.Anchor = Anchor.BottomRight;
 			bottomRight.SetParent(Canvas);
-			
+			bottomRight.ReceiveMouseInput = true;
+
 			
 			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
 			img = stretchVertical.AddComponent<Image>();
@@ -257,7 +267,8 @@ namespace DolananSample
 				stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
 					slice.Bounds.Width, slice.Bounds.Height);
 			}
-			
+			stretchVertical.ReceiveMouseInput = true;
+
 			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
 			stretchVertical.SetParent(Canvas);
 			//
@@ -283,7 +294,6 @@ namespace DolananSample
 		protected override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
-			Console.WriteLine("Draw");
 		}
 
 		protected override void LoadContent()
@@ -338,9 +348,7 @@ namespace DolananSample
 		/// <param name="worldRect">BackBuffer Rectangle</param>
 		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
-			Console.WriteLine("BackDraw");
 			base.BackDraw(gameTime, worldRect);
-			Console.WriteLine(Camera.WorldToScreen(p.Transform.GlobalLocation));
 			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.WorldToScreen(p.Transform.GlobalLocation), new Point(5, 5)), null, Color.Yellow);
 		}
 	}

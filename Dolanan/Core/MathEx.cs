@@ -87,6 +87,22 @@ namespace Dolanan.Engine
 			return new Vector2(v.X, v.Y);
 		}
 
+		public static Vector2 RotateAround(this Vector2 v, Vector2 pivot, float angleRad)
+		{
+			float s = MathF.Sin(angleRad);
+			float c = MathF.Cos(angleRad);
+			
+			// translate point back to origin (0,0)
+			Vector2 tempV = v - pivot;
+			
+			// rotate point
+			tempV = new Vector2(
+				tempV.X * c - tempV.Y * s,
+				tempV.X * s + tempV.Y * c);
+
+			return tempV + pivot;
+		}
+
 		#endregion
 
 		#region Point
