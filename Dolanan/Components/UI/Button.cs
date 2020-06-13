@@ -1,5 +1,6 @@
 ﻿using System;
 using Dolanan.Core;
+using Dolanan.Engine;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 
@@ -22,6 +23,7 @@ namespace Dolanan.Components.UI
 		{
 		}
 		public ButtonAction OnPressedDown, OnPressed, OnPressedUp, OnHover;
+		public bool IsButtonPressed { get; private set; } 
 
 		// This can be Image or NineSlice
 		public Image Image
@@ -48,6 +50,33 @@ namespace Dolanan.Components.UI
 		public override void Start()
 		{
 			base.Start();
+			Interactable = true;
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			base.Update(gameTime);
+
+			if (Interactable)
+			{
+				if (UIActor.IsMouseInside)
+				{
+					if (Input.IsMouseButtonJustPressed())
+					{
+						OnPressedDown?.Invoke();
+						IsButtonPressed = true;
+					}
+				}
+			}
+
+			if (IsButtonPressed)
+			{
+				if (Input.IsMouseButtonJustUp())
+				{
+					OnPressedUp?.Invoke();
+					IsButtonPressed = false;
+				}
+			}
 		}
 	}
 

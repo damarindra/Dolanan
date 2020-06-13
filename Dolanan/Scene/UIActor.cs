@@ -27,7 +27,7 @@ namespace Dolanan.Scene
 
 		public bool ReceiveMouseInput = true;
 		public UIMouseState OnMouseEnter, OnMouseExit;
-		private bool isMouseInside = false;
+		internal bool IsMouseInside = false;
 		
 		private enum MouseState
 		{
@@ -62,15 +62,15 @@ namespace Dolanan.Scene
 				Vector2 mouseP = Mouse.GetState().Position.ToVector2()
 					.RotateAround(Transform.ScreenLocationByPivot.ToVector2(), Transform.GlobalRotation);
 				bool isMouseEntering = Transform.Rectangle.Contains(mouseP);
-				if (!isMouseInside && isMouseEntering)
+				if (!IsMouseInside && isMouseEntering)
 				{
 					OnMouseEnter?.Invoke();
-					isMouseInside = true;
+					IsMouseInside = true;
 				}
-				else if(isMouseInside && !isMouseEntering)
+				else if(IsMouseInside && !isMouseEntering)
 				{
 					OnMouseExit?.Invoke();
-					isMouseInside = false;
+					IsMouseInside = false;
 				}
 			}
 		}
