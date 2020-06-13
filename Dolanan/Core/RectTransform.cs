@@ -1,15 +1,18 @@
 ﻿using System;
 using Dolanan.Components;
 using Dolanan.Controller;
+using Dolanan.Engine;
 using Dolanan.Scene;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
-namespace Dolanan.Engine
+namespace Dolanan.Core
 {
 	/// <summary>
 	/// RectTransform is used for UI Transforming stuff. Parent of UITransform can be Transform2D or RectTransform itself
 	/// Anchoring only work when parent are RectTransform
+	/// Location => Top Left of the rectangle.
+	/// Use LocationByPivot to getting the local location of from parent location and pivot location
 	/// </summary>
 	public class RectTransform : Transform2D
 	{
@@ -42,6 +45,7 @@ namespace Dolanan.Engine
 				UpdateChildsRectTransform();
 			}
 		}
+		public RectangleF GlobalRectangle => new RectangleF(GlobalLocation, Rectangle.Size);
 
 		public Anchor Anchor
 		{
@@ -89,7 +93,34 @@ namespace Dolanan.Engine
 
 		public Vector2 RectLocation => Rectangle.Location;
 		public Vector2 RectSize => Rectangle.Size;
-		public Vector2 OriginLocation => Rectangle.Location + Pivot * Rectangle.Size;
+
+		/// <summary>
+		/// Location by Pivot
+		/// </summary>
+		public Vector2 LocationByPivot
+		{
+			get => Rectangle.Location + Pivot * Rectangle.Size;
+			set
+			{
+				Vector2 loc = value - Pivot * Rectangle.Size;
+				SetRectLocation(loc);
+			}
+		}
+		/// <summary>
+		/// Global Location by Pivot
+		/// </summary>
+		public Vector2 GlobalLocationByPivot
+		{
+			get => GlobalLocation + Pivot * Rectangle.Size;
+			set
+			{
+				Vector2 loc = value - Pivot * Rectangle.Size;
+				if (Parent != null)
+					loc -= Parent.GlobalLocation;
+				SetRectLocation(loc);
+				//Rectangle = new RectangleF(, _rectangle.Size);
+			}
+		}
 
 		public float Left
 		{
@@ -178,8 +209,10 @@ namespace Dolanan.Engine
 				var top = anchorRect.Top + _offsetMin.Y;
 				var right = anchorRect.Right + _offsetMax.X;
 				var bottom = anchorRect.Bottom + _offsetMax.Y;
-				_rectangle = new RectangleF(left, top, right - left, bottom - top);
+				_rectangle = new RectangleF(left - Parent.Location.X, top - Parent.Location.Y, right - left, bottom - top);
 			}
+			
+			Location = _rectangle.Location;
 		}
 
 		protected void UpdateChildsRectTransform()
@@ -233,7 +266,6 @@ namespace Dolanan.Engine
 		{
 			base.Draw(gameTime, layerZDepth);
 
-			GameMgr.SpriteBatch.DrawStroke(_rectangle.ToRectangle(), Color.Yellow);
 		}
 
 		#endregion

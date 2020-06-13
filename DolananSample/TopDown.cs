@@ -4,6 +4,7 @@ using Dolanan.Collision;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
+using Dolanan.Core;
 using Dolanan.Engine;
 using Dolanan.Resources;
 using Dolanan.Scene;
@@ -36,7 +37,7 @@ namespace DolananSample
 		{
 			base.Initialize();
 			p = World.CreateActor<Player>("Player");
-			p.Transform.GlobalPosition =
+			p.Transform.GlobalLocation =
 				new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y / 2f);
 			
 			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
@@ -45,10 +46,12 @@ namespace DolananSample
 			Image img;
 			var ui = World.CreateActor<UIActor>("PlayerUI");
 			ui.RectTransform.Rectangle = new RectangleF(0, 0, 100, 25);
+			ui.RectTransform.Pivot = Pivot.Center;
 			img = ui.AddComponent<Image>();
 			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
 				img.TextureRectangle = slice.Bounds;
 			ui.SetParent(p);
+			ui.RectTransform.GlobalLocationByPivot = p.GlobalLocation - Vector2.UnitY * 25;
 			
 			World.Camera.FollowActor = p;
 
@@ -147,41 +150,38 @@ namespace DolananSample
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			
-			var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
-			img = topLeft.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
-			topLeft.RectTransform.Anchor = Anchor.TopLeft;
-			
-			topLeft.SetParent(Canvas);
-			
-			var topLeft2 = World.CreateActor<UIActor>("TopLeft2", UILayer);
-			img = topLeft2.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			img.Stretch = false;
-			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topLeft2.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
-			topLeft2.RectTransform.Anchor = Anchor.TopLeft;
-			topLeft2.SetParent(topLeft);
+			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
+			// img = topLeft.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// img.Stretch = false;
+			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
+			// topLeft.RectTransform.Anchor = Anchor.TopLeft;
+			// topLeft.SetParent(Canvas);
 			
 			var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
 			img = topCenter.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 4", out slice))
 				img.TextureRectangle = slice.Bounds;
 			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
 			topCenter.RectTransform.Anchor = Anchor.TopCenter;
 			topCenter.SetParent(Canvas);
 			
+			var topCenter2 = World.CreateActor<UIActor>("TopCenter2", UILayer);
+			img = topCenter2.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+				img.TextureRectangle = slice.Bounds;
+			topCenter2.RectTransform.Rectangle = new RectangleF(0, 0, 150, 150);
+			topCenter2.RectTransform.Anchor = Anchor.MiddleCenter;
+			topCenter2.SetParent(topCenter);
+			Console.WriteLine(topCenter2.Transform.Rectangle);
+			
 			var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
 			img = topRight.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 2", out slice))
 				img.TextureRectangle = slice.Bounds;
 			topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100, 0, 100, 100);
@@ -191,7 +191,6 @@ namespace DolananSample
 			var middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
 			img = middleLeft.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 3", out slice))
 				img.TextureRectangle = slice.Bounds;
 			middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
@@ -209,7 +208,6 @@ namespace DolananSample
 			var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
 			img = middleRight.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 5", out slice))
 				img.TextureRectangle = slice.Bounds;
 			middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
@@ -221,7 +219,6 @@ namespace DolananSample
 			var bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
 			img = bottomLeft.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 6", out slice))
 				img.TextureRectangle = slice.Bounds;
 			bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
@@ -231,7 +228,6 @@ namespace DolananSample
 			var bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
 			img = bottomCenter.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 7", out slice))
 				img.TextureRectangle = slice.Bounds;
 			bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
@@ -243,7 +239,6 @@ namespace DolananSample
 			var bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
 			img = bottomRight.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 8", out slice))
 				img.TextureRectangle = slice.Bounds;
 			bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
@@ -256,7 +251,6 @@ namespace DolananSample
 			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
 			img = stretchVertical.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
-			img.Stretch = false;
 			if (_uiAseprite.TryGetSlice("Slice 9", out slice))
 			{
 				img.TextureRectangle = slice.Bounds;
@@ -289,6 +283,7 @@ namespace DolananSample
 		protected override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
+			Console.WriteLine("Draw");
 		}
 
 		protected override void LoadContent()
@@ -343,8 +338,10 @@ namespace DolananSample
 		/// <param name="worldRect">BackBuffer Rectangle</param>
 		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
+			Console.WriteLine("BackDraw");
 			base.BackDraw(gameTime, worldRect);
-			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.WorldToScreen(p.Transform.Position), new Point(5, 5)), null, Color.Yellow);
+			Console.WriteLine(Camera.WorldToScreen(p.Transform.GlobalLocation));
+			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.WorldToScreen(p.Transform.GlobalLocation), new Point(5, 5)), null, Color.Yellow);
 		}
 	}
 

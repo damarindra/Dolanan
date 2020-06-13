@@ -45,8 +45,8 @@ namespace Dolanan.Scene
 
 		public Rectangle Limit { get; set; }
 
-		public Vector2 Min => Transform.GlobalPosition - new Vector2(ViewportRectSize.X / 2f, ViewportRectSize.Y / 2f);
-		public Vector2 Max => Transform.GlobalPosition + new Vector2(ViewportRectSize.X / 2f, ViewportRectSize.Y / 2f);
+		public Vector2 Min => Transform.GlobalLocation - new Vector2(ViewportRectSize.X / 2f, ViewportRectSize.Y / 2f);
+		public Vector2 Max => Transform.GlobalLocation + new Vector2(ViewportRectSize.X / 2f, ViewportRectSize.Y / 2f);
 
 		/// <summary>
 		///     Used for shifting the spriteBatch
@@ -54,8 +54,8 @@ namespace Dolanan.Scene
 		/// <returns></returns>
 		public Matrix GetTopLeftMatrix()
 		{
-			return Matrix.CreateTranslation(-(Transform.Position.X - ViewportRectSize.X / 2),
-				-(Transform.Position.Y - ViewportRectSize.Y / 2), 0);
+			return Matrix.CreateTranslation(-(Transform.Location.X - ViewportRectSize.X / 2),
+				-(Transform.Location.Y - ViewportRectSize.Y / 2), 0);
 		}
 
 
@@ -63,7 +63,7 @@ namespace Dolanan.Scene
 		{
 			ViewportRectSize = GameSettings.ViewportSize;
 			Transform = AddComponent<Transform2D>();
-			Transform.Position = new Vector2(ViewportRectSize.X / 2, ViewportRectSize.Y / 2);
+			Transform.Location = new Vector2(ViewportRectSize.X / 2, ViewportRectSize.Y / 2);
 			Limit = new Rectangle(0, 0, GameSettings.ViewportSize.X * 2, GameSettings.ViewportSize.Y * 2);
 		}
 
@@ -76,11 +76,11 @@ namespace Dolanan.Scene
 			if (UseSmooth)
 			{
 				var s = (float) gameTime.ElapsedGameTime.TotalSeconds * SmoothSpeed;
-				position = (FollowActor.Transform.GlobalPosition - Transform.Position) * s + Transform.Position;
+				position = (FollowActor.Transform.GlobalLocation - Transform.Location) * s + Transform.Location;
 			}
 			else
 			{
-				position = FollowActor.Transform.Position;
+				position = FollowActor.Transform.Location;
 			}
 
 			//Verify limit
@@ -92,13 +92,13 @@ namespace Dolanan.Scene
 					Limit.Y + Limit.Height - ViewportRectSize.Y / 2);
 			}
 
-			if (position != Transform.Position)
+			if (position != Transform.Location)
 			{
 				if (_pixelPerfect)
-					Transform.Position = new Vector2(MathF.Round(position.X),
+					Transform.Location = new Vector2(MathF.Round(position.X),
 						MathF.Round(position.Y));
 				else
-					Transform.Position = position;
+					Transform.Location = position;
 			}
 		}
 

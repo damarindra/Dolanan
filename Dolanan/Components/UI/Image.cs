@@ -1,4 +1,5 @@
-﻿using Dolanan.Controller;
+﻿using System;
+using Dolanan.Controller;
 using Dolanan.Scene;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
@@ -11,7 +12,6 @@ namespace Dolanan.Components.UI
 		protected Texture2D Texture;
 		public Color TintColor = Color.White;
 		public Rectangle TextureRectangle = Rectangle.Empty;
-		public bool Stretch = true;
 
 		public Image(Actor owner) : base(owner)
 		{
@@ -43,12 +43,8 @@ namespace Dolanan.Components.UI
 		{
 			base.Draw(gameTime, layerZDepth);
 
-			if (Stretch)
-				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), TextureRectangle,
-					TintColor);
-			else
-				GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.Rectangle.ToRectangle(), TextureRectangle,
-					TintColor);
+			GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.GlobalRectangle.ToRectangle(), TextureRectangle,
+				TintColor);
 		}
 	}
 }

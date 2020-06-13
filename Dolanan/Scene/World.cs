@@ -109,7 +109,11 @@ namespace Dolanan.Scene
 		/// <param name="layerZDepth">Not important, for Layer / Actor / Component only</param>
 		public virtual void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
-			foreach (var layer in Layers) layer.Draw(gameTime, layerZDepth);
+			foreach (var layer in Layers)
+			{
+				if(!UILayers.Contains(layer) || ((UILayer) layer).UISpace == UISpace.World)
+					layer.Draw(gameTime, layerZDepth);
+			}
 		}
 		
 		/// <summary>

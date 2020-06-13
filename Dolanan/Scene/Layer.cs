@@ -70,7 +70,7 @@ namespace Dolanan.Scene
 			if (!IsLoaded)
 				return;
 			foreach (var actor in Actors)
-				actor.Draw(gameTime, AutoYSort ? actor.Transform.Position.Y * float.Epsilon : LayerZ / (float)GameWorld.LayerCount);
+				actor.Draw(gameTime, AutoYSort ? actor.Transform.Location.Y * float.Epsilon : LayerZ / (float)GameWorld.LayerCount);
 		}
 		
 		/// <summary>

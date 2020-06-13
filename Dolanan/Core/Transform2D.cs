@@ -16,7 +16,7 @@ namespace Dolanan.Engine
 
 		private Matrix _matrix = Matrix.Identity;
 		private Transform2D _parent;
-		private Vector2 _position = Vector2.Zero;
+		private Vector2 _location = Vector2.Zero;
 		private float _rotation;
 		public TransformParentChange OnParentChange;
 		internal List<Transform2D> Childs = new List<Transform2D>();
@@ -49,21 +49,26 @@ namespace Dolanan.Engine
 			}
 		}
 
-		// Local
-		public Vector2 Position
+		/// <summary>
+		/// Local Location
+		/// </summary>
+		public Vector2 Location
 		{
-			get => _position;
+			get => _location;
 			set
 			{
-				_position = value;
+				_location = value;
 				UpdateTransform();
 			}
 		}
 
-		public Vector2 GlobalPosition
+		/// <summary>
+		/// Global Location
+		/// </summary>
+		public Vector2 GlobalLocation
 		{
 			get => _matrix.Translation.ToVector2();
-			set => Position = value - ParentGlobalPosition;
+			set => Location = value - ParentGlobalLocation;
 		}
 
 
@@ -97,7 +102,7 @@ namespace Dolanan.Engine
 		/// <summary>
 		///     Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
 		/// </summary>
-		private Vector2 ParentGlobalPosition => Parent?.GlobalPosition ?? Vector2.Zero;
+		private Vector2 ParentGlobalLocation => Parent?.GlobalLocation ?? Vector2.Zero;
 
 		private float ParentGlobalRotation => Parent?.GlobalRotation ?? 0;
 		public Vector2 GlobalScale => ParentScale * LocalScale;
@@ -122,7 +127,7 @@ namespace Dolanan.Engine
 		{
 			var matrix = Matrix.CreateScale(new Vector3(LocalScale, 1)) *
 			             Matrix.CreateRotationZ(Rotation) *
-			             Matrix.CreateTranslation(new Vector3(Position, 0));
+			             Matrix.CreateTranslation(new Vector3(Location, 0));
 			if (Parent != null)
 				matrix *= GetParentMatrix();
 
@@ -137,7 +142,7 @@ namespace Dolanan.Engine
 		{
 			return Matrix.CreateScale(new Vector3(ParentScale, 1)) *
 			       Matrix.CreateRotationZ(ParentGlobalRotation - Rotation) *
-			       Matrix.CreateTranslation(new Vector3(ParentGlobalPosition, 0));
+			       Matrix.CreateTranslation(new Vector3(ParentGlobalLocation, 0));
 		}
 	}
 }

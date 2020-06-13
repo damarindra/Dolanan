@@ -30,13 +30,13 @@ namespace Dolanan.Scene
 
 		public virtual Vector2 Location
 		{
-			get => Transform.Position;
-			set => Transform.Position = value;
+			get => Transform.Location;
+			set => Transform.Location = value;
 		}
 		public virtual Vector2 GlobalLocation
 		{
-			get => Transform.GlobalPosition;
-			set => Transform.GlobalPosition = value;
+			get => Transform.GlobalLocation;
+			set => Transform.GlobalLocation = value;
 		}
 		public virtual float Rotation
 		{
@@ -131,7 +131,7 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		///     Set parent. If parent in different layer, layer on this automatically changed
+		///     Set parent. If parent in different layer, this layer will be the same as parent layer
 		/// </summary>
 		/// <param name="parent"></param>
 		public void SetParent([NotNull]Actor parent)

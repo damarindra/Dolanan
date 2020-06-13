@@ -17,8 +17,8 @@ namespace Dolanan.Collision
 
 		public Vector2 Position
 		{
-			get => Owner.Transform.GlobalPosition - Offset;
-			set => Owner.Transform.GlobalPosition = value + Offset;
+			get => Owner.Transform.GlobalLocation - Offset;
+			set => Owner.Transform.GlobalLocation = value + Offset;
 			// Center = _position + _size / 2f;
 		}
 
@@ -41,7 +41,7 @@ namespace Dolanan.Collision
 		public override void Start()
 		{
 			base.Start();
-			Position = Owner.Transform.GlobalPosition;
+			Position = Owner.Transform.GlobalLocation;
 		}
 
 		public bool Overlaps(AABB other)

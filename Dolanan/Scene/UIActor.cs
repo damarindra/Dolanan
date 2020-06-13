@@ -1,5 +1,8 @@
 ﻿using Dolanan.Components;
+using Dolanan.Controller;
+using Dolanan.Core;
 using Dolanan.Engine;
+using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Scene
@@ -17,19 +20,7 @@ namespace Dolanan.Scene
 		
 		public UIActor UIParent { get; private set; }
 
-		public override Vector2 Location
-		{
-			get => RectTransform.OriginLocation;
-			set => RectTransform.SetRectLocation( value - RectTransform.OriginLocation);
-		}
-
-		public override Vector2 GlobalLocation
-		{
-			get; 
-			set;
-		}
-
-		public RectangleF RectTransformToScreen => new RectangleF(ParentLocation + RectTransform.RectLocation, RectTransform.RectSize);
+		public RectangleF RectTransformToScreen => new RectangleF(GlobalLocation, RectTransform.RectSize);
 
 		protected Vector2 ParentLocation
 		{
@@ -68,6 +59,13 @@ namespace Dolanan.Scene
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
+		}
+
+		public override void Draw(GameTime gameTime, float layerZDepth)
+		{
+			base.Draw(gameTime, layerZDepth);
+			GameMgr.SpriteBatch.DrawStroke(Transform.GlobalRectangle.ToRectangle(), Color.Yellow);
+
 		}
 
 		public new T AddComponent<T>() where T : UIComponent

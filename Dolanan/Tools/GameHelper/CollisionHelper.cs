@@ -14,7 +14,7 @@ namespace Dolanan.Tools.GameHelper
 			BodyType bodyType = BodyType.Static)
 		{
 			var result = GameMgr.Game.World.CreateActor<Actor>("fdsa");
-			result.Transform.Position = position;
+			result.Transform.Location = position;
 			var b = result.AddComponent<Body>();
 			b.Size = size;
 			b.Tag = tag;

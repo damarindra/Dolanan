@@ -6,6 +6,7 @@ namespace Dolanan.Controller
 	{
 		public static GameMin Game { get; private set; }
 		public static SpriteBatch SpriteBatch { get; private set; }
+		public static DrawState DrawState = DrawState.Draw;
 
 		public static void Init(GameMin game)
 		{
@@ -16,5 +17,10 @@ namespace Dolanan.Controller
 		{
 			SpriteBatch = spriteBatch;
 		}
+	}
+
+	public enum DrawState
+	{
+		Draw, BackDraw
 	}
 }
