@@ -129,12 +129,14 @@ namespace Dolanan
 			if (GameSettings.IsDirty)
 				GameSettings.ApplyChanges();
 
-			Input.LastFrameKeyboardState = Keyboard.GetState();
-			Input.LastFrameGamePadState = GamePad.GetState(0);
 
 			base.Update(gameTime);
 
 			World.LateUpdate(gameTime);
+			
+			Input.LastFrameKeyboardState = Keyboard.GetState();
+			Input.LastFrameGamePadState = GamePad.GetState(0);
+			Input.LastFrameMouseState = Mouse.GetState();
 		}
 
 		/// <summary>
