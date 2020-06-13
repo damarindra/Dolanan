@@ -32,5 +32,21 @@ namespace Dolanan.Components
 			base.Start();
 			UIActor = (UIActor) Owner;
 		}
+
+		public UISpace Space => UIActor.Layer.UISpace;
+
+		public bool Interactable
+		{
+			get
+			{
+				return _interactable;
+			}
+			set
+			{
+				_interactable = value;
+			}
+		}
+
+		private bool _interactable;
 	}
 }

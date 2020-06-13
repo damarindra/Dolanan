@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dolanan.Collision;
 using Dolanan.Controller;
 using Dolanan.Engine;
@@ -17,7 +18,8 @@ namespace Dolanan.Scene
 		private int _defaultLayer = 1;
 		public Camera Camera;
 
-		protected List<Layer> Layers = new List<Layer>();
+		protected List<Layer> Layers { get; private set; } = new List<Layer>();
+		protected List<UILayer> UILayers { get; private set; } = new List<UILayer>();
 
 		public World()
 		{
@@ -43,6 +45,8 @@ namespace Dolanan.Scene
 
 			var result = (T) Activator.CreateInstance(typeof(T), this, layerZ);
 			Layers.Add(result);
+			UILayers.Clear();
+			UILayers = Layers.OfType<UILayer>().ToList();
 			return result;
 		}
 
@@ -106,6 +110,22 @@ namespace Dolanan.Scene
 		public virtual void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
 			foreach (var layer in Layers) layer.Draw(gameTime, layerZDepth);
+		}
+		
+		/// <summary>
+		///     Render after BackBufferRender (Whole game world render). It useful for debugging, fixed rendering to screen, etc
+		/// </summary>
+		/// <param name="gameTime"></param>
+		/// <param name="worldRect">The back buffer render size</param>
+		public virtual void BackDraw(GameTime gameTime, Rectangle worldRect)
+		{
+			// SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.ScreenToCameraSpace(Mouse.GetState().Position),
+			// 	new Point(5, 5)), Color.Yellow);
+			foreach (UILayer layer in UILayers)
+			{
+				if(layer.UISpace == UISpace.Window)
+					layer.BackDraw(gameTime, worldRect);
+			}
 		}
 
 		#endregion

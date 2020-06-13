@@ -139,115 +139,126 @@ namespace DolananSample
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			
-			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
-			// var img = topLeft.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
+			var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
+			var img = topLeft.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
 			Slice slice;
-			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
-			// topLeft.RectTransform.Anchor = Anchor.TopLeft;
-			// topLeft.SetParent(Canvas);
-			//
-			// var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
-			// img = topCenter.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 4", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
-			// topCenter.RectTransform.Anchor = Anchor.TopCenter;
-			// topCenter.SetParent(Canvas);
-			//
-			// var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
-			// img = topRight.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 2", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100, 0, 100, 100);
-			// topRight.RectTransform.Anchor = Anchor.TopRight;
-			// topRight.SetParent(Canvas);
-			//
-			// var middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
-			// img = middleLeft.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 3", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
-			// middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
-			// middleLeft.SetParent(Canvas);
-			//
-			// var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
-			// img = middleCenter.AddComponent<Image>();
-			// middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
-			// 	GameSettings.ViewportSize.Y / 2 - 50,
-			// 	100, 100);
-			// middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
-			// middleCenter.SetParent(Canvas);
-			//
-			// var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
-			// img = middleRight.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 5", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
-			// 	GameSettings.ViewportSize.Y / 2 - 50,
-			// 	100, 100);
-			// middleRight.RectTransform.Anchor = Anchor.MiddleRight;
-			// middleRight.SetParent(Canvas);
-			//
-			// var bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
-			// img = bottomLeft.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 6", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
-			// bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
-			// bottomLeft.SetParent(Canvas);
-			//
-			// var bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
-			// img = bottomCenter.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 7", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
-			// 	GameSettings.ViewportSize.Y - 100,
-			// 	100, 100);
-			// bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
-			// bottomCenter.SetParent(Canvas);
-			//
-			// var bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
-			// img = bottomRight.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 8", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
-			// 	GameSettings.ViewportSize.Y - 100,
-			// 	100, 100);
-			// bottomRight.RectTransform.Anchor = Anchor.BottomRight;
-			// bottomRight.SetParent(Canvas);
-			//
-			//
-			// var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
-			// img = stretchVertical.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 9", out slice))
-			// {
-			// 	img.TextureRectangle = slice.Bounds;
-			// 	stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
-			// 		slice.Bounds.Width, slice.Bounds.Height);
-			// }
-			//
-			// stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
-			// stretchVertical.SetParent(Canvas);
+			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+				img.TextureRectangle = slice.Bounds;
+			topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
+			topLeft.RectTransform.Anchor = Anchor.TopLeft;
+			
+			topLeft.SetParent(Canvas);
+			
+			var topLeft2 = World.CreateActor<UIActor>("TopLeft2", UILayer);
+			img = topLeft2.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+				img.TextureRectangle = slice.Bounds;
+			topLeft2.RectTransform.Rectangle = new RectangleF(50, 50, 100, 100);
+			topLeft2.RectTransform.Anchor = Anchor.TopLeft;
+			topLeft2.SetParent(topLeft);
+			
+			var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
+			img = topCenter.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 4", out slice))
+				img.TextureRectangle = slice.Bounds;
+			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
+			topCenter.RectTransform.Anchor = Anchor.TopCenter;
+			topCenter.SetParent(Canvas);
+			
+			var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
+			img = topRight.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 2", out slice))
+				img.TextureRectangle = slice.Bounds;
+			topRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100, 0, 100, 100);
+			topRight.RectTransform.Anchor = Anchor.TopRight;
+			topRight.SetParent(Canvas);
+			
+			var middleLeft = World.CreateActor<UIActor>("MiddleLeft", UILayer);
+			img = middleLeft.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 3", out slice))
+				img.TextureRectangle = slice.Bounds;
+			middleLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y / 2 - 50, 100, 100);
+			middleLeft.RectTransform.Anchor = Anchor.MiddleLeft;
+			middleLeft.SetParent(Canvas);
+			
+			var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			img = middleCenter.AddComponent<Image>();
+			middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
+				GameSettings.ViewportSize.Y / 2 - 50,
+				100, 100);
+			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
+			middleCenter.SetParent(Canvas);
+			
+			var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
+			img = middleRight.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 5", out slice))
+				img.TextureRectangle = slice.Bounds;
+			middleRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
+				GameSettings.ViewportSize.Y / 2 - 50,
+				100, 100);
+			middleRight.RectTransform.Anchor = Anchor.MiddleRight;
+			middleRight.SetParent(Canvas);
+			
+			var bottomLeft = World.CreateActor<UIActor>("bottomLeft", UILayer);
+			img = bottomLeft.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 6", out slice))
+				img.TextureRectangle = slice.Bounds;
+			bottomLeft.RectTransform.Rectangle = new RectangleF(0, GameSettings.ViewportSize.Y - 100, 100, 100);
+			bottomLeft.RectTransform.Anchor = Anchor.BottomLeft;
+			bottomLeft.SetParent(Canvas);
+			
+			var bottomCenter = World.CreateActor<UIActor>("bottomCenter", UILayer);
+			img = bottomCenter.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 7", out slice))
+				img.TextureRectangle = slice.Bounds;
+			bottomCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
+				GameSettings.ViewportSize.Y - 100,
+				100, 100);
+			bottomCenter.RectTransform.Anchor = Anchor.BottomCenter;
+			bottomCenter.SetParent(Canvas);
+			
+			var bottomRight = World.CreateActor<UIActor>("bottomRight", UILayer);
+			img = bottomRight.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 8", out slice))
+				img.TextureRectangle = slice.Bounds;
+			bottomRight.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X - 100,
+				GameSettings.ViewportSize.Y - 100,
+				100, 100);
+			bottomRight.RectTransform.Anchor = Anchor.BottomRight;
+			bottomRight.SetParent(Canvas);
+			
+			
+			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
+			img = stretchVertical.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			img.Stretch = false;
+			if (_uiAseprite.TryGetSlice("Slice 9", out slice))
+			{
+				img.TextureRectangle = slice.Bounds;
+				stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
+					slice.Bounds.Width, slice.Bounds.Height);
+			}
+			
+			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
+			stretchVertical.SetParent(Canvas);
 			//
 			//
 			// var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
@@ -326,7 +337,6 @@ namespace DolananSample
 		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
 			base.BackDraw(gameTime, worldRect);
-			UILayer.BackDraw(gameTime, worldRect);
 			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.WorldToScreen(p.Transform.Position), new Point(5, 5)), null, Color.Yellow);
 		}
 	}

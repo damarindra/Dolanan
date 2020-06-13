@@ -196,7 +196,7 @@ namespace Dolanan
 		{
 			// SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.ScreenToCameraSpace(Mouse.GetState().Position),
 			// 	new Point(5, 5)), Color.Yellow);
-
+			World.BackDraw(gameTime, worldRect);
 		}
 
 		/// <summary>

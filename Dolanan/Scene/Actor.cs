@@ -134,6 +134,8 @@ namespace Dolanan.Scene
 		/// <param name="parent"></param>
 		public void SetParent(Actor parent)
 		{
+			if(parent == this)
+				return;
 			Parent = parent;
 			OnParentChange?.Invoke(parent);
 		}
@@ -146,6 +148,7 @@ namespace Dolanan.Scene
 				Log.PrintError("Trying to set layer on Child actor. Do it from the root Node!");
 				return;
 			}
+			
 
 			// set the new layer, take care everything needs to be done.
 			layer.AddActor(this);

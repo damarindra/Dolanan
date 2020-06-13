@@ -1,4 +1,5 @@
-﻿using Dolanan.Controller;
+﻿using System;
+using Dolanan.Controller;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
 
@@ -72,14 +73,14 @@ namespace Dolanan.Scene
 			{
 				// DO NOTHING
 			}
-			else if (UISpace == UISpace.Viewport && ScreenCanvas.RectTransform.Rectangle != worldRect.ToRectangleF())
-			{
-				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
-			}
 			else if (UISpace == UISpace.Window && ScreenCanvas.RectTransform.Rectangle.Size !=
 				GameMgr.Game.Window.ClientBounds.Size.ToVector2())
 			{
 				ScreenCanvas.RectTransform.SetRectSize(GameMgr.Game.Window.ClientBounds.Size.ToVector2());
+			}
+			else if (UISpace == UISpace.Viewport && ScreenCanvas.RectTransform.Rectangle != worldRect.ToRectangleF())
+			{
+				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
 			}
 
 			base.Draw(gameTime, LayerZ);
@@ -88,6 +89,7 @@ namespace Dolanan.Scene
 
 	public enum UISpace
 	{
+		[Obsolete]
 		// follow camera viewport (best for UI screen if your game window is consistent)
 		Viewport,
 
