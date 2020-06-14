@@ -50,7 +50,7 @@ namespace Dolanan.Components.UI
 		}
 
 		private ButtonState _buttonState;
-		private Color _startColor, _targetColor;
+		private Color _startColor = Color.White, _targetColor = Color.White;
 
 		public void SetImage(Image image)
 		{
@@ -67,8 +67,6 @@ namespace Dolanan.Components.UI
 				if (_buttonState != ButtonState.Pressed)
 				{
 					_buttonState = ButtonState.Hovering;
-					// _startColor = Image?.TintColor ?? Color.White;
-					// _targetColor = ColorTint.PressedColor;
 				}
 				//TODO Create await / task / async
 			};
@@ -77,10 +75,10 @@ namespace Dolanan.Components.UI
 				if (_buttonState == ButtonState.Hovering)
 				{
 					_buttonState = ButtonState.None;
-					// _startColor = Image?.TintColor ?? Color.White;
-					// _targetColor = ColorTint.NormalColor;
 				}
 			};
+			
+			
 		}
 
 		public override void Update(GameTime gameTime)

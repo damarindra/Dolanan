@@ -13,6 +13,7 @@ namespace Dolanan.Core
 	/// Anchoring only work when parent are RectTransform
 	/// Location => Top Left of the rectangle.
 	/// Use LocationByPivot to getting the local location of from parent location and pivot location
+	/// All calculation is based on Rectangle.Location (Top Left). Pivot only to make developer easier to use this
 	/// </summary>
 	public class RectTransform : Transform2D
 	{
@@ -27,18 +28,11 @@ namespace Dolanan.Core
 			get => _rectangle;
 			set
 			{
-				// Snapping to parent rectangle if ui
-				// if (ParentUI != null)
-				// {
-				// 	_rectangle.X = MathF.Max(_rectangle.X, ParentUI.RectTransform.Left);
-				// 	_rectangle.Y = MathF.Max(_rectangle.Y, ParentUI.RectTransform.Top);
-				// 	_rectangle.Width = MathF.Min(_rectangle.Width, ParentUI.RectTransform.Rectangle.Width);
-				// 	_rectangle.Height = MathF.Min(_rectangle.Height, ParentUI.RectTransform.Rectangle.Height);
-				// }
-				// else
-				// {
-					_rectangle = value;
-				// }
+				if (_rectangle.Location != value.Location)
+				{
+					
+				}
+				_rectangle = value;
 
 				UpdateAnchorOffset();
 				UpdateRectTransform();
@@ -59,20 +53,9 @@ namespace Dolanan.Core
 			}
 		}
 
-		private void UpdateAnchorOffset()
-		{
-			if (ParentUI != null)
-			{
-				var anchorRect = AnchorRect;
-
-				_offsetMin.X = _rectangle.X - anchorRect.Left;
-				_offsetMin.Y = _rectangle.Y - anchorRect.Top;
-				_offsetMax.X = _rectangle.Right - anchorRect.Right;
-				_offsetMax.Y = _rectangle.Bottom - anchorRect.Bottom;
-			}
-		}
-
-
+		/// <summary>
+		/// Rectangle of the Anchor. If the Anchor is not stretch (Rectangle), will return empty rectangle with right location
+		/// </summary>
 		public RectangleF AnchorRect
 		{
 			get
@@ -87,7 +70,7 @@ namespace Dolanan.Core
 				var min = Anchor.Min * ParentUI.RectTransform.Rectangle.Size;
 				var max = Anchor.Max * ParentUI.RectTransform.Rectangle.Size;
 
-				return new RectangleF(ParentUI.RectTransform.Rectangle.Location + min, max - min);
+				return new RectangleF(min, max - min);
 			}
 		}
 
@@ -110,13 +93,19 @@ namespace Dolanan.Core
 		public override Vector2 Location
 		{
 			get => base.Location;
-			set => SetRectLocation(value);
+			set
+			{
+				SetRectLocation(value);
+			}
 		}
 
 		public override Vector2 GlobalLocation
 		{
 			get => base.GlobalLocation;
-			set => Location = value - ParentGlobalLocation;
+			set
+			{
+				Location = value - ParentGlobalLocation;
+			}
 		}
 
 		public Point ScreenLocation
@@ -133,7 +122,7 @@ namespace Dolanan.Core
 		}
 
 		/// <summary>
-		/// Location by Pivot
+		/// Location by Pivot, remember to set the Pivot and Rect Size before set the location.
 		/// </summary>
 		public Vector2 LocationByPivot
 		{
@@ -145,7 +134,7 @@ namespace Dolanan.Core
 			}
 		}
 		/// <summary>
-		/// Global Location by Pivot
+		/// Global Location by Pivot, remember to set the Pivot and Rect Size before set the location.
 		/// </summary>
 		public Vector2 GlobalLocationByPivot
 		{
@@ -246,6 +235,19 @@ namespace Dolanan.Core
 			Rectangle = _rectangle;
 		}
 
+		private void UpdateAnchorOffset()
+		{
+			if (ParentUI != null)
+			{
+				var anchorRect = AnchorRect;
+
+				_offsetMin.X = _rectangle.X - anchorRect.Left;
+				_offsetMin.Y = _rectangle.Y - anchorRect.Top;
+				_offsetMax.X = _rectangle.Right - anchorRect.Right;
+				_offsetMax.Y = _rectangle.Bottom - anchorRect.Bottom;
+			}
+		}
+
 		/// <summary>
 		///     Updating rect transform including all child
 		/// </summary>
@@ -260,7 +262,7 @@ namespace Dolanan.Core
 				var top = anchorRect.Top + _offsetMin.Y;
 				var right = anchorRect.Right + _offsetMax.X;
 				var bottom = anchorRect.Bottom + _offsetMax.Y;
-				_rectangle = new RectangleF(left - ParentUI.RectTransform.RectLocation.X, top - ParentUI.RectTransform.RectLocation.Y, right - left, bottom - top);
+				_rectangle = new RectangleF(left, top, right - left, bottom - top);
 			}
 			
 			base.Location = _rectangle.Location;

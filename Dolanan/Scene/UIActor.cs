@@ -66,13 +66,11 @@ namespace Dolanan.Scene
 				{
 					OnMouseEnter?.Invoke();
 					IsMouseInside = true;
-					Console.WriteLine("Enter");
 				}
 				else if(IsMouseInside && !isMouseEntering)
 				{
 					OnMouseExit?.Invoke();
 					IsMouseInside = false;
-					Console.WriteLine("Exit");
 				}
 			}
 		}

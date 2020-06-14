@@ -211,5 +211,10 @@ namespace Dolanan.Components
 		{
 			return new Point((int) val.X, (int) val.Y);
 		}
+
+		public override string ToString()
+		{
+			return "{X:"+X + ", Y:" + Y+"}";
+		}
 	}
 }
