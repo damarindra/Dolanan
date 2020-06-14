@@ -18,7 +18,7 @@ Dolanan is just an library project, it is separated from your main project. So w
 
 
 ## Dependency
-- MonoGame > 3.7 (https://monogame.net/)
+- MonoGame Portable > 3.7.1.189 (https://monogame.net/)
 - Sigil 5.0.0 (https://github.com/kevin-montrose/Sigil)
 
 ## Related tools
