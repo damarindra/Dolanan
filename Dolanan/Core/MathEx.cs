@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Dolanan.Core;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Engine
@@ -124,6 +125,47 @@ namespace Dolanan.Engine
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Interpolation color
+		/// </summary>
+		/// <param name="c1">start</param>
+		/// <param name="c2">to</param>
+		/// <param name="t">0 - 1</param>
+		/// <param name="functions"></param>
+		/// <returns></returns>
+		public static Color Interpolate(Color c1, Color c2, float t, Easing.Functions functions = Easing.Functions.Linear)
+		{
+			if (t >= 1)
+				return c2;
+			if (t <= 0)
+				return c1;
+			
+			float i = Easing.Interpolate(t, functions);
+			return new Color(c1.R + i * (c2.R - c1.R),
+				c1.G + i * (c2.G - c1.G),
+				c1.B + i * (c2.B - c1.B),
+				c1.A + i * (c2.A - c1.A));
+		}
+		/// <summary>
+		/// Interpolation color
+		/// </summary>
+		/// <param name="f1">start</param>
+		/// <param name="f2">to</param>
+		/// <param name="t">0 - 1</param>
+		/// <param name="functions"></param>
+		/// <returns></returns>
+		public static float Interpolate(float f1, float f2, float t, Easing.Functions functions = Easing.Functions.Linear)
+		{
+			if (t >= 1)
+				return f2;
+			if (t <= 0)
+				return f1;
+			
+			float i = Easing.Interpolate(t, functions);
+			return f1 + i * (f2 - f1);
+		}
+
 
 		// public static Matrix SetRotationScaleAndSkew(this ref Matrix matrix, float rotation, Vector2 scale, float skew)
 		// {

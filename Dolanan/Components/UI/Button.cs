@@ -22,8 +22,7 @@ namespace Dolanan.Components.UI
 		public Button(Actor owner) : base(owner)
 		{
 		}
-		public ButtonAction OnPressedDown, OnPressed, OnPressedUp, OnHover;
-		public bool IsButtonPressed { get; private set; } 
+		public ButtonAction OnPressedDown, OnPressedUp;
 
 		// This can be Image or NineSlice
 		public Image Image
@@ -39,8 +38,19 @@ namespace Dolanan.Components.UI
 
 		public ButtonStyle ButtonStyle = ButtonStyle.Tint;
 		public ColorTint ColorTint = ColorTint.Default;
+		public Easing.Functions Easing = Core.Easing.Functions.CubicEaseOut;
+		public float EasingTime = .1f;
 
 		private Image _image = null;
+		private float _time = 0f;
+
+		private enum ButtonState
+		{
+			None, Hovering, Pressed
+		}
+
+		private ButtonState _buttonState;
+		private Color _startColor, _targetColor;
 
 		public void SetImage(Image image)
 		{
@@ -51,6 +61,26 @@ namespace Dolanan.Components.UI
 		{
 			base.Start();
 			Interactable = true;
+
+			UIActor.OnMouseEnter += () =>
+			{
+				if (_buttonState != ButtonState.Pressed)
+				{
+					_buttonState = ButtonState.Hovering;
+					// _startColor = Image?.TintColor ?? Color.White;
+					// _targetColor = ColorTint.PressedColor;
+				}
+				//TODO Create await / task / async
+			};
+			UIActor.OnMouseExit += () =>
+			{
+				if (_buttonState == ButtonState.Hovering)
+				{
+					_buttonState = ButtonState.None;
+					// _startColor = Image?.TintColor ?? Color.White;
+					// _targetColor = ColorTint.NormalColor;
+				}
+			};
 		}
 
 		public override void Update(GameTime gameTime)
@@ -64,19 +94,90 @@ namespace Dolanan.Components.UI
 					if (Input.IsMouseButtonJustPressed())
 					{
 						OnPressedDown?.Invoke();
-						IsButtonPressed = true;
+						_buttonState = ButtonState.Pressed;
 					}
 				}
 			}
 
-			if (IsButtonPressed)
+			if (_buttonState == ButtonState.Pressed)
 			{
 				if (Input.IsMouseButtonJustUp())
 				{
-					OnPressedUp?.Invoke();
-					IsButtonPressed = false;
+					if (UIActor.IsMouseInside)
+					{
+						OnPressedUp?.Invoke();
+						_buttonState = ButtonState.Hovering;
+					}
+					else
+					{
+						_buttonState = ButtonState.None;
+					}
 				}
 			}
+
+			#region Interaction Effect
+			//TODO Interaction still shit. Dunno better implementation for this things, maybe await task? dunno tho
+			if (Image != null)
+			{
+				if (ButtonStyle.HasFlag(ButtonStyle.Tint))
+				{
+					if (!Interactable)
+					{
+						Image.TintColor = ColorTint.DisabledColor;
+					}
+					else
+					{
+						switch (_buttonState)
+						{
+							default:
+							case ButtonState.None:
+								if (Math.Abs(_time) > Single.Epsilon && _targetColor != ColorTint.NormalColor)
+								{
+									_targetColor = ColorTint.NormalColor;
+									_startColor = Image.TintColor;
+									_time = 0;
+								}
+								else if (Image.TintColor != ColorTint.NormalColor)
+								{
+									Image.TintColor = MathEx.Interpolate(_startColor, _targetColor, _time / EasingTime);
+									_time += (float) gameTime.ElapsedGameTime.TotalSeconds;
+								}
+
+								break;
+							case ButtonState.Hovering:
+								if (Math.Abs(_time) > Single.Epsilon && _targetColor != ColorTint.HighlightedColor)
+								{
+									_targetColor = ColorTint.HighlightedColor;
+									_startColor = Image.TintColor;
+									_time = 0;
+								}
+								else if (Image.TintColor != ColorTint.HighlightedColor)
+								{
+									Image.TintColor = MathEx.Interpolate(_startColor, _targetColor, _time / EasingTime);
+									_time += (float) gameTime.ElapsedGameTime.TotalSeconds;
+								}
+
+								break;
+							case ButtonState.Pressed:
+								if (Math.Abs(_time) > Single.Epsilon && _targetColor != ColorTint.PressedColor)
+								{
+									_targetColor = ColorTint.PressedColor;
+									_startColor = Image.TintColor;
+									_time = 0;
+								}
+								else if (Image.TintColor != ColorTint.PressedColor)
+								{
+									Image.TintColor = MathEx.Interpolate(_startColor, _targetColor, _time / EasingTime);
+									_time += (float) gameTime.ElapsedGameTime.TotalSeconds;
+								}
+
+								break;
+							
+						}
+					}
+				}
+			}
+			#endregion
 		}
 	}
 
@@ -87,20 +188,18 @@ namespace Dolanan.Components.UI
 		public Color PressedColor;
 		public Color SelectedColor;
 		public Color DisabledColor;
-		public Easing.Functions Easing;
 
-		public ColorTint(Color normalColor, Color highlightedColor, Color pressedColor, Color selectedColor, Color disabledColor, Easing.Functions easing)
+		public ColorTint(Color normalColor, Color highlightedColor, Color pressedColor, Color selectedColor, Color disabledColor)
 		{
 			NormalColor = normalColor;
 			HighlightedColor = highlightedColor;
 			PressedColor = pressedColor;
 			SelectedColor = selectedColor;
 			DisabledColor = disabledColor;
-			Easing = easing;
 		}
 
 		public static ColorTint Default =>
 			new ColorTint(Color.White, new Color(244, 244, 244, 255), new Color(200, 200, 200, 255),
-				new Color(244, 244, 244, 255), new Color(200, 200, 200, 128), Core.Easing.Functions.CubicEaseInOut);
+				new Color(244, 244, 244, 255), new Color(200, 200, 200, 128));
 	}
 }

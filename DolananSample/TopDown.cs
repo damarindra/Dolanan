@@ -210,6 +210,7 @@ namespace DolananSample
 			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
 			middleCenter.SetParent(Canvas);
 			middleCenter.ReceiveMouseInput = true;
+			var btn = middleCenter.AddComponent<Button>();
 
 			var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
 			img = middleRight.AddComponent<Image>();
@@ -257,7 +258,7 @@ namespace DolananSample
 			bottomRight.SetParent(Canvas);
 			bottomRight.ReceiveMouseInput = true;
 
-			
+
 			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
 			img = stretchVertical.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
