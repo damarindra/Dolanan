@@ -22,7 +22,7 @@ namespace Dolanan.Components.UI
 		public Button(Actor owner) : base(owner)
 		{
 		}
-		public ButtonAction OnPressedDown, OnPressedUp;
+		public ButtonAction OnPressedDown, OnPressedUp, OnPressed;
 
 		// This can be Image or NineSlice
 		public Image Image
@@ -105,13 +105,17 @@ namespace Dolanan.Components.UI
 				{
 					if (UIActor.IsMouseInside)
 					{
-						OnPressedUp?.Invoke();
 						_buttonState = ButtonState.Hovering;
 					}
 					else
 					{
 						_buttonState = ButtonState.None;
 					}
+					OnPressedUp?.Invoke();
+				}
+				else
+				{
+					OnPressed?.Invoke();
 				}
 			}
 

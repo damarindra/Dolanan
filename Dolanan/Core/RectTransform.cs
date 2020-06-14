@@ -28,17 +28,17 @@ namespace Dolanan.Core
 			set
 			{
 				// Snapping to parent rectangle if ui
-				if (ParentUI != null)
-				{
-					_rectangle.X = MathF.Max(_rectangle.X, ParentUI.RectTransform.Left);
-					_rectangle.Y = MathF.Max(_rectangle.Y, ParentUI.RectTransform.Top);
-					_rectangle.Width = MathF.Min(_rectangle.Width, ParentUI.RectTransform.Rectangle.Width);
-					_rectangle.Height = MathF.Min(_rectangle.Height, ParentUI.RectTransform.Rectangle.Height);
-				}
-				else
-				{
+				// if (ParentUI != null)
+				// {
+				// 	_rectangle.X = MathF.Max(_rectangle.X, ParentUI.RectTransform.Left);
+				// 	_rectangle.Y = MathF.Max(_rectangle.Y, ParentUI.RectTransform.Top);
+				// 	_rectangle.Width = MathF.Min(_rectangle.Width, ParentUI.RectTransform.Rectangle.Width);
+				// 	_rectangle.Height = MathF.Min(_rectangle.Height, ParentUI.RectTransform.Rectangle.Height);
+				// }
+				// else
+				// {
 					_rectangle = value;
-				}
+				// }
 
 				UpdateAnchorOffset();
 				UpdateRectTransform();
@@ -106,6 +106,18 @@ namespace Dolanan.Core
 
 		public Vector2 RectLocation => Rectangle.Location;
 		public Vector2 RectSize => Rectangle.Size;
+
+		public override Vector2 Location
+		{
+			get => base.Location;
+			set => SetRectLocation(value);
+		}
+
+		public override Vector2 GlobalLocation
+		{
+			get => base.GlobalLocation;
+			set => Location = value - ParentGlobalLocation;
+		}
 
 		public Point ScreenLocation
 		{
@@ -248,10 +260,10 @@ namespace Dolanan.Core
 				var top = anchorRect.Top + _offsetMin.Y;
 				var right = anchorRect.Right + _offsetMax.X;
 				var bottom = anchorRect.Bottom + _offsetMax.Y;
-				_rectangle = new RectangleF(left - Parent.Location.X, top - Parent.Location.Y, right - left, bottom - top);
+				_rectangle = new RectangleF(left - ParentUI.RectTransform.RectLocation.X, top - ParentUI.RectTransform.RectLocation.Y, right - left, bottom - top);
 			}
 			
-			Location = _rectangle.Location;
+			base.Location = _rectangle.Location;
 		}
 
 		protected void UpdateChildsRectTransform()

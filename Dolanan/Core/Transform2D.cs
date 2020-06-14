@@ -52,7 +52,7 @@ namespace Dolanan.Engine
 		/// <summary>
 		/// Local Location
 		/// </summary>
-		public Vector2 Location
+		public virtual Vector2 Location
 		{
 			get => _location;
 			set
@@ -65,7 +65,7 @@ namespace Dolanan.Engine
 		/// <summary>
 		/// Global Location
 		/// </summary>
-		public Vector2 GlobalLocation
+		public virtual Vector2 GlobalLocation
 		{
 			get => _matrix.Translation.ToVector2();
 			set => Location = value - ParentGlobalLocation;
@@ -102,7 +102,7 @@ namespace Dolanan.Engine
 		/// <summary>
 		///     Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
 		/// </summary>
-		private Vector2 ParentGlobalLocation => Parent?.GlobalLocation ?? Vector2.Zero;
+		protected Vector2 ParentGlobalLocation => Parent?.GlobalLocation ?? Vector2.Zero;
 
 		private float ParentGlobalRotation => Parent?.GlobalRotation ?? 0;
 		public Vector2 GlobalScale => ParentScale * LocalScale;

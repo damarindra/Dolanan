@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Dolanan.Engine
@@ -68,6 +69,11 @@ namespace Dolanan.Engine
 			}
 
 			return false;
+		}
+
+		public static Point GetMouseMotion()
+		{
+			return Mouse.GetState().Position - LastFrameMouseState.Position;
 		}
 
 		public static bool IsInputActionJustPressed(string action)

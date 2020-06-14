@@ -53,96 +53,12 @@ namespace DolananSample
 				img.TextureRectangle = slice.Bounds;
 			ui.SetParent(p);
 			ui.RectTransform.GlobalLocationByPivot = p.GlobalLocation - Vector2.UnitY * 25;
-			
+			//ui.RectTransform.GlobalLocationByPivot = p.GlobalLocation - Vector2.UnitY * 25;
+
 			World.Camera.FollowActor = p;
 
 			if (_texturesTopDown.TryGet("square", out var texture2D))
 			{
-				// var wall = CollisionHelper.CreateColliderActor(new Vector2(0, GameSettings.ViewportSize.Y / 2f),
-				// 	new Vector2(64, GameSettings.ViewportSize.Y));
-				// wall.Transform.LocalScale = new Vector2(1, GameSettings.ViewportSize.Y / 64f);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				//                                    new Vector2(0, GameSettings.ViewportSize.Y / 2f - 32f);
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(GameSettings.ViewportSize.X / 2f, 0),
-				// 	new Vector2(GameSettings.ViewportSize.X, 64));
-				// wall.Transform.LocalScale = new Vector2(GameSettings.ViewportSize.X / 64f, 1);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				//                                    new Vector2(GameSettings.ViewportSize.X / 2f - 32f, 0);
-				//
-				// wall = CollisionHelper.CreateColliderActor(
-				// 	new Vector2(GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y / 2f),
-				// 	new Vector2(64, GameSettings.ViewportSize.Y));
-				// wall.Transform.LocalScale = new Vector2(1, GameSettings.ViewportSize.Y / 64f);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				//                                    new Vector2(0, GameSettings.ViewportSize.Y / 2f - 32f);
-				//
-				// wall = CollisionHelper.CreateColliderActor(
-				// 	new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y),
-				// 	new Vector2(GameSettings.ViewportSize.X, 64));
-				// wall.Transform.LocalScale = new Vector2(GameSettings.ViewportSize.X / 64f, 1);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Body>().Offset = wall.GetComponent<Renderer>().Origin +
-				//                                    new Vector2(GameSettings.ViewportSize.X / 2f - 32f, 0);
-				//
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(64, 64), new Vector2(64, 64));
-				// wall.Transform.LocalScale = new Vector2(1, 1);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-				//
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(254, 129), new Vector2(64, 64));
-				// wall.Transform.LocalScale = new Vector2(1, 1);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(154, 229), new Vector2(64, 64));
-				// wall.Transform.LocalScale = new Vector2(1, 1);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-				//
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(457, 365), Vector2.One * 64 * 2);
-				// wall.Transform.LocalScale = new Vector2(2, 2);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(763, 456), new Vector2(64, 64));
-				// wall.Transform.LocalScale = new Vector2(1, 1);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-				//
-				//
-				// wall = CollisionHelper.CreateColliderActor(new Vector2(765, 180), Vector2.One * 64 * 3);
-				// wall.Transform.LocalScale = new Vector2(3, 3);
-				// wall.AddComponent<Renderer>().Texture2D = texture2D;
-				// wall.GetComponent<Renderer>().ModulatedColor = Color.Red;
-				// wall.GetComponent<Renderer>().Pivot = Pivot.TopLeft;
-				//
-				// var trigger = World.CreateActor<SpriteActor>("trigger");
-				// trigger.Transform.Position = new Vector2(128, 400);
-				// var body = trigger.AddComponent<Body>();
-				// body.IsTrigger = true;
-				// body.Tag = "trigger";
-				// body.Size = Vector2.One * 128;
-				// var spr = trigger.GetComponent<Sprite>();
-				// spr.Pivot = Pivot.TopLeft;
-				// spr.Texture2D = texture2D;
-				// trigger.Transform.LocalScale *= 2;
-				// spr.ModulatedColor = new Color(Color.Aqua, .3f);
 			}
 
 			
@@ -177,9 +93,11 @@ namespace DolananSample
 			img.Texture2D = _uiTexture;
 			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
 				img.TextureRectangle = slice.Bounds;
-			topCenter2.RectTransform.Rectangle = new RectangleF(0, 0, 150, 150);
-			topCenter2.RectTransform.Anchor = Anchor.MiddleCenter;
 			topCenter2.SetParent(topCenter);
+			topCenter2.RectTransform.Anchor = Anchor.MiddleCenter;
+			topCenter2.RectTransform.GlobalLocationByPivot = Vector2.Zero;
+			topCenter2.RectTransform.SetRectSize(new Vector2(150, 150));
+			// topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
 			topCenter2.ReceiveMouseInput = true;
 
 			var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
@@ -211,6 +129,15 @@ namespace DolananSample
 			middleCenter.SetParent(Canvas);
 			middleCenter.ReceiveMouseInput = true;
 			var btn = middleCenter.AddComponent<Button>();
+			btn.OnPressed += () =>
+			{
+				Console.WriteLine("Before " + middleCenter.Transform.Location);
+				Console.WriteLine("Must be " + (middleCenter.Transform.Location + Input.GetMouseMotion().ToVector2()));
+				middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2();
+				Console.WriteLine("After " +middleCenter.Transform.Location);
+				//Console.WriteLine(middleCenter.Transform.RectLocation + Input.GetMouseMotion().ToVector2());
+				//middleCenter.Transform.SetRectLocation( middleCenter.Transform.RectLocation + Input.GetMouseMotion().ToVector2());
+			};
 
 			var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
 			img = middleRight.AddComponent<Image>();
