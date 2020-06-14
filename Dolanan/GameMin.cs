@@ -102,6 +102,7 @@ namespace Dolanan
 
 		protected override void Update(GameTime gameTime)
 		{
+			GameMgr.DrawState = DrawState.None;
 #if DEBUG
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -154,21 +155,22 @@ namespace Dolanan
 		{
 			GraphicsDevice.SetRenderTarget(RenderTarget);
 			GraphicsDevice.Clear(GameSettings.BackgroundColor);
+			GameMgr.DrawState = DrawState.Draw;
 
-			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(), blendState: BlendState.AlphaBlend);
+			GameMgr.BeginDrawWorld();
 			World.Draw(gameTime);
 			SpriteBatch.End();
 
 			DrawProcess(gameTime);
 
-			SpriteBatch.Begin(transformMatrix: World.Camera.GetTopLeftMatrix(),
-				samplerState: GameSettings.DefaultSamplerState);
+			GameMgr.BeginDrawWorld();
 			if (_debugShowCollision) World.DrawCollision();
 			SpriteBatch.End();
 
+			GameMgr.DrawState = DrawState.BackDraw;
 			BackBufferRender();
 
-			SpriteBatch.Begin(samplerState: GameSettings.DefaultSamplerState);
+			SpriteBatch.Begin(samplerState: GameMgr.DefaultSamplerState);
 			BackDraw(gameTime, RenderDestination);
 			if (_debugFps && ResFont.Instance.TryGet("bitty", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
@@ -196,6 +198,7 @@ namespace Dolanan
 		/// <param name="worldRect">The back buffer render size</param>
 		protected virtual void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
+
 			// SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.ScreenToCameraSpace(Mouse.GetState().Position),
 			// 	new Point(5, 5)), Color.Yellow);
 			World.BackDraw(gameTime, worldRect);

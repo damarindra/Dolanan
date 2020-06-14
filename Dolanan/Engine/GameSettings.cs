@@ -11,7 +11,6 @@ namespace Dolanan.Engine
 
 		public static Color BackgroundColor = Color.DimGray;
 
-		public static readonly SamplerState DefaultSamplerState = SamplerState.PointClamp;
 
 		/// <summary>
 		///     Window Size

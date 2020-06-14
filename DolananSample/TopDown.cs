@@ -194,36 +194,37 @@ namespace DolananSample
 			// bottomRight.ReceiveMouseInput = true;
 			//
 			//
-			// var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
-			// img = stretchVertical.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// if (_uiAseprite.TryGetSlice("Slice 9", out slice))
-			// {
-			// 	img.TextureRectangle = slice.Bounds;
-			// 	stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
-			// 		slice.Bounds.Width, slice.Bounds.Height);
-			// }
-			// stretchVertical.ReceiveMouseInput = true;
+			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
+			img = stretchVertical.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			if (_uiAseprite.TryGetSlice("Slice 9", out slice))
+			{
+				img.TextureRectangle = slice.Bounds;
+				stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
+					slice.Bounds.Width, slice.Bounds.Height);
+			}
+			stretchVertical.ReceiveMouseInput = true;
+			Log.Print(stretchVertical);
+			
+			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
+			stretchVertical.SetParent(Canvas);
 			//
-			// stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
-			// stretchVertical.SetParent(Canvas);
 			//
+			var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
+			var ns = stretchHorizontal.AddComponent<NineSlice>();
+			var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
+			var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
+			ns.Texture2D = tNs;
+			if (asepriteNs.TryGetSlice("slice", out slice))
+			{
+				ns.TextureRectangle = slice.Bounds;
+			// 	ns.Center = slice.Center;
+				stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
+					GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
+			}
 			//
-			// var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
-			// var ns = stretchHorizontal.AddComponent<NineSlice>();
-			// var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
-			// var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
-			// ns.Texture2D = tNs;
-			// if (asepriteNs.TryGetSlice("slice", out slice))
-			// {
-			// 	ns.TextureRectangle = slice.Bounds;
-			// // 	ns.Center = slice.Center;
-			// 	stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
-			// 		GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
-			// }
-			// //
-			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
-			// stretchHorizontal.SetParent(Canvas);
+			stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
+			stretchHorizontal.SetParent(Canvas);
 
 		}
 

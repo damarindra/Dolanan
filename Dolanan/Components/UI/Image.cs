@@ -36,14 +36,14 @@ namespace Dolanan.Components.UI
 
 		public void FitRectangleToImage()
 		{
-			UIActor.RectTransform.SetRectSize(TextureRectangle.Size.ToVector2());
+			Owner.RectTransform.SetRectSize(TextureRectangle.Size.ToVector2());
 		}
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
 			base.Draw(gameTime, layerZDepth);
 
-			GameMgr.SpriteBatch.Draw(Texture2D, UIActor.RectTransform.GlobalRectangle.ToRectangle(), TextureRectangle,
+			GameMgr.SpriteBatch.Draw(Texture2D, Owner.RectTransform.GlobalRectangle.ToRectangle(), TextureRectangle,
 				TintColor);
 		}
 	}

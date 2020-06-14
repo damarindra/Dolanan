@@ -5,7 +5,7 @@ namespace Dolanan.Tools
 {
 	public static class Log
 	{
-		public static void Print(string msg, [CallerLineNumber] int lineNumber = 0,
+		public static void Print(object msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
 #if DEBUG
@@ -13,7 +13,7 @@ namespace Dolanan.Tools
 #endif
 		}
 
-		public static void PrintWarning(string msg, [CallerLineNumber] int lineNumber = 0,
+		public static void PrintWarning(object msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
 #if DEBUG
@@ -23,7 +23,7 @@ namespace Dolanan.Tools
 #endif
 		}
 
-		public static void PrintError(string msg, [CallerLineNumber] int lineNumber = 0,
+		public static void PrintError(object msg, [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string caller = null, [CallerFilePath] string path = null)
 		{
 #if DEBUG

@@ -30,7 +30,7 @@ namespace Dolanan.Components.UI
 			get
 			{
 				if(_image == null)
-					_image = UIActor.GetComponent<Image>();
+					_image = Owner.GetComponent<Image>();
 				return _image;
 			}
 			private set => _image = value;
@@ -62,7 +62,7 @@ namespace Dolanan.Components.UI
 			base.Start();
 			Interactable = true;
 
-			UIActor.OnMouseEnter += () =>
+			Owner.OnMouseEnter += () =>
 			{
 				if (_buttonState != ButtonState.Pressed)
 				{
@@ -70,7 +70,7 @@ namespace Dolanan.Components.UI
 				}
 				//TODO Create await / task / async
 			};
-			UIActor.OnMouseExit += () =>
+			Owner.OnMouseExit += () =>
 			{
 				if (_buttonState == ButtonState.Hovering)
 				{
@@ -87,7 +87,7 @@ namespace Dolanan.Components.UI
 
 			if (Interactable)
 			{
-				if (UIActor.IsMouseInside)
+				if (Owner.IsMouseInside)
 				{
 					if (Input.IsMouseButtonJustPressed())
 					{
@@ -101,7 +101,7 @@ namespace Dolanan.Components.UI
 			{
 				if (Input.IsMouseButtonJustUp())
 				{
-					if (UIActor.IsMouseInside)
+					if (Owner.IsMouseInside)
 					{
 						_buttonState = ButtonState.Hovering;
 					}

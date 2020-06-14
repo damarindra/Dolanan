@@ -86,5 +86,6 @@ namespace Dolanan.Scene
 		{
 			return base.AddComponent<T>();
 		}
+
 	}
 }

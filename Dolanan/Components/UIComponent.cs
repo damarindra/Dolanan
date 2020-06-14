@@ -12,7 +12,7 @@ namespace Dolanan.Components
 	/// </summary>
 	public class UIComponent : Component
 	{
-		public UIActor UIActor;
+		public new UIActor Owner;
 
 		public UIComponent(Actor owner) : base(owner)
 		{
@@ -22,16 +22,16 @@ namespace Dolanan.Components
 		{
 			get
 			{
-				if (UIActor == null)
+				if (Owner == null)
 					return null;
-				return UIActor.RectTransform;
+				return Owner.RectTransform;
 			}
 		}
 
 		public override void Start()
 		{
 			base.Start();
-			UIActor = (UIActor) Owner;
+			Owner = (UIActor) base.Owner;
 		}
 
 		public bool Interactable

@@ -155,5 +155,10 @@ namespace Dolanan.Scene
 			// set the new layer, take care everything needs to be done.
 			layer.AddActor(this);
 		}
+
+		public override string ToString()
+		{
+			return Name + " (" + GetType()+ ")";
+		}
 	}
 }
