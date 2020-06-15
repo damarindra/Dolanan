@@ -129,7 +129,7 @@ namespace Dolanan.Engine
 			             Matrix.CreateRotationZ(Rotation) *
 			             Matrix.CreateTranslation(new Vector3(Location, 0));
 			if (Parent != null)
-				matrix *= GetParentMatrix();
+				matrix = matrix * GetParentMatrix();
 
 			_matrix = matrix;
 
@@ -141,7 +141,7 @@ namespace Dolanan.Engine
 		public Matrix GetParentMatrix()
 		{
 			return Matrix.CreateScale(new Vector3(ParentScale, 1)) *
-			       Matrix.CreateRotationZ(ParentGlobalRotation - Rotation) *
+			       Matrix.CreateRotationZ(ParentGlobalRotation) *
 			       Matrix.CreateTranslation(new Vector3(ParentGlobalLocation, 0));
 		}
 	}
