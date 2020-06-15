@@ -1,5 +1,6 @@
 ﻿using System;
 using Dolanan.Controller;
+using Dolanan.Engine;
 using Dolanan.Scene;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
@@ -43,8 +44,11 @@ namespace Dolanan.Components.UI
 		{
 			base.Draw(gameTime, layerZDepth);
 
-			GameMgr.SpriteBatch.Draw(Texture2D, Owner.RectTransform.GlobalRectangle.ToRectangle(), TextureRectangle,
-				TintColor);
+			Vector2 origin = Transform.Pivot * TextureRectangle.Size.ToVector2();
+			RectangleF destinationRect = Owner.RectTransform.GlobalRectangle;
+			destinationRect.Location += Transform.Pivot * destinationRect.Size;
+			GameMgr.SpriteBatch.Draw(Texture2D, destinationRect.ToRectangle(), TextureRectangle,
+				TintColor, Transform.GlobalRotation, origin, SpriteEffects.None, 0);
 		}
 	}
 }

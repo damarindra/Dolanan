@@ -40,6 +40,12 @@ namespace DolananSample
 			p = World.CreateActor<Player>("Player");
 			p.Transform.GlobalLocation =
 				new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y / 2f);
+
+			var fd = World.CreateActor<SpriteActor>("r");
+			fd.SetParent(p);
+			fd.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("square_64x64");
+			fd.Location = Vector2.One * 64;
+			fd.Rotation = MathHelper.ToRadians(45);
 			
 			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
 			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
@@ -94,24 +100,33 @@ namespace DolananSample
 			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
 				img.TextureRectangle = slice.Bounds;
 			topCenter2.SetParent(topCenter);
-			topCenter2.RectTransform.Anchor = Anchor.TopLeft;
-			topCenter2.RectTransform.GlobalLocation = topCenter.GlobalLocation;
+			topCenter2.RectTransform.Anchor = Anchor.TopRight;
+			topCenter2.Transform.Location = Vector2.Zero;
 			topCenter2.RectTransform.SetRectSize(new Vector2(150, 150));
 			// topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
 			topCenter2.ReceiveMouseInput = true;
 
-			topCenter2 = World.CreateActor<UIActor>("TopCenter3", UILayer);
-			img = topCenter2.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topCenter2.SetParent(topCenter);
-			topCenter2.RectTransform.Pivot = Pivot.TopRight;
-			topCenter2.RectTransform.Anchor = Anchor.MiddleRight;
-			topCenter2.RectTransform.SetRectSize(new Vector2(150, 150));
-			topCenter2.RectTransform.LocationByPivot = new Vector2(0);
-			// topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
-			topCenter2.ReceiveMouseInput = true;
+			// topCenter2 = World.CreateActor<UIActor>("TopCenter3", UILayer);
+			// img = topCenter2.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// topCenter2.SetParent(topCenter);
+			// topCenter2.RectTransform.Pivot = Pivot.TopRight;
+			// topCenter2.RectTransform.Anchor = Anchor.MiddleRight;
+			// topCenter2.RectTransform.SetRectSize(new Vector2(150, 150));
+			// topCenter2.RectTransform.LocationByPivot = new Vector2(0);
+			// // topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
+			// topCenter2.ReceiveMouseInput = true;
+
+			var label = World.CreateActor<UIActor>("Label", UILayer);
+			label.SetParent(topCenter2);
+			label.Transform.Anchor = Anchor.BottomCenter;
+			label.Transform.Location = Vector2.Zero;
+			var l = label.AddComponent<Label>();
+			ResFont.Instance.TryGet("bitty", out var f);
+			l.Font = f;
+			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is";
 			
 			// var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
 			// img = topRight.AddComponent<Image>();
@@ -133,19 +148,22 @@ namespace DolananSample
 			// middleLeft.SetParent(Canvas);
 			// middleLeft.ReceiveMouseInput = true;
 			//
-			// var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
-			// img = middleCenter.AddComponent<Image>();
-			// middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
-			// 	GameSettings.ViewportSize.Y / 2 - 50,
-			// 	100, 100);
-			// middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
-			// middleCenter.SetParent(Canvas);
-			// middleCenter.ReceiveMouseInput = true;
-			// var btn = middleCenter.AddComponent<Button>();
-			// btn.OnPressed += () =>
-			// {
-			// 	middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2();
-			// };
+			var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			img = middleCenter.AddComponent<Image>();
+			middleCenter.Transform.Pivot = Pivot.Center;
+			middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
+				GameSettings.ViewportSize.Y / 2 - 50,
+				100, 100);
+			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
+			middleCenter.SetParent(Canvas);
+			middleCenter.ReceiveMouseInput = true;
+			var btn = middleCenter.AddComponent<Button>();
+			btn.OnPressed += () =>
+			{
+				middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2();
+			};
+			middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
+
 			//
 			// var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
 			// img = middleRight.AddComponent<Image>();
@@ -194,37 +212,37 @@ namespace DolananSample
 			// bottomRight.ReceiveMouseInput = true;
 			//
 			//
-			var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
-			img = stretchVertical.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			if (_uiAseprite.TryGetSlice("Slice 9", out slice))
-			{
-				img.TextureRectangle = slice.Bounds;
-				stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
-					slice.Bounds.Width, slice.Bounds.Height);
-			}
-			stretchVertical.ReceiveMouseInput = true;
-			Log.Print(stretchVertical);
-			
-			stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
-			stretchVertical.SetParent(Canvas);
+			// var stretchVertical = World.CreateActor<UIActor>("stretchVertical", UILayer);
+			// img = stretchVertical.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// if (_uiAseprite.TryGetSlice("Slice 9", out slice))
+			// {
+			// 	img.TextureRectangle = slice.Bounds;
+			// 	stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
+			// 		slice.Bounds.Width, slice.Bounds.Height);
+			// }
+			// stretchVertical.ReceiveMouseInput = true;
+			// Log.Print(stretchVertical);
 			//
-			//
-			var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
-			var ns = stretchHorizontal.AddComponent<NineSlice>();
-			var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
-			var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
-			ns.Texture2D = tNs;
-			if (asepriteNs.TryGetSlice("slice", out slice))
-			{
-				ns.TextureRectangle = slice.Bounds;
-			// 	ns.Center = slice.Center;
-				stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
-					GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
-			}
-			//
-			stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
-			stretchHorizontal.SetParent(Canvas);
+			// stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
+			// stretchVertical.SetParent(Canvas);
+			// //
+			// //
+			// var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
+			// var ns = stretchHorizontal.AddComponent<NineSlice>();
+			// var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
+			// var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
+			// ns.Texture2D = tNs;
+			// if (asepriteNs.TryGetSlice("slice", out slice))
+			// {
+			// 	ns.TextureRectangle = slice.Bounds;
+			// // 	ns.Center = slice.Center;
+			// 	stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
+			// 		GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
+			// }
+			// //
+			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
+			// stretchHorizontal.SetParent(Canvas);
 
 		}
 

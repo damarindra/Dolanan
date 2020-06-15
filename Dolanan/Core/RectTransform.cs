@@ -41,6 +41,10 @@ namespace Dolanan.Core
 		}
 		public RectangleF GlobalRectangle => new RectangleF(GlobalLocation, Rectangle.Size);
 
+		/// <summary>
+		/// Anchor from the parent. Anchor will automatically adjusting the Rectangle, location and it size.
+		/// Anchor doesn't act as Rectangle offset, so setting location do not relative to anchor  
+		/// </summary>
 		public Anchor Anchor
 		{
 			get => _anchor;
@@ -90,6 +94,9 @@ namespace Dolanan.Core
 		public Vector2 RectLocation => Rectangle.Location;
 		public Vector2 RectSize => Rectangle.Size;
 
+		/// <summary>
+		/// Location is calculated from the TopLeft of the Rectangle. Location relative only to its parent location (also top left if UI)
+		/// </summary>
 		public override Vector2 Location
 		{
 			get => base.Location;
@@ -99,6 +106,9 @@ namespace Dolanan.Core
 			}
 		}
 
+		/// <summary>
+		/// Location is calculated from the TopLeft of the Rectangle
+		/// </summary>
 		public override Vector2 GlobalLocation
 		{
 			get => base.GlobalLocation;
@@ -120,7 +130,7 @@ namespace Dolanan.Core
 				return GlobalLocation.ToPoint();
 			}
 		}
-
+		
 		/// <summary>
 		/// Location by Pivot, remember to set the Pivot and Rect Size before set the location.
 		/// </summary>

@@ -48,7 +48,7 @@ namespace Dolanan.Scene
 				RectTransform.RefreshParent();
 				if (parent != null)
 				{
-					if (parent.GetType().IsSubclassOf(typeof(UIActor)))
+					if (parent.GetType() == typeof(UIActor) || parent.GetType().IsSubclassOf(typeof(UIActor)))
 						UIParent = (UIActor) parent;
 				}
 			};
