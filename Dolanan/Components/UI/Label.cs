@@ -48,15 +48,14 @@ namespace Dolanan.Components.UI
 				return;
 			GameMgr.EndDraw();
 			
-			GameMgr.BeginDrawAuto(rasterizerState: _rasterizer, blendState: BlendState.AlphaBlend, sortMode: SpriteSortMode.Immediate);
-			
 			Rectangle currentRect = GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle;
+			GameMgr.BeginDrawAuto(rasterizerState: _rasterizer, blendState: BlendState.AlphaBlend, sortMode: SpriteSortMode.Immediate);
 
-			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = Transform.Rectangle.ToRectangle();
+			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = Transform.GlobalRectangle.ToRectangle();
 			GameMgr.SpriteBatch.DrawString(Font, _text, Transform.GlobalLocation, TintColor);
 
-			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
 			GameMgr.EndDraw();
+			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
 			
 			GameMgr.BeginDrawAuto();
 		}

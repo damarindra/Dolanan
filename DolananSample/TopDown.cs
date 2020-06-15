@@ -123,7 +123,9 @@ namespace DolananSample
 			label.SetParent(topCenter2);
 			label.Transform.Anchor = Anchor.BottomCenter;
 			label.Transform.Location = Vector2.Zero;
+			label.Transform.SetRectSize(new Vector2(100, 30));
 			var l = label.AddComponent<Label>();
+			l.AutoSize = false;
 			ResFont.Instance.TryGet("bitty", out var f);
 			l.Font = f;
 			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is";
