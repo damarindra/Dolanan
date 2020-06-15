@@ -53,7 +53,7 @@ namespace Dolanan.Components.UI
 			Rectangle currentRect = GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle;
 
 			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = Transform.Rectangle.ToRectangle();
-			GameMgr.SpriteBatch.DrawString(Font, _text, Transform.Location, TintColor);
+			GameMgr.SpriteBatch.DrawString(Font, _text, Transform.GlobalLocation, TintColor);
 
 			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
 			GameMgr.EndDraw();
