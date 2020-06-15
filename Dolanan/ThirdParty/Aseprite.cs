@@ -111,10 +111,7 @@ namespace Dolanan.ThirdParty
 			}
 
 			body.Size = slice.Bounds.Size.ToVector2();
-			if (slice.IsPivotValid && usePivotAsCenter)
-			{
-				body.Offset = slice.Pivot.ToVector2();
-			}
+			if (slice.IsPivotValid && usePivotAsCenter) body.Offset = slice.Pivot.ToVector2();
 		}
 
 		public static void ToNineSlice(this Slice slice, ref NineSlice nineSlice)
@@ -124,7 +121,7 @@ namespace Dolanan.ThirdParty
 				Log.PrintWarning("Slice doesn't have a valid nineslice support :" + slice.Name);
 				return;
 			}
-			
+
 			nineSlice.Transform.SetRectSize(slice.Bounds.Size.ToVector2());
 			nineSlice.Center = slice.Center;
 		}

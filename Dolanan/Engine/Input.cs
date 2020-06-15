@@ -14,59 +14,47 @@ namespace Dolanan.Engine
 		private static readonly Dictionary<string, InputAxis> _inputAxises = new Dictionary<string, InputAxis>();
 
 		/// <summary>
-		/// 
 		/// </summary>
 		/// <param name="id">0 : left | 1 : right | 2 middle | 3 XButton1 | 4 XButton2</param>
 		/// <returns></returns>
 		public static bool IsMouseButtonJustPressed(int id = 0)
 		{
 			if (id == 0)
-			{
 				return LastFrameMouseState.LeftButton != ButtonState.Pressed &&
 				       Mouse.GetState().LeftButton == ButtonState.Pressed;
-			}else if (id == 1)
-			{
+			if (id == 1)
 				return LastFrameMouseState.RightButton != ButtonState.Pressed &&
 				       Mouse.GetState().RightButton == ButtonState.Pressed;
-			}else if (id == 2)
-			{
+			if (id == 2)
 				return LastFrameMouseState.MiddleButton != ButtonState.Pressed &&
 				       Mouse.GetState().MiddleButton == ButtonState.Pressed;
-			}else if (id == 3)
-			{
+			if (id == 3)
 				return LastFrameMouseState.XButton1 != ButtonState.Pressed &&
 				       Mouse.GetState().XButton1 == ButtonState.Pressed;
-			}else if (id == 4)
-			{
+			if (id == 4)
 				return LastFrameMouseState.XButton2 != ButtonState.Pressed &&
 				       Mouse.GetState().XButton2 == ButtonState.Pressed;
-			}
 
 			return false;
 		}
+
 		public static bool IsMouseButtonJustUp(int id = 0)
 		{
 			if (id == 0)
-			{
 				return LastFrameMouseState.LeftButton == ButtonState.Pressed &&
 				       Mouse.GetState().LeftButton != ButtonState.Pressed;
-			}else if (id == 1)
-			{
+			if (id == 1)
 				return LastFrameMouseState.RightButton == ButtonState.Pressed &&
 				       Mouse.GetState().RightButton != ButtonState.Pressed;
-			}else if (id == 2)
-			{
+			if (id == 2)
 				return LastFrameMouseState.MiddleButton == ButtonState.Pressed &&
 				       Mouse.GetState().MiddleButton != ButtonState.Pressed;
-			}else if (id == 3)
-			{
+			if (id == 3)
 				return LastFrameMouseState.XButton1 == ButtonState.Pressed &&
 				       Mouse.GetState().XButton1 != ButtonState.Pressed;
-			}else if (id == 4)
-			{
+			if (id == 4)
 				return LastFrameMouseState.XButton2 == ButtonState.Pressed &&
 				       Mouse.GetState().XButton2 != ButtonState.Pressed;
-			}
 
 			return false;
 		}

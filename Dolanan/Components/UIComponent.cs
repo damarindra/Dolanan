@@ -1,5 +1,4 @@
 ﻿using Dolanan.Core;
-using Dolanan.Engine;
 using Dolanan.Scene;
 
 namespace Dolanan.Components
@@ -28,24 +27,12 @@ namespace Dolanan.Components
 			}
 		}
 
+		public bool Interactable { get; set; }
+
 		public override void Start()
 		{
 			base.Start();
 			Owner = (UIActor) base.Owner;
 		}
-
-		public bool Interactable
-		{
-			get
-			{
-				return _interactable;
-			}
-			set
-			{
-				_interactable = value;
-			}
-		}
-
-		private bool _interactable;
 	}
 }

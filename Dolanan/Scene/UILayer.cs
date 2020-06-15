@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using Dolanan.Controller;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
@@ -57,7 +55,7 @@ namespace Dolanan.Scene
 				actor.Update(gameTime);
 				if (actor.GetType().IsSubclassOf(typeof(UIActor)))
 				{
-					UIActor ac = (UIActor) actor;
+					var ac = (UIActor) actor;
 					ac.RectTransform = ac.RectTransform;
 				}
 			}

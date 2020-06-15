@@ -11,46 +11,41 @@ namespace Dolanan.Components.UI
 	[Flags]
 	public enum ButtonStyle
 	{
-		None = 			0,
-		Tint = 			1,
-		Scale	=		2,
-		SwitchTexture =	4
+		None = 0,
+		Tint = 1,
+		Scale = 2,
+		SwitchTexture = 4
 	}
-	
+
 	public class Button : UIComponent
 	{
+		private ButtonState _buttonState;
+
+		private Image _image;
+		private Color _startColor = Color.White, _targetColor = Color.White;
+		private float _time;
+
+		public ButtonStyle ButtonStyle = ButtonStyle.Tint;
+		public ColorTint ColorTint = ColorTint.Default;
+		public Easing.Functions Easing = Core.Easing.Functions.CubicEaseOut;
+		public float EasingTime = .1f;
+		public ButtonAction OnPressedDown, OnPressedUp, OnPressed;
+
 		public Button(Actor owner) : base(owner)
 		{
 		}
-		public ButtonAction OnPressedDown, OnPressedUp, OnPressed;
 
 		// This can be Image or NineSlice
 		public Image Image
 		{
 			get
 			{
-				if(_image == null)
+				if (_image == null)
 					_image = Owner.GetComponent<Image>();
 				return _image;
 			}
 			private set => _image = value;
 		}
-
-		public ButtonStyle ButtonStyle = ButtonStyle.Tint;
-		public ColorTint ColorTint = ColorTint.Default;
-		public Easing.Functions Easing = Core.Easing.Functions.CubicEaseOut;
-		public float EasingTime = .1f;
-
-		private Image _image = null;
-		private float _time = 0f;
-
-		private enum ButtonState
-		{
-			None, Hovering, Pressed
-		}
-
-		private ButtonState _buttonState;
-		private Color _startColor = Color.White, _targetColor = Color.White;
 
 		public void SetImage(Image image)
 		{
@@ -64,21 +59,13 @@ namespace Dolanan.Components.UI
 
 			Owner.OnMouseEnter += () =>
 			{
-				if (_buttonState != ButtonState.Pressed)
-				{
-					_buttonState = ButtonState.Hovering;
-				}
+				if (_buttonState != ButtonState.Pressed) _buttonState = ButtonState.Hovering;
 				//TODO Create await / task / async
 			};
 			Owner.OnMouseExit += () =>
 			{
-				if (_buttonState == ButtonState.Hovering)
-				{
-					_buttonState = ButtonState.None;
-				}
+				if (_buttonState == ButtonState.Hovering) _buttonState = ButtonState.None;
 			};
-			
-			
 		}
 
 		public override void Update(GameTime gameTime)
@@ -86,29 +73,21 @@ namespace Dolanan.Components.UI
 			base.Update(gameTime);
 
 			if (Interactable)
-			{
 				if (Owner.IsMouseInside)
-				{
 					if (Input.IsMouseButtonJustPressed())
 					{
 						OnPressedDown?.Invoke();
 						_buttonState = ButtonState.Pressed;
 					}
-				}
-			}
 
 			if (_buttonState == ButtonState.Pressed)
 			{
 				if (Input.IsMouseButtonJustUp())
 				{
 					if (Owner.IsMouseInside)
-					{
 						_buttonState = ButtonState.Hovering;
-					}
 					else
-					{
 						_buttonState = ButtonState.None;
-					}
 					OnPressedUp?.Invoke();
 				}
 				else
@@ -118,22 +97,19 @@ namespace Dolanan.Components.UI
 			}
 
 			#region Interaction Effect
+
 			//TODO Interaction still shit. Dunno better implementation for this things, maybe await task? dunno tho
 			if (Image != null)
-			{
 				if (ButtonStyle.HasFlag(ButtonStyle.Tint))
 				{
 					if (!Interactable)
-					{
 						Image.TintColor = ColorTint.DisabledColor;
-					}
 					else
-					{
 						switch (_buttonState)
 						{
 							default:
 							case ButtonState.None:
-								if (Math.Abs(_time) > Single.Epsilon && _targetColor != ColorTint.NormalColor)
+								if (Math.Abs(_time) > float.Epsilon && _targetColor != ColorTint.NormalColor)
 								{
 									_targetColor = ColorTint.NormalColor;
 									_startColor = Image.TintColor;
@@ -147,7 +123,7 @@ namespace Dolanan.Components.UI
 
 								break;
 							case ButtonState.Hovering:
-								if (Math.Abs(_time) > Single.Epsilon && _targetColor != ColorTint.HighlightedColor)
+								if (Math.Abs(_time) > float.Epsilon && _targetColor != ColorTint.HighlightedColor)
 								{
 									_targetColor = ColorTint.HighlightedColor;
 									_startColor = Image.TintColor;
@@ -161,7 +137,7 @@ namespace Dolanan.Components.UI
 
 								break;
 							case ButtonState.Pressed:
-								if (Math.Abs(_time) > Single.Epsilon && _targetColor != ColorTint.PressedColor)
+								if (Math.Abs(_time) > float.Epsilon && _targetColor != ColorTint.PressedColor)
 								{
 									_targetColor = ColorTint.PressedColor;
 									_startColor = Image.TintColor;
@@ -174,12 +150,17 @@ namespace Dolanan.Components.UI
 								}
 
 								break;
-							
 						}
-					}
 				}
-			}
+
 			#endregion
+		}
+
+		private enum ButtonState
+		{
+			None,
+			Hovering,
+			Pressed
 		}
 	}
 
@@ -191,7 +172,8 @@ namespace Dolanan.Components.UI
 		public Color SelectedColor;
 		public Color DisabledColor;
 
-		public ColorTint(Color normalColor, Color highlightedColor, Color pressedColor, Color selectedColor, Color disabledColor)
+		public ColorTint(Color normalColor, Color highlightedColor, Color pressedColor, Color selectedColor,
+			Color disabledColor)
 		{
 			NormalColor = normalColor;
 			HighlightedColor = highlightedColor;

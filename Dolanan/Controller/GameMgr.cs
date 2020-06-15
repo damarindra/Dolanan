@@ -5,12 +5,12 @@ namespace Dolanan.Controller
 {
 	public static class GameMgr
 	{
-		public static GameMin Game { get; private set; }
-		public static SpriteBatch SpriteBatch { get; private set; }
 		public static readonly SamplerState DefaultSamplerState = SamplerState.PointClamp;
 		public static readonly BlendState DefaultBlendState = BlendState.AlphaBlend;
 		internal static DrawState DrawState = DrawState.Draw;
-		internal static RasterizerState RazterizerScissor = new RasterizerState() { ScissorTestEnable = true };
+		internal static RasterizerState RazterizerScissor = new RasterizerState {ScissorTestEnable = true};
+		public static GameMin Game { get; private set; }
+		public static SpriteBatch SpriteBatch { get; private set; }
 
 		public static void Init(GameMin game)
 		{
@@ -23,7 +23,7 @@ namespace Dolanan.Controller
 		}
 
 		/// <summary>
-		/// Same as SpriteBatch.Begin, but using default settings
+		///     Same as SpriteBatch.Begin, but using default settings
 		/// </summary>
 		/// <param name="transformMatrix"></param>
 		public static void BeginDraw(Matrix? transformMatrix = null,
@@ -35,14 +35,15 @@ namespace Dolanan.Controller
 			Effect effect = null)
 		{
 			SpriteBatch.Begin(transformMatrix: transformMatrix,
-				blendState: blendState?? DefaultBlendState, 
-				samplerState: samplerState?? DefaultSamplerState,
+				blendState: blendState ?? DefaultBlendState,
+				samplerState: samplerState ?? DefaultSamplerState,
 				depthStencilState: depthStencilState,
 				rasterizerState: rasterizerState,
 				effect: effect);
 		}
+
 		/// <summary>
-		/// Same as SpriteBatch.Begin, but using default settings. This will draw in Draw method (World Space)
+		///     Same as SpriteBatch.Begin, but using default settings. This will draw in Draw method (World Space)
 		/// </summary>
 		public static void BeginDrawWorld(
 			SpriteSortMode sortMode = SpriteSortMode.Deferred,
@@ -52,15 +53,17 @@ namespace Dolanan.Controller
 			RasterizerState rasterizerState = null,
 			Effect effect = null)
 		{
-			SpriteBatch.Begin(transformMatrix: Game.World.Camera.GetTopLeftMatrix(), 
-				blendState: blendState?? DefaultBlendState,
-				samplerState: samplerState?? DefaultSamplerState,
+			SpriteBatch.Begin(transformMatrix: Game.World.Camera.GetTopLeftMatrix(),
+				blendState: blendState ?? DefaultBlendState,
+				samplerState: samplerState ?? DefaultSamplerState,
 				depthStencilState: depthStencilState,
 				rasterizerState: rasterizerState,
 				effect: effect);
 		}
+
 		/// <summary>
-		/// Same as SpriteBatch.Begin, but using default settings. Automatically select between Draw (World Space) / BackDraw (Window)
+		///     Same as SpriteBatch.Begin, but using default settings. Automatically select between Draw (World Space) / BackDraw
+		///     (Window)
 		/// </summary>
 		public static void BeginDrawAuto(
 			SpriteSortMode sortMode = SpriteSortMode.Deferred,
@@ -70,7 +73,7 @@ namespace Dolanan.Controller
 			RasterizerState rasterizerState = null,
 			Effect effect = null)
 		{
-			if(DrawState == DrawState.Draw)
+			if (DrawState == DrawState.Draw)
 				BeginDrawWorld(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect);
 			else
 				BeginDraw(null, sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect);
@@ -84,6 +87,8 @@ namespace Dolanan.Controller
 
 	public enum DrawState
 	{
-		Draw, BackDraw, None
+		Draw,
+		BackDraw,
+		None
 	}
 }

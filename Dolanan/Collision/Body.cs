@@ -38,7 +38,7 @@ namespace Dolanan.Collision
 			base.Start();
 			if (Owner.Layer.IsLoaded)
 				GameMgr.Game.World.Colliders.Add(this);
-			
+
 			// This handle the parent change. Ex : when Actor.Detach is called, the parent will be null, which mean
 			// it needs to be removed from the world collision.
 			Owner.OnParentChange += parent =>
@@ -47,7 +47,7 @@ namespace Dolanan.Collision
 				if (parent == null)
 					GameMgr.Game.World.Colliders.Remove(this);
 				// add if parent is not null
-				else if(!GameMgr.Game.World.Colliders.Contains(this))
+				else if (!GameMgr.Game.World.Colliders.Contains(this))
 					GameMgr.Game.World.Colliders.Add(this);
 			};
 		}

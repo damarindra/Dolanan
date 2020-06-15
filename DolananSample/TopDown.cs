@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using Dolanan;
-using Dolanan.Collision;
+﻿using Dolanan;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
@@ -12,7 +9,6 @@ using Dolanan.Scene;
 using Dolanan.Scene.Object;
 using Dolanan.ThirdParty;
 using Dolanan.Tools;
-using Dolanan.Tools.GameHelper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -46,7 +42,7 @@ namespace DolananSample
 			fd.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("square_64x64");
 			fd.Location = Vector2.One * 64;
 			fd.Rotation = MathHelper.ToRadians(45);
-			
+
 			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
 			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
 			Slice slice;
@@ -67,13 +63,13 @@ namespace DolananSample
 			{
 			}
 
-			
+
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			Canvas.ReceiveMouseInput = false;
-			
+
 			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
 			// img = topLeft.AddComponent<Image>();
 			// img.Texture2D = _uiTexture;
@@ -83,7 +79,7 @@ namespace DolananSample
 			// topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
 			// topLeft.RectTransform.Anchor = Anchor.TopLeft;
 			// topLeft.SetParent(Canvas);
-			
+
 			var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
 			img = topCenter.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
@@ -130,7 +126,7 @@ namespace DolananSample
 			ResFont.Instance.TryGet("bitty", out var f);
 			l.Font = f;
 			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is";
-			
+
 			// var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
 			// img = topRight.AddComponent<Image>();
 			// img.Texture2D = _uiTexture;
@@ -161,10 +157,7 @@ namespace DolananSample
 			middleCenter.SetParent(Canvas);
 			middleCenter.ReceiveMouseInput = true;
 			var btn = middleCenter.AddComponent<Button>();
-			btn.OnPressed += () =>
-			{
-				middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2();
-			};
+			btn.OnPressed += () => { middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2(); };
 			middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
 
 			//
@@ -246,7 +239,6 @@ namespace DolananSample
 			// //
 			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
 			// stretchHorizontal.SetParent(Canvas);
-
 		}
 
 		protected override void Draw(GameTime gameTime)
@@ -307,7 +299,8 @@ namespace DolananSample
 		protected override void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
 			base.BackDraw(gameTime, worldRect);
-			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.WorldToScreen(p.Transform.GlobalLocation), new Point(5, 5)), null, Color.Yellow);
+			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel,
+				new Rectangle(Camera.WorldToScreen(p.Transform.GlobalLocation), new Point(5, 5)), null, Color.Yellow);
 		}
 	}
 

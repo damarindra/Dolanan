@@ -1,6 +1,4 @@
-﻿using System;
-using Dolanan.Components;
-using Dolanan.Controller;
+﻿using Dolanan.Components;
 using Dolanan.Engine;
 using Dolanan.Scene;
 using Dolanan.Tools;
@@ -9,11 +7,11 @@ using Microsoft.Xna.Framework;
 namespace Dolanan.Core
 {
 	/// <summary>
-	/// RectTransform is used for UI Transforming stuff. Parent of UITransform can be Transform2D or RectTransform itself
-	/// Anchoring only work when parent are RectTransform
-	/// Location => Top Left of the rectangle.
-	/// Use LocationByPivot to getting the local location of from parent location and pivot location
-	/// All calculation is based on Rectangle.Location (Top Left). Pivot only to make developer easier to use this
+	///     RectTransform is used for UI Transforming stuff. Parent of UITransform can be Transform2D or RectTransform itself
+	///     Anchoring only work when parent are RectTransform
+	///     Location => Top Left of the rectangle.
+	///     Use LocationByPivot to getting the local location of from parent location and pivot location
+	///     All calculation is based on Rectangle.Location (Top Left). Pivot only to make developer easier to use this
 	/// </summary>
 	public class RectTransform : Transform2D
 	{
@@ -30,8 +28,8 @@ namespace Dolanan.Core
 			{
 				if (_rectangle.Location != value.Location)
 				{
-					
 				}
+
 				_rectangle = value;
 
 				UpdateAnchorOffset();
@@ -39,11 +37,12 @@ namespace Dolanan.Core
 				UpdateChildsRectTransform();
 			}
 		}
+
 		public RectangleF GlobalRectangle => new RectangleF(GlobalLocation, Rectangle.Size);
 
 		/// <summary>
-		/// Anchor from the parent. Anchor will automatically adjusting the Rectangle, location and it size.
-		/// Anchor doesn't act as Rectangle offset, so setting location do not relative to anchor  
+		///     Anchor from the parent. Anchor will automatically adjusting the Rectangle, location and it size.
+		///     Anchor doesn't act as Rectangle offset, so setting location do not relative to anchor
 		/// </summary>
 		public Anchor Anchor
 		{
@@ -58,7 +57,7 @@ namespace Dolanan.Core
 		}
 
 		/// <summary>
-		/// Rectangle of the Anchor. If the Anchor is not stretch (Rectangle), will return empty rectangle with right location
+		///     Rectangle of the Anchor. If the Anchor is not stretch (Rectangle), will return empty rectangle with right location
 		/// </summary>
 		public RectangleF AnchorRect
 		{
@@ -85,8 +84,8 @@ namespace Dolanan.Core
 				//just force to world ui if the layer is type`Layer`
 				if (Owner.Layer.GetType() == typeof(Layer))
 					return UISpace.World;
-				
-				UILayer layer = (UILayer) Owner.Layer;
+
+				var layer = (UILayer) Owner.Layer;
 				return layer.UISpace;
 			}
 		}
@@ -95,63 +94,56 @@ namespace Dolanan.Core
 		public Vector2 RectSize => Rectangle.Size;
 
 		/// <summary>
-		/// Location is calculated from the TopLeft of the Rectangle. Location relative only to its parent location (also top left if UI)
+		///     Location is calculated from the TopLeft of the Rectangle. Location relative only to its parent location (also top
+		///     left if UI)
 		/// </summary>
 		public override Vector2 Location
 		{
 			get => base.Location;
-			set
-			{
-				SetRectLocation(value);
-			}
+			set => SetRectLocation(value);
 		}
 
 		/// <summary>
-		/// Location is calculated from the TopLeft of the Rectangle
+		///     Location is calculated from the TopLeft of the Rectangle
 		/// </summary>
 		public override Vector2 GlobalLocation
 		{
 			get => base.GlobalLocation;
-			set
-			{
-				Location = value - ParentGlobalLocation;
-			}
+			set => Location = value - ParentGlobalLocation;
 		}
 
 		public Point ScreenLocation
 		{
 			get
 			{
-				if (UISpace == UISpace.World)
-				{
-					Camera.WorldToScreen(GlobalLocation);
-				}
+				if (UISpace == UISpace.World) Camera.WorldToScreen(GlobalLocation);
 
 				return GlobalLocation.ToPoint();
 			}
 		}
-		
+
 		/// <summary>
-		/// Location by Pivot, remember to set the Pivot and Rect Size before set the location.
+		///     Location by Pivot, remember to set the Pivot and Rect Size before set the location.
 		/// </summary>
 		public Vector2 LocationByPivot
 		{
 			get => Rectangle.Location + Pivot * Rectangle.Size;
 			set
 			{
-				Vector2 loc = value - Pivot * Rectangle.Size;
+				var loc = value - Pivot * Rectangle.Size;
 				SetRectLocation(loc);
 			}
 		}
+
 		/// <summary>
-		/// Global Location by Pivot, remember to set the Pivot and Rect Size before set the location.
+		///     Global Location by Pivot, remember to set the Pivot and Rect Size before set the location.
 		/// </summary>
 		public Vector2 GlobalLocationByPivot
 		{
 			get => GlobalLocation + Pivot * Rectangle.Size;
 			set
 			{
-				Vector2 loc = value - Pivot * Rectangle.Size;
+				var loc = value - Pivot * Rectangle.Size;
 				if (Parent != null)
 					loc -= Parent.GlobalLocation;
 				SetRectLocation(loc);
@@ -163,10 +155,7 @@ namespace Dolanan.Core
 		{
 			get
 			{
-				if (UISpace == UISpace.World)
-				{
-					Camera.WorldToScreen(GlobalLocationByPivot);
-				}
+				if (UISpace == UISpace.World) Camera.WorldToScreen(GlobalLocationByPivot);
 
 				return GlobalLocationByPivot.ToPoint();
 			}
@@ -213,13 +202,13 @@ namespace Dolanan.Core
 		}
 
 		public UIActor UIParent { get; set; }
-		
+
 		#endregion
 
 		#region Fields
 
 		/// <summary>
-		/// Pivot / Center of the rect location
+		///     Pivot / Center of the rect location
 		/// </summary>
 		public Pivot Pivot = Pivot.TopLeft;
 
@@ -274,16 +263,14 @@ namespace Dolanan.Core
 				var bottom = anchorRect.Bottom + _offsetMax.Y;
 				_rectangle = new RectangleF(left, top, right - left, bottom - top);
 			}
-			
+
 			base.Location = _rectangle.Location;
 		}
 
 		protected void UpdateChildsRectTransform()
 		{
 			foreach (var child in Childs)
-			{
 				if (child.GetType() == typeof(RectTransform) || child.GetType().IsSubclassOf(typeof(RectTransform)))
-				{
 					if (child.Owner.GetType() == typeof(UIActor) || child.Owner.GetType().IsSubclassOf(typeof(UIActor)))
 					{
 						var uiActor = (UIActor) child.Owner;
@@ -291,8 +278,6 @@ namespace Dolanan.Core
 						uiActor.RectTransform.UpdateRectTransform();
 						uiActor.RectTransform.UpdateChildsRectTransform();
 					}
-				}
-			}
 		}
 
 		public void SetRectLocation(Vector2 location)
@@ -315,20 +300,15 @@ namespace Dolanan.Core
 			OnParentChange += parent =>
 			{
 				if (parent != null)
-				{
-					if (parent.Owner.GetType() == (typeof(UIActor)) ||
+					if (parent.Owner.GetType() == typeof(UIActor) ||
 					    parent.Owner.GetType().IsSubclassOf(typeof(UIActor)))
-					{
 						UIParent = (UIActor) parent.Owner;
-					}
-				}
 			};
 		}
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
 			base.Draw(gameTime, layerZDepth);
-
 		}
 
 		#endregion

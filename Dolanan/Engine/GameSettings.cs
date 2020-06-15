@@ -141,7 +141,8 @@ namespace Dolanan.Engine
 
 		Height
 		// TODO : Expand will use the most possible between width or height ( we don't really need this actually)
-		, Expand
+		,
+		Expand
 	}
 
 	public enum WindowMode

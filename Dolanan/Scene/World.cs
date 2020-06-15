@@ -18,9 +18,6 @@ namespace Dolanan.Scene
 		private int _defaultLayer = 1;
 		public Camera Camera;
 
-		protected List<Layer> Layers { get; private set; } = new List<Layer>();
-		protected List<UILayer> UILayers { get; private set; } = new List<UILayer>();
-
 		public World()
 		{
 			Initialize();
@@ -30,6 +27,11 @@ namespace Dolanan.Scene
 
 			Camera = GetDefaultLayer().AddActor<Camera>("Camera");
 		}
+
+		protected List<Layer> Layers { get; } = new List<Layer>();
+		protected List<UILayer> UILayers { get; private set; } = new List<UILayer>();
+
+		public int LayerCount => Layers.Count;
 
 		/// <summary>
 		///     Create new layer, if the layerZ already exist, return it
@@ -57,8 +59,6 @@ namespace Dolanan.Scene
 					(int) collisionCollider.Min.Y,
 					(int) collisionCollider.Size.X, (int) collisionCollider.Size.Y), Color.White);
 		}
-
-		public int LayerCount => Layers.Count;
 
 		#region GameCycle
 
@@ -110,12 +110,10 @@ namespace Dolanan.Scene
 		public virtual void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
 			foreach (var layer in Layers)
-			{
-				if(!UILayers.Contains(layer) || ((UILayer) layer).UISpace == UISpace.World)
+				if (!UILayers.Contains(layer) || ((UILayer) layer).UISpace == UISpace.World)
 					layer.Draw(gameTime, layerZDepth);
-			}
 		}
-		
+
 		/// <summary>
 		///     Render after BackBufferRender (Whole game world render). It useful for debugging, fixed rendering to screen, etc
 		/// </summary>
@@ -125,11 +123,9 @@ namespace Dolanan.Scene
 		{
 			// SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.ScreenToCameraSpace(Mouse.GetState().Position),
 			// 	new Point(5, 5)), Color.Yellow);
-			foreach (UILayer layer in UILayers)
-			{
-				if(layer.UISpace == UISpace.Window)
+			foreach (var layer in UILayers)
+				if (layer.UISpace == UISpace.Window)
 					layer.BackDraw(gameTime, worldRect);
-			}
 		}
 
 		#endregion

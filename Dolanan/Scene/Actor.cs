@@ -23,36 +23,10 @@ namespace Dolanan.Scene
 		protected readonly List<Component> Components = new List<Component>();
 
 		public string Name;
+		public LayerState OnLayerChange;
 
 		public ParentState OnParentChange;
-		public LayerState OnLayerChange;
 		public Transform2D Transform;
-
-		public virtual Vector2 Location
-		{
-			get => Transform.Location;
-			set => Transform.Location = value;
-		}
-		public virtual Vector2 GlobalLocation
-		{
-			get => Transform.GlobalLocation;
-			set => Transform.GlobalLocation = value;
-		}
-		public virtual float Rotation
-		{
-			get => Transform.Rotation;
-			set => Transform.Rotation = value;
-		}
-		public virtual float GlobalRotation
-		{
-			get => Transform.GlobalRotation;
-			set => Transform.GlobalRotation = value;
-		}
-		public virtual Vector2 Scale
-		{
-			get => Transform.LocalScale;
-			set => Transform.LocalScale = value;
-		}
 
 		public Actor(string name, [NotNull] Layer layer)
 		{
@@ -62,6 +36,36 @@ namespace Dolanan.Scene
 			Transform = AddComponent<Transform2D>();
 			layer.AddActor(this);
 			Start();
+		}
+
+		public virtual Vector2 Location
+		{
+			get => Transform.Location;
+			set => Transform.Location = value;
+		}
+
+		public virtual Vector2 GlobalLocation
+		{
+			get => Transform.GlobalLocation;
+			set => Transform.GlobalLocation = value;
+		}
+
+		public virtual float Rotation
+		{
+			get => Transform.Rotation;
+			set => Transform.Rotation = value;
+		}
+
+		public virtual float GlobalRotation
+		{
+			get => Transform.GlobalRotation;
+			set => Transform.GlobalRotation = value;
+		}
+
+		public virtual Vector2 Scale
+		{
+			get => Transform.LocalScale;
+			set => Transform.LocalScale = value;
 		}
 
 		public Layer Layer { get; internal set; }
@@ -111,7 +115,7 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		/// Remove parent and layer references.
+		///     Remove parent and layer references.
 		/// </summary>
 		public void Detach()
 		{
@@ -134,15 +138,15 @@ namespace Dolanan.Scene
 		///     Set parent. If parent in different layer, this layer will be the same as parent layer
 		/// </summary>
 		/// <param name="parent"></param>
-		public void SetParent([NotNull]Actor parent)
+		public void SetParent([NotNull] Actor parent)
 		{
-			if(parent == this || Transform.Parent == parent.Transform)
+			if (parent == this || Transform.Parent == parent.Transform)
 				return;
 			Transform.Parent = parent.Transform;
 			OnParentChange?.Invoke(parent);
 		}
 
-		public void SetLayer([NotNull ]Layer layer)
+		public void SetLayer([NotNull] Layer layer)
 		{
 			if (Transform.Parent != null)
 			{
@@ -150,7 +154,7 @@ namespace Dolanan.Scene
 				Log.PrintError("Trying to set layer on Child actor. Do it from the root Node!");
 				return;
 			}
-			
+
 
 			// set the new layer, take care everything needs to be done.
 			layer.AddActor(this);
@@ -158,7 +162,7 @@ namespace Dolanan.Scene
 
 		public override string ToString()
 		{
-			return Name + " (" + GetType()+ ")";
+			return Name + " (" + GetType() + ")";
 		}
 	}
 }

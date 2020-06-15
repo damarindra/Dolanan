@@ -40,6 +40,7 @@ namespace Dolanan.Scene
 		public bool IsLoaded { get; private set; }
 
 		public World GameWorld { get; }
+
 		// TODO : LayerZ used for layerDepth spriteBatch.Draw, the range only between 0 - 1, so fix this!
 		public int LayerZ { get; }
 
@@ -70,9 +71,10 @@ namespace Dolanan.Scene
 			if (!IsLoaded)
 				return;
 			foreach (var actor in Actors)
-				actor.Draw(gameTime, AutoYSort ? actor.Transform.Location.Y * float.Epsilon : LayerZ / (float)GameWorld.LayerCount);
+				actor.Draw(gameTime,
+					AutoYSort ? actor.Transform.Location.Y * float.Epsilon : LayerZ / (float) GameWorld.LayerCount);
 		}
-		
+
 		/// <summary>
 		///     Add Actor to the current layer.
 		/// </summary>
@@ -86,11 +88,11 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		///     Internal use only, please use <see cref="AddActor{T}"/> for creating new actor.
-		/// 	This function only useful when you want to move actor to new layer. All childs will move to this layer too
+		///     Internal use only, please use <see cref="AddActor{T}" /> for creating new actor.
+		///     This function only useful when you want to move actor to new layer. All childs will move to this layer too
 		/// </summary>
 		/// <param name="actor">Actor</param>
-		internal void AddActor([NotNull]Actor actor)
+		internal void AddActor([NotNull] Actor actor)
 		{
 			if (actor.Layer != null && actor.Layer != this) actor.Layer.Actors.Remove(actor);
 			if (Actors.Contains(actor))
@@ -101,10 +103,7 @@ namespace Dolanan.Scene
 
 			Actors.Add(actor);
 			actor.OnLayerChange?.Invoke(this);
-			foreach (var child in actor.Transform.Childs)
-			{
-				AddActor(child.Owner);
-			}
+			foreach (var child in actor.Transform.Childs) AddActor(child.Owner);
 		}
 
 		public T GetActor<T>()
@@ -118,20 +117,21 @@ namespace Dolanan.Scene
 		}
 
 		/// <summary>
-		/// Removing actor from layer. Only allowed root actor. Use Actor.Detach, it is safer
+		///     Removing actor from layer. Only allowed root actor. Use Actor.Detach, it is safer
 		/// </summary>
 		/// <param name="actor"></param>
 		public void RemoveActor(Actor actor)
 		{
 			if (actor.Transform.Parent != null)
 			{
-				Log.PrintError("Trying to remove non-root Actor from layer : " + LayerZ + ". This is not allowed. Use Actor.RemoveChild.");
+				Log.PrintError("Trying to remove non-root Actor from layer : " + LayerZ +
+				               ". This is not allowed. Use Actor.RemoveChild.");
 				return;
 			}
-			
+
 			Actors.Remove(actor);
 			actor.Layer = null;
-			
+
 			RemoveActorRecursive(actor);
 		}
 

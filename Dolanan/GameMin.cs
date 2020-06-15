@@ -22,15 +22,11 @@ namespace Dolanan
 		private bool _debugShowCollision;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 
-		
+
 		protected RenderTarget2D RenderTarget;
 		protected SpriteBatch SpriteBatch;
 		public World World;
 
-		public float ScaleRenderTarget => GameSettings.WindowKeep == WindowSizeKeep.Width ? _scaleRenderTarget.X : _scaleRenderTarget.Y;
-
-		public Rectangle RenderDestination { get; private set; }
-		
 		public GameMin()
 		{
 			Graphics = new GraphicsDeviceManager(this);
@@ -46,6 +42,12 @@ namespace Dolanan
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 		}
+
+		public float ScaleRenderTarget => GameSettings.WindowKeep == WindowSizeKeep.Width
+			? _scaleRenderTarget.X
+			: _scaleRenderTarget.Y;
+
+		public Rectangle RenderDestination { get; private set; }
 
 		public GraphicsDeviceManager Graphics { get; }
 
@@ -134,7 +136,7 @@ namespace Dolanan
 			base.Update(gameTime);
 
 			World.LateUpdate(gameTime);
-			
+
 			Input.LastFrameKeyboardState = Keyboard.GetState();
 			Input.LastFrameGamePadState = GamePad.GetState(0);
 			Input.LastFrameMouseState = Mouse.GetState();
@@ -198,7 +200,6 @@ namespace Dolanan
 		/// <param name="worldRect">The back buffer render size</param>
 		protected virtual void BackDraw(GameTime gameTime, Rectangle worldRect)
 		{
-
 			// SpriteBatch.Draw(ScreenDebugger.Pixel, new Rectangle(Camera.ScreenToCameraSpace(Mouse.GetState().Position),
 			// 	new Point(5, 5)), Color.Yellow);
 			World.BackDraw(gameTime, worldRect);
@@ -212,7 +213,7 @@ namespace Dolanan
 			GraphicsDevice.SetRenderTarget(null);
 			SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
 			// destination is window screen space!
-			Rectangle _rectangle = new Rectangle();
+			var _rectangle = new Rectangle();
 			_rectangle.Width = (int) (World.Camera.ViewportRectSize.X * ScaleRenderTarget);
 			_rectangle.Height = (int) (World.Camera.ViewportRectSize.Y * ScaleRenderTarget);
 

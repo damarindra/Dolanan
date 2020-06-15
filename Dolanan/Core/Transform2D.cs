@@ -13,13 +13,13 @@ namespace Dolanan.Engine
 	public class Transform2D : Component
 	{
 		private Vector2 _localScale = Vector2.One;
+		private Vector2 _location = Vector2.Zero;
 
 		private Matrix _matrix = Matrix.Identity;
 		private Transform2D _parent;
-		private Vector2 _location = Vector2.Zero;
 		private float _rotation;
-		public TransformParentChange OnParentChange;
 		internal List<Transform2D> Childs = new List<Transform2D>();
+		public TransformParentChange OnParentChange;
 
 		public Transform2D(Actor owner) : base(owner)
 		{
@@ -38,6 +38,7 @@ namespace Dolanan.Engine
 					_parent.Childs.Remove(this);
 					_parent = null;
 				}
+
 				_parent = value;
 				if (_parent != null)
 				{
@@ -45,12 +46,13 @@ namespace Dolanan.Engine
 					if (_parent.Owner.Layer != Owner.Layer)
 						Owner.SetLayer(_parent.Owner.Layer);
 				}
+
 				OnParentChange?.Invoke(value);
 			}
 		}
 
 		/// <summary>
-		/// Local Location
+		///     Local Location
 		/// </summary>
 		public virtual Vector2 Location
 		{
@@ -63,7 +65,7 @@ namespace Dolanan.Engine
 		}
 
 		/// <summary>
-		/// Global Location
+		///     Global Location
 		/// </summary>
 		public virtual Vector2 GlobalLocation
 		{

@@ -49,11 +49,9 @@ namespace Dolanan.Components.UI
 			get
 			{
 				if (_center == Rectangle.Empty)
-				{
-					_center = new Rectangle((int) 1, (int) 1,
-						(int) TextureRectangle.Width - 2,
-						(int) TextureRectangle.Height - 2);
-				}
+					_center = new Rectangle(1, 1,
+						TextureRectangle.Width - 2,
+						TextureRectangle.Height - 2);
 
 				return _center;
 			}
