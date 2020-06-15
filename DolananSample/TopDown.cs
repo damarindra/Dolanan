@@ -119,13 +119,15 @@ namespace DolananSample
 			label.SetParent(topCenter2);
 			label.Transform.Anchor = Anchor.BottomCenter;
 			label.Transform.Location = Vector2.Zero;
-			label.Transform.SetRectSize(new Vector2(100, 30));
+			label.Transform.SetRectSize(new Vector2(100, 100));
 			label.Clip = true;
 			var l = label.AddComponent<Label>();
 			l.AutoSize = false;
 			ResFont.Instance.TryGet("bitty", out var f);
 			l.Font = f;
 			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is";
+			l.TextAlign = TextAlign.Center;
+			l.TextVAlign = TextVAlign.Middle;
 
 			// var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
 			// img = topRight.AddComponent<Image>();
@@ -260,29 +262,29 @@ namespace DolananSample
 			if (Keyboard.GetState().IsKeyDown(Keys.L))
 			{
 				if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-					Canvas.RectTransform.Right += 1f;
-				else Canvas.RectTransform.Right -= 1f;
+					Canvas.RectTransform.RightRect += 1f;
+				else Canvas.RectTransform.RightRect -= 1f;
 			}
 
 			if (Keyboard.GetState().IsKeyDown(Keys.K))
 			{
 				if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-					Canvas.RectTransform.Bottom += 1f;
-				else Canvas.RectTransform.Bottom -= 1f;
+					Canvas.RectTransform.BottomRect += 1f;
+				else Canvas.RectTransform.BottomRect -= 1f;
 			}
 
 			if (Keyboard.GetState().IsKeyDown(Keys.J))
 			{
 				if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-					Canvas.RectTransform.Left += 1f;
-				else Canvas.RectTransform.Left -= 1f;
+					Canvas.RectTransform.LeftRect += 1f;
+				else Canvas.RectTransform.LeftRect -= 1f;
 			}
 
 			if (Keyboard.GetState().IsKeyDown(Keys.I))
 			{
 				if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-					Canvas.RectTransform.Top += 1f;
-				else Canvas.RectTransform.Top -= 1f;
+					Canvas.RectTransform.TopRect += 1f;
+				else Canvas.RectTransform.TopRect -= 1f;
 			}
 		}
 

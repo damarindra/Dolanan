@@ -1,4 +1,5 @@
-﻿using Dolanan.Controller;
+﻿using System;
+using Dolanan.Controller;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,7 @@ namespace Dolanan.Components.UI
 		/// <summary>
 		///     Automatically resize whenever text is out of RectTransform
 		/// </summary>
+		[Obsolete]
 		public bool AutoSize = true;
 
 		public SpriteFont Font = null;
@@ -20,6 +22,26 @@ namespace Dolanan.Components.UI
 		public TextVAlign TextVAlign = TextVAlign.Top;
 
 		public Color TintColor = Color.White;
+
+		private Vector2 TextLocation
+		{
+			get
+			{
+				Vector2 result = Transform.GlobalLocation;
+				var size = Font.MeasureString(_text);
+				if (TextAlign == TextAlign.Right)
+					result.X += Transform.RightRect - size.X;
+				else if (TextAlign == TextAlign.Center)
+					result.X += Transform.RectSize.X / 2f - size.X / 2f;
+
+				if (TextVAlign == TextVAlign.Bottom)
+					result.Y += Transform.BottomRect - size.Y;
+				else if (TextVAlign == TextVAlign.Middle)
+					result.Y += Transform.RectSize.Y / 2f - size.Y / 2f;
+
+				return result;
+			}
+		}
 
 		public Label(Actor owner) : base(owner)
 		{
@@ -45,7 +67,7 @@ namespace Dolanan.Components.UI
 			if (Font == null)
 				return;
 
-			GameMgr.SpriteBatch.DrawString(Font, _text, Transform.GlobalLocation, TintColor);
+			GameMgr.SpriteBatch.DrawString(Font, _text, TextLocation, TintColor);
 		}
 	}
 

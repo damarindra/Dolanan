@@ -161,7 +161,7 @@ namespace Dolanan.Core
 			}
 		}
 
-		public float Left
+		public float LeftRect
 		{
 			get => Rectangle.Left;
 			set
@@ -171,7 +171,7 @@ namespace Dolanan.Core
 			}
 		}
 
-		public float Right
+		public float RightRect
 		{
 			get => Rectangle.Right;
 			set
@@ -181,7 +181,7 @@ namespace Dolanan.Core
 			}
 		}
 
-		public float Top
+		public float TopRect
 		{
 			get => Rectangle.Top;
 			set
@@ -191,7 +191,7 @@ namespace Dolanan.Core
 			}
 		}
 
-		public float Bottom
+		public float BottomRect
 		{
 			get => Rectangle.Bottom;
 			set
