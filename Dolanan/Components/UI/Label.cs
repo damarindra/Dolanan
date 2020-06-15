@@ -1,4 +1,5 @@
-﻿using Dolanan.Controller;
+﻿using System;
+using Dolanan.Controller;
 using Dolanan.Core;
 using Dolanan.Engine;
 using Dolanan.Scene;
@@ -39,25 +40,14 @@ namespace Dolanan.Components.UI
 		public Color TintColor = Color.White;
 
 		private string _text = "";
-		private RasterizerState _rasterizer = new RasterizerState() { ScissorTestEnable = true };
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
 			base.Draw(gameTime, layerZDepth);
 			if(Font == null)
 				return;
-			GameMgr.EndDraw();
 			
-			Rectangle currentRect = GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle;
-			GameMgr.BeginDrawAuto(rasterizerState: _rasterizer, blendState: BlendState.AlphaBlend, sortMode: SpriteSortMode.Immediate);
-
-			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = Transform.GlobalRectangle.ToRectangle();
 			GameMgr.SpriteBatch.DrawString(Font, _text, Transform.GlobalLocation, TintColor);
-
-			GameMgr.EndDraw();
-			GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
-			
-			GameMgr.BeginDrawAuto();
 		}
 	}
 

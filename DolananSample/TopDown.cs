@@ -124,6 +124,7 @@ namespace DolananSample
 			label.Transform.Anchor = Anchor.BottomCenter;
 			label.Transform.Location = Vector2.Zero;
 			label.Transform.SetRectSize(new Vector2(100, 30));
+			label.Clip = true;
 			var l = label.AddComponent<Label>();
 			l.AutoSize = false;
 			ResFont.Instance.TryGet("bitty", out var f);

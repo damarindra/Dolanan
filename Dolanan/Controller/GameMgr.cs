@@ -10,6 +10,7 @@ namespace Dolanan.Controller
 		public static readonly SamplerState DefaultSamplerState = SamplerState.PointClamp;
 		public static readonly BlendState DefaultBlendState = BlendState.AlphaBlend;
 		internal static DrawState DrawState = DrawState.Draw;
+		internal static RasterizerState RazterizerScissor = new RasterizerState() { ScissorTestEnable = true };
 
 		public static void Init(GameMin game)
 		{

@@ -64,15 +64,15 @@ namespace Dolanan.Core
 		{
 			get
 			{
-				if (ParentUI == null)
+				if (UIParent == null)
 				{
 					Log.PrintError(
 						"Trying to get Anchor Rect, but doesn't have any parent, returning default Rectangle");
 					return _rectangle;
 				}
 
-				var min = Anchor.Min * ParentUI.RectTransform.Rectangle.Size;
-				var max = Anchor.Max * ParentUI.RectTransform.Rectangle.Size;
+				var min = Anchor.Min * UIParent.RectTransform.Rectangle.Size;
+				var max = Anchor.Max * UIParent.RectTransform.Rectangle.Size;
 
 				return new RectangleF(min, max - min);
 			}
@@ -212,7 +212,7 @@ namespace Dolanan.Core
 			}
 		}
 
-		public UIActor ParentUI { get; set; }
+		public UIActor UIParent { get; set; }
 		
 		#endregion
 
@@ -247,7 +247,7 @@ namespace Dolanan.Core
 
 		private void UpdateAnchorOffset()
 		{
-			if (ParentUI != null)
+			if (UIParent != null)
 			{
 				var anchorRect = AnchorRect;
 
@@ -264,7 +264,7 @@ namespace Dolanan.Core
 		public void UpdateRectTransform()
 		{
 			// Updating rect transform
-			if (ParentUI != null)
+			if (UIParent != null)
 			{
 				var anchorRect = AnchorRect;
 
@@ -319,7 +319,7 @@ namespace Dolanan.Core
 					if (parent.Owner.GetType() == (typeof(UIActor)) ||
 					    parent.Owner.GetType().IsSubclassOf(typeof(UIActor)))
 					{
-						ParentUI = (UIActor) parent.Owner;
+						UIParent = (UIActor) parent.Owner;
 					}
 				}
 			};

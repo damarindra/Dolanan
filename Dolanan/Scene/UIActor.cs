@@ -5,6 +5,7 @@ using Dolanan.Core;
 using Dolanan.Engine;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Dolanan.Scene
@@ -28,7 +29,62 @@ namespace Dolanan.Scene
 		public bool ReceiveMouseInput = true;
 		public UIMouseState OnMouseEnter, OnMouseExit;
 		internal bool IsMouseInside = false;
+		/// <summary>
+		/// Clipping all renderer type component (children affected)
+		/// </summary>
+		public bool Clip = false;
+
+		/// <summary>
+		/// If parent Clip is true?
+		/// </summary>
+		public bool IsGlobalClipped
+		{
+			get
+			{
+				bool result = Clip;
+				
+				
+				UIActor p = UIParent;
+				while (p != null)
+				{
+					if (p.Clip)
+					{
+						result = true;
+						break;
+					}
+					
+					p = p.UIParent;
+				}
+
+				return result;
+			}
+		}
 		
+		
+		/// <summary>
+		/// Used for clipping any type of renderer (Image, label, etc)
+		/// </summary>
+		public Rectangle GlobalRectangleClip
+		{
+			get
+			{
+				Rectangle result = Clip ? RectTransform.GlobalRectangle.ToRectangle() : GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle;
+
+				UIActor p = UIParent;
+				while (p != null)
+				{
+					if (p.Clip)
+					{
+						result = Rectangle.Intersect(result, p.RectTransform.Rectangle.ToRectangle());
+					}
+
+					p = p.UIParent;
+				}
+				
+				return result;
+			}
+		}
+
 		private enum MouseState
 		{
 			Inside, Outside
@@ -77,7 +133,22 @@ namespace Dolanan.Scene
 
 		public override void Draw(GameTime gameTime, float layerZDepth)
 		{
-			base.Draw(gameTime, layerZDepth);
+			if (IsGlobalClipped)
+			{
+				GameMgr.EndDraw();
+				Rectangle currentRect = GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle;
+				GameMgr.BeginDrawAuto(rasterizerState: GameMgr.RazterizerScissor, 
+					blendState: BlendState.AlphaBlend, sortMode: SpriteSortMode.Immediate);
+				GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = GlobalRectangleClip;
+				base.Draw(gameTime, layerZDepth);
+				GameMgr.EndDraw();
+				GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = currentRect;
+				GameMgr.BeginDrawAuto();
+			}
+			else 
+				base.Draw(gameTime, layerZDepth);
+			
+			
 			GameMgr.SpriteBatch.DrawStroke(Transform.GlobalRectangle.ToRectangle(), Color.Yellow);
 
 		}
