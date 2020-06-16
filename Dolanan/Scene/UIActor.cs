@@ -1,4 +1,5 @@
-﻿using Dolanan.Components;
+﻿using System;
+using Dolanan.Components;
 using Dolanan.Controller;
 using Dolanan.Core;
 using Dolanan.Engine;
@@ -37,6 +38,7 @@ namespace Dolanan.Scene
 		public new RectTransform Transform => RectTransform;
 
 		public UIActor UIParent { get; private set; }
+		public UILayer UILayer { get; private set; }
 
 		/// <summary>
 		///     If parent Clip is true?
@@ -93,6 +95,8 @@ namespace Dolanan.Scene
 		{
 			base.Start();
 			base.Transform = RectTransform = base.AddComponent<RectTransform>();
+			if (Layer.GetType() == typeof(UILayer) || Layer .GetType().IsSubclassOf(typeof(UILayer)))
+				UILayer = (UILayer) Layer;
 
 			OnParentChange += parent =>
 			{
@@ -100,6 +104,14 @@ namespace Dolanan.Scene
 				if (parent != null)
 					if (parent.GetType() == typeof(UIActor) || parent.GetType().IsSubclassOf(typeof(UIActor)))
 						UIParent = (UIActor) parent;
+			};
+			OnLayerChange += layer =>
+			{
+				if (layer != null)
+				{
+					if (layer.GetType() == typeof(UILayer) || layer.GetType().IsSubclassOf(typeof(UILayer)))
+						UILayer = (UILayer) layer;
+				}
 			};
 		}
 
@@ -130,7 +142,7 @@ namespace Dolanan.Scene
 			{
 				GameMgr.EndDraw();
 				var currentRect = GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle;
-				GameMgr.BeginDrawAuto(rasterizerState: GameMgr.RazterizerScissor,
+				GameMgr.BeginDrawAuto(rasterizerState: GameMgr.RasterizerScissor,
 					blendState: BlendState.AlphaBlend, sortMode: SpriteSortMode.Immediate);
 				GameMgr.SpriteBatch.GraphicsDevice.ScissorRectangle = GlobalRectangleClip;
 				base.Draw(gameTime, layerZDepth);
@@ -145,6 +157,11 @@ namespace Dolanan.Scene
 
 
 			GameMgr.SpriteBatch.DrawStroke(Transform.GlobalRectangle.ToRectangle(), Color.Yellow);
+			if (UIParent != null)
+			{
+				GameMgr.SpriteBatch.DrawStroke(Transform.AnchorRect.ToRectangle(), Color.Red);
+				// Console.WriteLine(Name + " , " + Transform.AnchorRect);
+			}
 		}
 
 		public new T AddComponent<T>() where T : UIComponent

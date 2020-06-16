@@ -37,5 +37,12 @@
     </MonoGameContentReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Level\testJson.json" />
+    <Content Include="Level\testJson.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
 

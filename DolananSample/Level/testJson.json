@@ -1,0 +1,20 @@
+﻿{
+  "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.19.2-x64",
+  "image": "concept_character_v3_green.png",
+  "format": "RGBA8888",
+  "size": { "w": 512, "h": 64 },
+  "scale": "1",
+  "frameTags": [
+    { "name": "Idle", "from": 1, "to": 4, "direction": "forward" },
+    { "name": "Run", "from": 5, "to": 10, "direction": "forward" },
+    { "name": "Run_Backward", "from": 11, "to": 16, "direction": "forward" }
+  ],
+  "layers": [
+    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+}
+}

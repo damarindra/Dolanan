@@ -1,4 +1,5 @@
-﻿using Dolanan;
+﻿using System;
+using Dolanan;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
@@ -62,45 +63,55 @@ namespace DolananSample
 			if (_texturesTopDown.TryGet("square", out var texture2D))
 			{
 			}
-
-
+			Console.WriteLine(Single.Epsilon);
+			Console.WriteLine(1.00000001f);
+			Console.WriteLine(1.0000001f);
+			Console.WriteLine(1.000001f);
+			Console.WriteLine(1.00001f);
+			Console.WriteLine(1.0001f);
+			var s = System.IO.File.ReadAllText("Level/testJson.json");
+			Console.WriteLine(s);
+			
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			Canvas.ReceiveMouseInput = false;
 
-			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
-			// img = topLeft.AddComponent<Image>();
-			// img.Texture2D = _uiTexture;
-			// img.Stretch = false;
-			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-			// 	img.TextureRectangle = slice.Bounds;
-			// topLeft.RectTransform.Rectangle = new RectangleF(0, 0, 100, 100);
-			// topLeft.RectTransform.Anchor = Anchor.TopLeft;
-			// topLeft.SetParent(Canvas);
+			var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
+			topLeft.SetParent(Canvas);
+			img = topLeft.AddComponent<Image>();
+			img.Texture2D = _uiTexture;
+			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+				img.TextureRectangle = slice.Bounds;
+			topLeft.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X * .25f, 100);
+			topLeft.RectTransform.FitAnchorToRect();
+			img.Stretch = false;
 
 			var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
+			topCenter.SetParent(Canvas);
 			img = topCenter.AddComponent<Image>();
 			img.Texture2D = _uiTexture;
 			if (_uiAseprite.TryGetSlice("Slice 4", out slice))
 				img.TextureRectangle = slice.Bounds;
-			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
-			topCenter.RectTransform.Anchor = Anchor.TopCenter;
-			topCenter.SetParent(Canvas);
+			topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .25f, 0, GameSettings.ViewportSize.X * .75f, 100);
+			topCenter.RectTransform.FitAnchorToRect();
+			// topCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2f - 50, 0, 100, 100);
+			// topCenter.RectTransform.Anchor = Anchor.TopCenter;
+			
 			topCenter.ReceiveMouseInput = true;
 
-			var topCenter2 = World.CreateActor<UIActor>("TopCenter2", UILayer);
-			img = topCenter2.AddComponent<Image>();
-			img.Texture2D = _uiTexture;
-			if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-				img.TextureRectangle = slice.Bounds;
-			topCenter2.SetParent(topCenter);
-			topCenter2.RectTransform.Anchor = Anchor.TopRight;
-			topCenter2.Transform.Location = Vector2.Zero;
-			topCenter2.RectTransform.SetRectSize(new Vector2(150, 150));
-			// topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
-			topCenter2.ReceiveMouseInput = true;
+			// var topCenter2 = World.CreateActor<UIActor>("TopCenter2", UILayer);
+			// img = topCenter2.AddComponent<Image>();
+			// img.Texture2D = _uiTexture;
+			// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+			// 	img.TextureRectangle = slice.Bounds;
+			// topCenter2.SetParent(topCenter);
+			// topCenter2.RectTransform.Anchor = Anchor.TopRight;
+			// topCenter2.Transform.Location = Vector2.Zero;
+			// topCenter2.RectTransform.SetRectSize(new Vector2(150, 150));
+			// // topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
+			// topCenter2.ReceiveMouseInput = true;
 
 			// topCenter2 = World.CreateActor<UIActor>("TopCenter3", UILayer);
 			// img = topCenter2.AddComponent<Image>();
@@ -115,18 +126,25 @@ namespace DolananSample
 			// // topCenter2.RectTransform. = new RectangleF(0, 0, 150, 150);
 			// topCenter2.ReceiveMouseInput = true;
 
+			var parentlabel = World.CreateActor<UIActor>("ParentLabel", UILayer);
+			parentlabel.SetParent(Canvas);
+			parentlabel.Transform.Anchor = Anchor.BottomLeft;
+			parentlabel.Transform.Location = new Vector2(0, Canvas.RectTransform.RectSize.Y - 400);
+			parentlabel.Transform.SetRectSize(new Vector2(240, 400));
+			parentlabel.Clip = true;
+			
 			var label = World.CreateActor<UIActor>("Label", UILayer);
-			label.SetParent(Canvas);
-			label.Transform.Anchor = Anchor.BottomCenter;
+			label.SetParent(parentlabel);
+			label.Transform.Anchor = Anchor.BottomLeft;
 			label.Transform.Location = Vector2.Zero;
 			label.Transform.SetRectSize(new Vector2(240, 200));
 			label.Clip = false;
 			var l = label.AddComponent<Label>();
 			ResFont.Instance.TryGet("bitty", out var f);
 			l.Font = f;
-			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is";
-			l.TextAlign = TextAlign.Center;
-			l.TextVAlign = TextVAlign.Middle;
+			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+			l.TextAlign = TextAlign.Left;
+			l.TextVAlign = TextVAlign.Top;
 
 			// var topRight = World.CreateActor<UIActor>("TopRight", UILayer);
 			// img = topRight.AddComponent<Image>();

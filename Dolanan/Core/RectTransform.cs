@@ -1,4 +1,5 @@
-﻿using Dolanan.Components;
+﻿using System;
+using Dolanan.Components;
 using Dolanan.Engine;
 using Dolanan.Scene;
 using Dolanan.Tools;
@@ -49,6 +50,9 @@ namespace Dolanan.Core
 			get => _anchor;
 			set
 			{
+				if(UIParent == null)
+					Log.PrintWarning("Actor : "+ Owner.Name + ", Trying to modify anchor, but don't have Parent UIActor, it is useless! SetParent before modify anchor! ");
+				
 				_anchor.Min = new Vector2(MathEx.Clamp(value.Min.X, 0, 1), MathEx.Clamp(value.Min.Y, 0, 1));
 				_anchor.Max = new Vector2(MathEx.Clamp(value.Max.X, 0, 1), MathEx.Clamp(value.Max.Y, 0, 1));
 
@@ -66,7 +70,7 @@ namespace Dolanan.Core
 				if (UIParent == null)
 				{
 					Log.PrintError(
-						"Trying to get Anchor Rect, but doesn't have any parent, returning default Rectangle");
+						"Actor : "+ Owner.Name + ", Trying to get Anchor Rect, but doesn't have any parent, returning default Rectangle");
 					return _rectangle;
 				}
 
@@ -213,14 +217,14 @@ namespace Dolanan.Core
 		public Pivot Pivot = Pivot.TopLeft;
 
 		/// <summary>
-		///     Offset Left and Top
+		///     Offset Left and Top from Anchor to Rectangle
 		/// </summary>
-		private Vector2 _offsetMin;
+		private Vector2 _offsetAnchorToRectMin;
 
 		/// <summary>
-		///     Offset Right and Bottom
+		///     Offset Right and Bottom from Anchor to Rectangle
 		/// </summary>
-		private Vector2 _offsetMax;
+		private Vector2 _offsetAnchorToRectMax;
 
 		private RectangleF _rectangle;
 		private Anchor _anchor;
@@ -228,6 +232,17 @@ namespace Dolanan.Core
 		#endregion
 
 		#region Method
+
+		/// <summary>
+		/// 	Set Anchor Min and Max exactly the same as rectangle
+		/// </summary>
+		public void FitAnchorToRect()
+		{
+			if(UIParent == null)
+				return;
+			
+			Anchor = new Anchor(Location / UIParent.RectTransform.RectSize, (Location + RectSize) / UIParent.RectTransform.RectSize);
+		}
 
 		public void RefreshParent()
 		{
@@ -240,10 +255,10 @@ namespace Dolanan.Core
 			{
 				var anchorRect = AnchorRect;
 
-				_offsetMin.X = _rectangle.X - anchorRect.Left;
-				_offsetMin.Y = _rectangle.Y - anchorRect.Top;
-				_offsetMax.X = _rectangle.Right - anchorRect.Right;
-				_offsetMax.Y = _rectangle.Bottom - anchorRect.Bottom;
+				_offsetAnchorToRectMin.X = _rectangle.X - anchorRect.Left;
+				_offsetAnchorToRectMin.Y = _rectangle.Y - anchorRect.Top;
+				_offsetAnchorToRectMax.X = _rectangle.Right - anchorRect.Right;
+				_offsetAnchorToRectMax.Y = _rectangle.Bottom - anchorRect.Bottom;
 			}
 		}
 
@@ -257,10 +272,10 @@ namespace Dolanan.Core
 			{
 				var anchorRect = AnchorRect;
 
-				var left = anchorRect.Left + _offsetMin.X;
-				var top = anchorRect.Top + _offsetMin.Y;
-				var right = anchorRect.Right + _offsetMax.X;
-				var bottom = anchorRect.Bottom + _offsetMax.Y;
+				var left = anchorRect.Left + _offsetAnchorToRectMin.X;
+				var top = anchorRect.Top + _offsetAnchorToRectMin.Y;
+				var right = anchorRect.Right + _offsetAnchorToRectMax.X;
+				var bottom = anchorRect.Bottom + _offsetAnchorToRectMax.Y;
 				_rectangle = new RectangleF(left, top, right - left, bottom - top);
 			}
 

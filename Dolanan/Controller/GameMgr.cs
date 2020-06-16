@@ -5,11 +5,11 @@ namespace Dolanan.Controller
 {
 	public static class GameMgr
 	{
-		public static readonly SamplerState DefaultSamplerState = SamplerState.PointClamp;
-		public static readonly BlendState DefaultBlendState = BlendState.AlphaBlend;
-		public static readonly DepthStencilState DefaultDepthStencil = DepthStencilState.None;
+		public static SamplerState DefaultSamplerState = SamplerState.PointClamp;
+		public static BlendState DefaultBlendState = BlendState.AlphaBlend;
+		public static DepthStencilState DefaultDepthStencil = DepthStencilState.None;
 		internal static DrawState DrawState = DrawState.Draw;
-		internal static RasterizerState RazterizerScissor = new RasterizerState {ScissorTestEnable = true};
+		internal static RasterizerState RasterizerScissor = new RasterizerState {ScissorTestEnable = true};
 		public static GameMin Game { get; private set; }
 		public static SpriteBatch SpriteBatch { get; private set; }
 

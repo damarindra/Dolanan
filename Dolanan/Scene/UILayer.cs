@@ -8,6 +8,7 @@ namespace Dolanan.Scene
 	public class UILayer : Layer
 	{
 		private UISpace _uiSpace = UISpace.Window;
+		public float Scaling = 1f;
 
 		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ)
 		{
