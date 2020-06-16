@@ -70,12 +70,12 @@ namespace Dolanan.Scene
 
 		public T CreateActor<T>(string name) where T : Actor
 		{
-			return GetDefaultLayer().AddActor<T>(name);
+			return GetDefaultLayer().CreateActor<T>(name);
 		}
 
 		public T CreateActor<T>(string name, Layer layer) where T : Actor
 		{
-			return layer.AddActor<T>(name);
+			return layer.CreateActor<T>(name);
 		}
 
 		public void UpdateLayerZOrder()
@@ -125,7 +125,7 @@ namespace Dolanan.Scene
 			foreach (var name in (LayerName[]) Enum.GetValues(typeof(LayerName)))
 				Layers.Add(new Layer(this, (int) name));
 
-			Camera = GetDefaultLayer().AddActor<Camera>("Camera");
+			Camera = GetDefaultLayer().CreateActor<Camera>("Camera");
 		}
 
 		public virtual void Update(GameTime gameTime)

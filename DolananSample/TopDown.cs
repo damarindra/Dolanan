@@ -87,6 +87,7 @@ namespace DolananSample
 			topLeft.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X * .25f, 100);
 			topLeft.RectTransform.FitAnchorToRect();
 			img.Stretch = false;
+			topLeft.Clip = true;
 
 			var topCenter = World.CreateActor<UIActor>("TopCenter", UILayer);
 			topCenter.SetParent(Canvas);
@@ -140,7 +141,7 @@ namespace DolananSample
 			label.Transform.SetRectSize(new Vector2(240, 200));
 			label.Clip = false;
 			var l = label.AddComponent<Label>();
-			ResFont.Instance.TryGet("bitty", out var f);
+			ResFont.Instance.TryGet("8px", out var f);
 			l.Font = f;
 			l.Text = "Hello there, this text automatically autoresize, no matter how much your text is. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 			l.TextAlign = TextAlign.Left;
@@ -243,21 +244,21 @@ namespace DolananSample
 			// stretchVertical.SetParent(Canvas);
 			// //
 			// //
-			// var stretchHorizontal = World.CreateActor<UIActor>("stretchHorizontal", UILayer);
-			// var ns = stretchHorizontal.AddComponent<NineSlice>();
-			// var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
-			// var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
-			// ns.Texture2D = tNs;
-			// if (asepriteNs.TryGetSlice("slice", out slice))
-			// {
-			// 	ns.TextureRectangle = slice.Bounds;
-			// // 	ns.Center = slice.Center;
-			// 	stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
-			// 		GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
-			// }
-			// //
-			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
-			// stretchHorizontal.SetParent(Canvas);
+			var stretchHorizontal = UILayer.CreateActor<UIActor>("stretchHorizontal");
+			var ns = stretchHorizontal.AddComponent<NineSlice>();
+			var tNs = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/Colored/blue");
+			var asepriteNs = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/Colored/blue_ase");
+			ns.Texture2D = tNs;
+			if (asepriteNs.TryGetSlice("slice", out slice))
+			{
+				ns.TextureRectangle = slice.Bounds;
+				ns.Center = slice.Center;
+				stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
+					GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
+			}
+			//
+			stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
+			// ns.Mode = NineSlice.ResizeMode.Stretch;
 		}
 
 		protected override void Draw(GameTime gameTime)

@@ -74,7 +74,7 @@ namespace Dolanan.Engine
 		}
 
 
-		public float Rotation
+		public virtual float Rotation
 		{
 			get => _rotation;
 			set
@@ -84,14 +84,14 @@ namespace Dolanan.Engine
 			}
 		}
 
-		public float GlobalRotation
+		public virtual float GlobalRotation
 		{
 			get => ParentGlobalRotation + Rotation;
 			set => Rotation = value - ParentGlobalRotation;
 		}
 
 
-		public Vector2 LocalScale
+		public virtual Vector2 LocalScale
 		{
 			get => _localScale;
 			set
@@ -101,15 +101,16 @@ namespace Dolanan.Engine
 			}
 		}
 
+		public virtual Vector2 GlobalScale => ParentScale * LocalScale;
+		
 		/// <summary>
 		///     Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
 		/// </summary>
 		protected Vector2 ParentGlobalLocation => Parent?.GlobalLocation ?? Vector2.Zero;
 
-		private float ParentGlobalRotation => Parent?.GlobalRotation ?? 0;
-		public Vector2 GlobalScale => ParentScale * LocalScale;
+		protected float ParentGlobalRotation => Parent?.GlobalRotation ?? 0;
 
-		private Vector2 ParentScale => Parent?.GlobalScale ?? Vector2.One;
+		protected Vector2 ParentScale => Parent?.GlobalScale ?? Vector2.One;
 
 		public Matrix Matrix => _matrix;
 

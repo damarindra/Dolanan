@@ -79,14 +79,14 @@ namespace Dolanan.Scene
 		/// <param name="name"></param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T AddActor<T>(string name) where T : Actor
+		public T CreateActor<T>(string name) where T : Actor
 		{
 			var actor = (T) Activator.CreateInstance(typeof(T), name, this);
 			return actor;
 		}
 
 		/// <summary>
-		///     Internal use only, please use <see cref="AddActor{T}" /> for creating new actor.
+		///     Internal use only, please use <see cref="CreateActor{T}" /> for creating new actor.
 		///     This function only useful when you want to move actor to new layer. All childs will move to this layer too
 		/// </summary>
 		/// <param name="actor">Actor</param>

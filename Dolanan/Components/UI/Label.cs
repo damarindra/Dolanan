@@ -55,7 +55,15 @@ namespace Dolanan.Components.UI
 				return;
 
 			if(!WordWrap)
-				GameMgr.SpriteBatch.DrawString(Font, _text, TextLocation(_text), TintColor);
+				GameMgr.SpriteBatch.DrawString(Font, 
+					_text,
+					TextLocation(_text),
+					TintColor,
+					Transform.GlobalRotation,
+					Vector2.Zero,
+					Transform.GlobalScale,
+					SpriteEffects.None,
+					layerZDepth);
 			else
 			{
 				var textArray = ParseText(_text);
@@ -82,8 +90,13 @@ namespace Dolanan.Components.UI
 						textArray[i], 
 						TextLocation(textArray[i], textLocations[i]) + 
 							new Vector2(0, -totalYOffset +yOffset), 
-						TintColor);
-					yOffset += textLocations[i].Y;
+						TintColor,
+						Transform.GlobalRotation,
+						Vector2.Zero,
+						Transform.GlobalScale,
+						SpriteEffects.None,
+						layerZDepth);
+					yOffset += textLocations[i].Y * Transform.GlobalScale.Y;
 				}
 			}	
 		}

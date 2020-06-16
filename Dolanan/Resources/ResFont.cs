@@ -20,7 +20,8 @@ namespace Dolanan.Resources
 			base.Load();
 			// TODO : all logic inside here
 
-			TryAddToResource("bitty", ContentManager.Load<SpriteFont>(ContentDirectory + "bitty"));
+			TryAddToResource("8px", ContentManager.Load<SpriteFont>(ContentDirectory + "04B_03__8px"));
+			TryAddToResource("16px", ContentManager.Load<SpriteFont>(ContentDirectory + "04B_03__16px"));
 
 			return this;
 		}

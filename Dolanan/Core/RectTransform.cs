@@ -115,7 +115,14 @@ namespace Dolanan.Core
 			get => base.GlobalLocation;
 			set => Location = value - ParentGlobalLocation;
 		}
+		
+		internal float UILayerScaling => UIParent?.UILayer?.Scaling ?? 1;
 
+		/// <summary>
+		/// Scale doesn't affect the Rectangle, it is only affected to the renderer component.
+		/// </summary>
+		public override Vector2 GlobalScale => base.GlobalScale * UILayerScaling;
+		
 		public Point ScreenLocation
 		{
 			get

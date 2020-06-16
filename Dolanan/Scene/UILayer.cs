@@ -8,7 +8,12 @@ namespace Dolanan.Scene
 	public class UILayer : Layer
 	{
 		private UISpace _uiSpace = UISpace.Window;
-		public float Scaling = 1f;
+		/// <summary>
+		/// Scaling all UIActor in this layer
+		/// Scaling is what you think, the technique I'm using is, invert the scaling. So if scaling is 2, that means divide by 2
+		/// ScreenCanvas will be divided by 2, that means all of ScreenCanvas child will be shrink
+		/// </summary>
+		public float Scaling = 2;
 
 		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ)
 		{
@@ -31,7 +36,7 @@ namespace Dolanan.Scene
 		public override void Start()
 		{
 			base.Start();
-			ScreenCanvas = AddActor<UIActor>("Canvas");
+			ScreenCanvas = CreateActor<UIActor>("Canvas");
 			ScreenCanvas.RectTransform.Rectangle =
 				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
 			GameMgr.Game.World.Camera.OnViewportChanged += viewport =>
@@ -42,9 +47,12 @@ namespace Dolanan.Scene
 			};
 		}
 
-		public new T AddActor<T>(string name) where T : UIActor
+		public new T CreateActor<T>(string name) where T : UIActor
 		{
-			return base.AddActor<T>(name);
+			UIActor actor = base.CreateActor<T>(name);
+			if(ScreenCanvas != null)
+				actor.SetParent(ScreenCanvas);
+			return (T) actor;
 		}
 
 		public override void Update(GameTime gameTime)

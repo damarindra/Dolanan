@@ -14,6 +14,20 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Fonts/04B_03__16px.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/04B_03__16px.spritefont
+
+#begin Fonts/04B_03__8px.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/04B_03__8px.spritefont
+
 #begin Fonts/bitty.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

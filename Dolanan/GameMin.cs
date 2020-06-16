@@ -172,7 +172,7 @@ namespace Dolanan
 
 			GameMgr.BeginDrawAuto();
 			BackDraw(gameTime, RenderDestination);
-			if (_debugFps && ResFont.Instance.TryGet("bitty", out var font))
+			if (_debugFps && ResFont.Instance.TryGet("16px", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
 
 			SpriteBatch.End();

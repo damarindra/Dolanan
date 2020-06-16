@@ -60,7 +60,7 @@ namespace Dolanan.Components.UI
 					color: TintColor,
 					rotation: Transform.GlobalRotation,
 					origin: origin, 
-					scale: 4,
+					scale: Transform.GlobalScale,
 					effects: SpriteEffects.None,
 					layerDepth: Single.Epsilon);
 				
@@ -70,7 +70,7 @@ namespace Dolanan.Components.UI
 					color: TintColor,
 					rotation: Transform.GlobalRotation,
 					origin: origin, 
-					scale: 4,
+					scale: Transform.GlobalScale,
 					effects: SpriteEffects.None,
 					layerDepth: Single.Epsilon * 2f);
 				// Console.WriteLine(value: Transform.GlobalLocationByPivot);
