@@ -22,10 +22,7 @@ namespace Dolanan.Scene
 		{
 			Initialize();
 
-			foreach (var name in (LayerName[]) Enum.GetValues(typeof(LayerName)))
-				Layers.Add(new Layer(this, (int) name));
-
-			Camera = GetDefaultLayer().AddActor<Camera>("Camera");
+			Start();
 		}
 
 		protected List<Layer> Layers { get; } = new List<Layer>();
@@ -49,6 +46,7 @@ namespace Dolanan.Scene
 			Layers.Add(result);
 			UILayers.Clear();
 			UILayers = Layers.OfType<UILayer>().ToList();
+			UpdateLayerZOrder();
 			return result;
 		}
 
@@ -59,8 +57,6 @@ namespace Dolanan.Scene
 					(int) collisionCollider.Min.Y,
 					(int) collisionCollider.Size.X, (int) collisionCollider.Size.Y), Color.White);
 		}
-
-		#region GameCycle
 
 		public Layer GetLayer(LayerName layerName)
 		{
@@ -82,12 +78,54 @@ namespace Dolanan.Scene
 			return layer.AddActor<T>(name);
 		}
 
+		public void UpdateLayerZOrder()
+		{
+			for (int i = 0; i < Layers.Count; i++)
+			{
+				Layers[i].LayerZ = i / (float)LayerCount;
+			}
+		}
+
+		public void SwapLayer(Layer l1, Layer l2)
+		{
+			int indexL1 = Layers.IndexOf(l1);
+			int indexL2 = Layers.IndexOf(l2);
+			
+			if(indexL1 < 0 || indexL2 < 0)
+				return;
+
+			Layers[indexL1] = l2;
+			Layers[indexL2] = l1;
+
+			float l1LayerZ = l1.LayerZ;
+			l1.LayerZ = l2.LayerZ;
+			l2.LayerZ = l1LayerZ;
+		}
+		public void SwapLayer(int indexL1, int indexL2)
+		{
+			if (indexL1 < 0 || indexL2 < 0 || indexL1 >= LayerCount || indexL2 >= LayerCount)
+				return;
+
+			Layer l1 = Layers[indexL1];
+			Layers[indexL1] = Layers[indexL2];
+			Layers[indexL2] = l1;
+
+			float l1LayerZ = l1.LayerZ;
+			l1.LayerZ = Layers[indexL2].LayerZ;
+			Layers[indexL2].LayerZ = l1LayerZ;
+		}
+
+		#region Cycle
 		public virtual void Initialize()
 		{
 		}
 
 		public virtual void Start()
 		{
+			foreach (var name in (LayerName[]) Enum.GetValues(typeof(LayerName)))
+				Layers.Add(new Layer(this, (int) name));
+
+			Camera = GetDefaultLayer().AddActor<Camera>("Camera");
 		}
 
 		public virtual void Update(GameTime gameTime)

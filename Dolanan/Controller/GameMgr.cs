@@ -7,6 +7,7 @@ namespace Dolanan.Controller
 	{
 		public static readonly SamplerState DefaultSamplerState = SamplerState.PointClamp;
 		public static readonly BlendState DefaultBlendState = BlendState.AlphaBlend;
+		public static readonly DepthStencilState DefaultDepthStencil = DepthStencilState.None;
 		internal static DrawState DrawState = DrawState.Draw;
 		internal static RasterizerState RazterizerScissor = new RasterizerState {ScissorTestEnable = true};
 		public static GameMin Game { get; private set; }
@@ -27,7 +28,7 @@ namespace Dolanan.Controller
 		/// </summary>
 		/// <param name="transformMatrix"></param>
 		public static void BeginDraw(Matrix? transformMatrix = null,
-			SpriteSortMode sortMode = SpriteSortMode.Deferred,
+			SpriteSortMode sortMode = SpriteSortMode.FrontToBack,
 			BlendState blendState = null,
 			SamplerState samplerState = null,
 			DepthStencilState depthStencilState = null,
@@ -37,16 +38,17 @@ namespace Dolanan.Controller
 			SpriteBatch.Begin(transformMatrix: transformMatrix,
 				blendState: blendState ?? DefaultBlendState,
 				samplerState: samplerState ?? DefaultSamplerState,
-				depthStencilState: depthStencilState,
+				depthStencilState: depthStencilState ?? DefaultDepthStencil,
 				rasterizerState: rasterizerState,
-				effect: effect);
+				effect: effect,
+				sortMode: sortMode);
 		}
 
 		/// <summary>
 		///     Same as SpriteBatch.Begin, but using default settings. This will draw in Draw method (World Space)
 		/// </summary>
 		public static void BeginDrawWorld(
-			SpriteSortMode sortMode = SpriteSortMode.Deferred,
+			SpriteSortMode sortMode = SpriteSortMode.FrontToBack,
 			BlendState blendState = null,
 			SamplerState samplerState = null,
 			DepthStencilState depthStencilState = null,
@@ -56,9 +58,10 @@ namespace Dolanan.Controller
 			SpriteBatch.Begin(transformMatrix: Game.World.Camera.GetTopLeftMatrix(),
 				blendState: blendState ?? DefaultBlendState,
 				samplerState: samplerState ?? DefaultSamplerState,
-				depthStencilState: depthStencilState,
+				depthStencilState: depthStencilState ?? DefaultDepthStencil,
 				rasterizerState: rasterizerState,
-				effect: effect);
+				effect: effect,
+				sortMode: sortMode);
 		}
 
 		/// <summary>
@@ -66,7 +69,7 @@ namespace Dolanan.Controller
 		///     (Window)
 		/// </summary>
 		public static void BeginDrawAuto(
-			SpriteSortMode sortMode = SpriteSortMode.Deferred,
+			SpriteSortMode sortMode = SpriteSortMode.FrontToBack,
 			BlendState blendState = null,
 			SamplerState samplerState = null,
 			DepthStencilState depthStencilState = null,

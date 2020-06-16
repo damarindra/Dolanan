@@ -27,10 +27,11 @@ namespace Dolanan.Engine
 		public void LateUpdate(GameTime gameTime);
 
 		/// <summary>
-		///     Draw method, just like Update!
+		///     Draw method, just like Update! layerZDepth already calculated in Layer.Draw. AutoYSort will automatically
+		/// 	sort using Y position. If you want to ignore AutoYSort, just get Layer.LayerZ (already ordered without AutoYSort)
 		/// </summary>
-		/// <param name="gameTime"></param>
-		/// <param name="layerZDepth"></param>
+		/// <param name="gameTime">delta Time</param>
+		/// <param name="layerZDepth">layerDepth, should be passed to SpriteBatch.Draw</param>
 		public void Draw(GameTime gameTime, float layerZDepth);
 	}
 }

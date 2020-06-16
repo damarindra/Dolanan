@@ -85,8 +85,6 @@ namespace Dolanan
 
 			base.Initialize();
 
-			World.Start();
-
 			IsGameFinishedInitialize = true;
 		}
 
@@ -172,7 +170,7 @@ namespace Dolanan
 			GameMgr.DrawState = DrawState.BackDraw;
 			BackBufferRender();
 
-			SpriteBatch.Begin(samplerState: GameMgr.DefaultSamplerState);
+			GameMgr.BeginDrawAuto();
 			BackDraw(gameTime, RenderDestination);
 			if (_debugFps && ResFont.Instance.TryGet("bitty", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
