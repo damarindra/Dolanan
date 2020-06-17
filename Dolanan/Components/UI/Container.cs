@@ -16,7 +16,7 @@ namespace Dolanan.Components.UI
 		{
 		}
 		public ChildAlignment Alignment = ChildAlignment.TopLeft;
-		public Padding Padding;
+		public Padding Padding = new Padding(4);
 
 		protected Anchor _childAnchor;
 
@@ -36,7 +36,7 @@ namespace Dolanan.Components.UI
 			}
 		}
 
-		protected virtual void RefreshChildsLocation()
+		protected virtual void RefreshChildsRectangle()
 		{
 			switch (Alignment)
 			{
@@ -65,7 +65,7 @@ namespace Dolanan.Components.UI
 
 			Owner.OnChildChange += childs =>
 			{
-				RefreshChildsLocation();
+				RefreshChildsRectangle();
 			};
 		}
 		

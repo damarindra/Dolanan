@@ -17,9 +17,9 @@ namespace Dolanan.Components.UI
 		
 		public int Spacing = 4;
 
-		protected override void RefreshChildsLocation()
+		protected override void RefreshChildsRectangle()
 		{
-			base.RefreshChildsLocation();
+			base.RefreshChildsRectangle();
 			
 			int lastY = (int)Transform.GlobalRectangle.Y + Padding.Top;
 			if (Alignment == ChildAlignment.BottomLeft || Alignment == ChildAlignment.BottomRight)
@@ -37,10 +37,9 @@ namespace Dolanan.Components.UI
 					RectTransform rt = (RectTransform) transformChild;
 					rt.Anchor = _childAnchor;
 
-					rt.LocationByPivot = new Vector2(startX, lastY);
+					rt.GlobalLocationByPivot = new Vector2(startX, lastY);
 					lastY += dir * ((int)rt.Size.Y + Spacing);
 					
-					Console.WriteLine(rt.LocationByPivot);
 				}
 			}
 		}

@@ -22,9 +22,14 @@ namespace Dolanan.Components.UI
 		/// </summary>
 		public bool IsVerticalPriority = false;
 
-		protected override void RefreshChildsLocation()
+		/// <summary>
+		/// Automatically set child rect size same as GridSize when child added to this Container
+		/// </summary>
+		public bool AutoRectSize = false;
+
+		protected override void RefreshChildsRectangle()
 		{
-			base.RefreshChildsLocation();
+			base.RefreshChildsRectangle();
 
 			Rectangle innerRect = InnerRectangle;
 			
@@ -50,24 +55,36 @@ namespace Dolanan.Components.UI
 				{
 					RectTransform rt = (RectTransform) transformChild;
 					rt.Anchor = _childAnchor;
+					if(AutoRectSize)
+						rt.Size = GridSize.ToVector2();
 
-					rt.LocationByPivot = new Vector2(lastX, lastY);
+					rt.GlobalLocationByPivot = new Vector2(lastX, lastY);
 
 					if (IsVerticalPriority)
 					{
 						lastY += dir.Y * (GridSize.Y);
-						if (lastY < innerRect.Top || lastY > innerRect.Bottom)
+						if (dir.Y > 0 && lastY + GridSize.Y > innerRect.Bottom)
 						{
-							lastY = dir.Y == 1 ? innerRect.Y : innerRect.Y + innerRect.Height;
+							lastY = innerRect.Y;
+							lastX += GridSize.X;
+						}
+						else if(lastY - GridSize.Y < innerRect.Top)
+						{
+							lastY = innerRect.Y + innerRect.Height;
 							lastX += GridSize.X;
 						}
 					}
 					else
 					{
 						lastX += dir.X * (GridSize.X);
-						if (lastX < innerRect.Left || lastX > innerRect.Right)
+						if (dir.X > 0 && lastX + GridSize.X > innerRect.Right)
 						{
-							lastX = dir.X == 1 ? innerRect.X : innerRect.X + innerRect.Width;
+							lastX = innerRect.X;
+							lastY += GridSize.Y;
+						}
+						else if(lastX - GridSize.X < innerRect.Left)
+						{
+							lastX = innerRect.X + innerRect.Width;
 							lastY += GridSize.Y;
 						}
 					}

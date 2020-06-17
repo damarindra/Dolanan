@@ -84,7 +84,7 @@ namespace DolananSample
 			vCont.Alignment = Container.ChildAlignment.TopRight;
 			vCont.Padding = new Padding(6, 6);
 
-			for (int y = 0; y < 1; y++)
+			for (int y = 0; y < 3; y++)
 			{
 				var containerAct = UILayer.CreateActor<UIActor>("HContainer");
 				containerAct.RectTransform.Size = new Vector2(400, 100);
@@ -104,10 +104,29 @@ namespace DolananSample
 					c.RectTransform.Pivot = Pivot.TopRight;
 					c.SetParent(containerAct);
 				}
-				Console.WriteLine(containerAct.RectTransform.LocationByPivot);
 			}
-			
-			
+
+			var gridAct = UILayer.CreateActor<UIActor>("GridContainer");
+			gridAct.RectTransform.Size = new Vector2(396, 150);
+			gridAct.RectTransform.Pivot = Pivot.TopRight;
+			gridAct.SetParent(vContAct);
+			var gCont = gridAct.AddComponent<GridContainer>();
+			gCont.Alignment = Container.ChildAlignment.TopLeft;
+			gCont.AutoRectSize = true;
+			for (int i = 0; i < 30; i++)
+			{
+				var c = UILayer.CreateActor<UIActor>("img");
+				img = c.AddComponent<Image>();
+				img.Texture2D = _uiTexture;
+				if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+					img.TextureRectangle = slice.Bounds;
+				c.RectTransform.SetRectSize(new Vector2(64, 64));
+				c.RectTransform.Pivot = Pivot.TopLeft;
+				c.SetParent(gridAct);
+			}
+
+
+
 			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);
 			// topLeft.SetParent(Canvas);
 			// img = topLeft.AddComponent<Image>();
