@@ -82,7 +82,7 @@ namespace Dolanan.Scene
 				while (p != null)
 				{
 					if (p.Clip)
-						result = Rectangle.Intersect(result, p.RectTransform.Rectangle.ToRectangle());
+						result = Rectangle.Intersect(result, p.RectTransform.GlobalRectangle.ToRectangle());
 
 					p = p.UIParent;
 				}
