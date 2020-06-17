@@ -31,6 +31,12 @@ namespace Dolanan.Scene
 		public ParentState OnParentChange;
 		public Transform2D Transform;
 
+		/// <summary>
+		/// 	Get the ZDepth, useful for drawing stuff, raycast from camera
+		/// 	This value automatically increment whenever calling GameMgr.Draw
+		/// </summary>
+		public int ZDepth { get; internal set; }
+
 		public Actor(string name, [NotNull] Layer layer)
 		{
 			Initialize();

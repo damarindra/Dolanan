@@ -1,4 +1,5 @@
-﻿using Dolanan.Components;
+﻿using System;
+using Dolanan.Components;
 using Dolanan.Controller;
 using Dolanan.Core;
 using Dolanan.Engine;
@@ -27,7 +28,10 @@ namespace Dolanan.Scene
 		internal bool IsMouseInside;
 		public UIMouseState OnMouseEnter, OnMouseExit;
 
-		public bool ReceiveMouseInput = true;
+		/// <summary>
+		/// 	Allow receiving any input
+		/// </summary>
+		public bool Interactable = true;
 		public RectTransform RectTransform;
 
 		public UIActor(string name, Layer layer) : base(name, layer)
@@ -115,11 +119,11 @@ namespace Dolanan.Scene
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-			if (ReceiveMouseInput)
+			if (Interactable)
 			{
 				var mouseP = Mouse.GetState().Position.ToVector2()
 					.RotateAround(Transform.ScreenLocationByPivot.ToVector2(), Transform.GlobalRotation);
-				var isMouseEntering = Transform.Rectangle.Contains(mouseP);
+				var isMouseEntering = Transform.GlobalRectangle.Contains(mouseP);
 				if (!IsMouseInside && isMouseEntering)
 				{
 					OnMouseEnter?.Invoke();

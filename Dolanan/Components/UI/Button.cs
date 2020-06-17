@@ -19,7 +19,7 @@ namespace Dolanan.Components.UI
 
 	public class Button : UIComponent
 	{
-		private ButtonState _buttonState;
+		public ButtonState State { get; internal set; }
 
 		private Image _image;
 		private Color _startColor = Color.White, _targetColor = Color.White;
@@ -59,12 +59,12 @@ namespace Dolanan.Components.UI
 
 			Owner.OnMouseEnter += () =>
 			{
-				if (_buttonState != ButtonState.Pressed) _buttonState = ButtonState.Hovering;
+				if (State != ButtonState.Pressed) State = ButtonState.Hovering;
 				//TODO Create await / task / async
 			};
 			Owner.OnMouseExit += () =>
 			{
-				if (_buttonState == ButtonState.Hovering) _buttonState = ButtonState.None;
+				if (State == ButtonState.Hovering) State = ButtonState.None;
 			};
 		}
 
@@ -76,18 +76,22 @@ namespace Dolanan.Components.UI
 				if (Owner.IsMouseInside)
 					if (Input.IsMouseButtonJustPressed())
 					{
-						OnPressedDown?.Invoke();
-						_buttonState = ButtonState.Pressed;
+						// Register to Input Manager, it will be processed which button should be pressed (if stacking each other)
+						// Input.CurrentUIButtonActive to access the selected button
+						Input.UIInteractedByMouseButtonJustPressed.Add(this);
+						// OnPressedDown?.Invoke();
+						// State = ButtonState.Pressed;
 					}
 
-			if (_buttonState == ButtonState.Pressed)
+			if (State == ButtonState.Pressed && Input.CurrentUIButtonPressed == this)
 			{
 				if (Input.IsMouseButtonJustUp())
 				{
 					if (Owner.IsMouseInside)
-						_buttonState = ButtonState.Hovering;
+						State = ButtonState.Hovering;
 					else
-						_buttonState = ButtonState.None;
+						State = ButtonState.None;
+					// Input.UIInteractedByMouseButtonJustUp.Add(this);
 					OnPressedUp?.Invoke();
 				}
 				else
@@ -105,7 +109,7 @@ namespace Dolanan.Components.UI
 					if (!Interactable)
 						Image.TintColor = ColorTint.DisabledColor;
 					else
-						switch (_buttonState)
+						switch (State)
 						{
 							default:
 							case ButtonState.None:
@@ -156,7 +160,7 @@ namespace Dolanan.Components.UI
 			#endregion
 		}
 
-		private enum ButtonState
+		public enum ButtonState
 		{
 			None,
 			Hovering,

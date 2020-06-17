@@ -76,8 +76,10 @@ namespace Dolanan.Components
 		public override void Draw(GameTime gameTime, float layerZDepth)
 		{
 			if (Texture2D != null)
-				GameMgr.SpriteBatch.Draw(Texture2D, Owner.Transform.GlobalLocation, SrcRectangle, ModulatedColor,
+			{
+				GameMgr.Draw(Owner, Texture2D, Owner.Transform.GlobalLocation, SrcRectangle, ModulatedColor,
 					Owner.Transform.GlobalRotation, _origin, Owner.Transform.GlobalScale, SpriteEffect, layerZDepth);
+			}
 		}
 	}
 

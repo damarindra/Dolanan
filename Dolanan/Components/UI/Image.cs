@@ -48,12 +48,12 @@ namespace Dolanan.Components.UI
 			{
 				var destinationRect = Owner.RectTransform.GlobalRectangle;
 				destinationRect.Location += Transform.Pivot * destinationRect.Size;
-				GameMgr.SpriteBatch.Draw(Texture2D, destinationRect.ToRectangle(), TextureRectangle,
-					TintColor, Transform.GlobalRotation, origin, SpriteEffects.None, 0);
+				GameMgr.Draw(Owner, Texture2D, destinationRect.ToRectangle(), TextureRectangle,
+					TintColor, Transform.GlobalRotation, origin, SpriteEffects.None, layerZDepth);
 			}
 			else
 			{
-				GameMgr.SpriteBatch.Draw(Texture2D,
+				GameMgr.Draw(Owner, Texture2D,
 					Transform.GlobalLocationByPivot + Vector2.One * 3,
 					TextureRectangle,
 					TintColor,

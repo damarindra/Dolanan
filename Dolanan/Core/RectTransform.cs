@@ -183,7 +183,7 @@ namespace Dolanan.Core
 		{
 			get
 			{
-				if (UISpace == UISpace.World) Camera.WorldToScreen(GlobalLocationByPivot);
+				if (UISpace == UISpace.World) return Camera.WorldToScreen(GlobalLocationByPivot);
 
 				return GlobalLocationByPivot.ToPoint();
 			}
@@ -230,6 +230,24 @@ namespace Dolanan.Core
 		}
 
 		public UIActor UIParent { get; set; }
+
+		internal UIActor FirstChildUI
+		{
+			get
+			{
+				UIActor result = null;
+				foreach (var child in Childs)
+				{
+					if (child.GetType() == typeof(RectTransform) || child.GetType().IsSubclassOf(typeof(RectTransform)))
+					{
+						result = (UIActor) child.Owner;
+						break;
+					}
+				}
+
+				return result;
+			}
+		}
 
 		#endregion
 

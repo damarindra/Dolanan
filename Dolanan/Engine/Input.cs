@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dolanan.Components.UI;
+using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,7 +14,19 @@ namespace Dolanan.Engine
 		public static MouseState LastFrameMouseState;
 		private static readonly Dictionary<string, InputAction> _inputActions = new Dictionary<string, InputAction>();
 		private static readonly Dictionary<string, InputAxis> _inputAxises = new Dictionary<string, InputAxis>();
+		/// <summary>
+		/// 	All Button (UIButton Component) that interacted by mouse will be registered here first, sorted by depth backwards,
+		/// 	First index is bigger, last index is lower
+		/// </summary>
+		internal static List<Button> UIInteractedByMouseButtonJustPressed = new List<Button>();
+		/// <summary>
+		/// 	All Button (UIButton Component) that interacted by mouse will be registered here first, sorted by depth backwards,
+		/// 	First index is bigger, last index is lower
+		/// </summary>
+		internal static List<Button> UIInteractedByMouseButtonJustUp = new List<Button>();
 
+		public static Button CurrentUIButtonPressed = null;
+		
 		/// <summary>
 		/// </summary>
 		/// <param name="id">0 : left | 1 : right | 2 middle | 3 XButton1 | 4 XButton2</param>

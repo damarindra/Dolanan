@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Dolanan.Scene;
+using Dolanan.Tools;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Dolanan.Controller
@@ -85,6 +88,77 @@ namespace Dolanan.Controller
 		public static void EndDraw()
 		{
 			SpriteBatch.End();
+		}
+
+		public static void Draw(Actor actor,
+			Texture2D texture,
+			Vector2 position,
+			Rectangle? sourceRectangle,
+			Color color,
+			float rotation,
+			Vector2 origin,
+			Vector2 scale,
+			SpriteEffects effects,
+			float layerDepth)
+		{
+			SpriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+			RegisterZDepth(actor, layerDepth);
+		}
+		public static void Draw(Actor actor,
+			Texture2D texture,
+			Vector2 position,
+			Rectangle? sourceRectangle,
+			Color color,
+			float rotation,
+			Vector2 origin,
+			float scale,
+			SpriteEffects effects,
+			float layerDepth)
+		{
+			SpriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
+			RegisterZDepth(actor, layerDepth);
+		}
+		public static void Draw(Actor actor,
+			Texture2D texture,
+			Rectangle destinationRectangle,
+			Rectangle? sourceRectangle,
+			Color color,
+			float rotation,
+			Vector2 origin,
+			SpriteEffects effects,
+			float layerDepth)
+		{
+			SpriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
+			RegisterZDepth(actor, layerDepth);
+		}
+		
+		[Obsolete]
+		public static void Draw(Actor actor,
+			Texture2D texture,
+			Vector2? position = null,
+			Rectangle? destinationRectangle = null,
+			Rectangle? sourceRectangle = null,
+			Vector2? origin = null,
+			float rotation = 0.0f,
+			Vector2? scale = null,
+			Color? color = null,
+			SpriteEffects effects = SpriteEffects.None,
+			float layerDepth = 0.0f)
+		{
+			SpriteBatch.Draw(texture, position, destinationRectangle, sourceRectangle, origin,rotation, scale, color, effects, layerDepth);
+			RegisterZDepth(actor, layerDepth);
+		}
+
+		private static int drawCounter = 0;
+		static void RegisterZDepth(Actor actor, float layerDepth)
+		{
+			actor.ZDepth = drawCounter;
+			drawCounter ++;
+		}
+
+		public static void ResetState()
+		{
+			drawCounter = 0;
 		}
 	}
 

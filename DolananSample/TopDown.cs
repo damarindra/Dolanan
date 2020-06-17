@@ -1,4 +1,5 @@
-﻿using Dolanan;
+﻿using System;
+using Dolanan;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
@@ -66,7 +67,7 @@ namespace DolananSample
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Size = new Vector2(GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
-			Canvas.ReceiveMouseInput = false;
+			Canvas.Interactable = false;
 
 			var vContAct = UILayer.CreateActor<UIActor>("VContainer");
 			vContAct.Location += Vector2.UnitX * 50;
@@ -109,6 +110,7 @@ namespace DolananSample
 			for (var i = 0; i < 30; i++)
 			{
 				var c = UILayer.CreateActor<UIActor>("img");
+				c.Interactable = true;
 				img = c.AddComponent<Image>();
 				img.Texture2D = _uiTexture;
 				if (_uiAseprite.TryGetSlice("Slice 1", out slice))
@@ -116,6 +118,12 @@ namespace DolananSample
 				c.RectTransform.SetRectSize(new Vector2(64, 64));
 				c.RectTransform.Pivot = Pivot.TopLeft;
 				c.SetParent(gridAct);
+				var b = c.AddComponent<Button>();
+				b.OnPressed += () =>
+				{
+					c.Transform.Location += Input.GetMouseMotion().ToVector2();
+				};
+				Console.WriteLine(c.ZDepth);
 			}
 
 
@@ -209,18 +217,18 @@ namespace DolananSample
 			// middleLeft.SetParent(Canvas);
 			// middleLeft.ReceiveMouseInput = true;
 			//
-			// var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
-			// img = middleCenter.AddComponent<Image>();
-			// middleCenter.Transform.Pivot = Pivot.Center;
-			// middleCenter.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X / 2 - 50,
-			// 	GameSettings.ViewportSize.Y / 2 - 50,
-			// 	100, 100);
-			// middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
-			// middleCenter.SetParent(Canvas);
-			// middleCenter.ReceiveMouseInput = true;
-			// var btn = middleCenter.AddComponent<Button>();
-			// btn.OnPressed += () => { middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2(); };
-			// middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
+			var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			img = middleCenter.AddComponent<Image>();
+			middleCenter.Transform.Pivot = Pivot.Center;
+			middleCenter.RectTransform.Location = new Vector2(GameSettings.ViewportSize.X / 2 - 50,
+				GameSettings.ViewportSize.Y / 2 - 50);
+			middleCenter.RectTransform.Size = new Vector2(100, 100);
+			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
+			middleCenter.SetParent(Canvas);
+			middleCenter.Interactable = true;
+			var btn = middleCenter.AddComponent<Button>();
+			btn.OnPressed += () => { middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2(); };
+			middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
 
 			//
 			// var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);

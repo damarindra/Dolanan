@@ -89,52 +89,52 @@ namespace Dolanan.Components.UI
 			                     (transformRectangle.Size - bottomRightSize);
 
 			// Draw corner
-			GameMgr.SpriteBatch.Draw(Texture2D,
-				new Rectangle(topLeftLoc, topLeftSize), TopLeftSlice, TintColor);
-			GameMgr.SpriteBatch.Draw(Texture2D,
+			GameMgr.Draw(Owner, Texture2D,
+				new Rectangle(topLeftLoc, topLeftSize), TopLeftSlice, TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+			GameMgr.Draw(Owner, Texture2D,
 				new Rectangle(bottomRightLoc.X, topLeftLoc.Y, bottomRightSize.X, topLeftSize.Y), TopRightSlice,
-				TintColor);
-			GameMgr.SpriteBatch.Draw(Texture2D,
+				TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+			GameMgr.Draw(Owner, Texture2D,
 				new Rectangle(topLeftLoc.X, bottomRightLoc.Y, topLeftSize.X, bottomRightSize.Y), BottomLeftSlice,
-				TintColor);
-			GameMgr.SpriteBatch.Draw(Texture2D,
-				new Rectangle(bottomRightLoc, bottomRightSize), BottomRightSlice, TintColor);
+				TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+			GameMgr.Draw(Owner, Texture2D,
+				new Rectangle(bottomRightLoc, bottomRightSize), BottomRightSlice, TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
 
 			// Draw resizeable side
 			if (Mode == ResizeMode.Stretch)
 			{
-				GameMgr.SpriteBatch.Draw(Texture2D,
+				GameMgr.Draw(Owner, Texture2D,
 					new Rectangle(middleCenterLoc.X, topLeftLoc.Y, middleCenterSize.X, topLeftSize.Y), TopCenterSlice,
-					TintColor);
-				GameMgr.SpriteBatch.Draw(Texture2D,
+					TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+				GameMgr.Draw(Owner, Texture2D,
 					new Rectangle(topLeftLoc.X, middleCenterLoc.Y, topLeftSize.X, middleCenterSize.Y), MiddleLeftSlice,
-					TintColor);
-				GameMgr.SpriteBatch.Draw(Texture2D,
+					TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+				GameMgr.Draw(Owner, Texture2D,
 					new Rectangle(bottomRightLoc.X, middleCenterLoc.Y, bottomRightSize.X, middleCenterSize.Y),
-					MiddleRightSlice, TintColor);
-				GameMgr.SpriteBatch.Draw(Texture2D,
+					MiddleRightSlice, TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+				GameMgr.Draw(Owner, Texture2D,
 					new Rectangle(middleCenterLoc.X, bottomRightLoc.Y, middleCenterSize.X, bottomRightSize.Y),
-					BottomCenterSlice, TintColor);
-				GameMgr.SpriteBatch.Draw(Texture2D,
+					BottomCenterSlice, TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
+				GameMgr.Draw(Owner, Texture2D,
 					new Rectangle(middleCenterLoc.X, middleCenterLoc.Y, middleCenterSize.X, middleCenterSize.Y),
-					MiddleCenterSlice, TintColor);
+					MiddleCenterSlice, TintColor, 0, Vector2.Zero, SpriteEffects.None, layerZDepth);
 			}
 			else
 			{
 				DrawTiling(new Point(middleCenterLoc.X, topLeftLoc.Y), new Point(middleCenterSize.X, topLeftSize.Y),
-					TopCenterSlice);
+					TopCenterSlice, layerZDepth);
 				DrawTiling(new Point(topLeftLoc.X, middleCenterLoc.Y), new Point(topLeftSize.X, middleCenterSize.Y),
-					MiddleLeftSlice);
+					MiddleLeftSlice, layerZDepth);
 				DrawTiling(new Point(bottomRightLoc.X, middleCenterLoc.Y),
-					new Point(bottomRightSize.X, middleCenterSize.Y), MiddleRightSlice);
+					new Point(bottomRightSize.X, middleCenterSize.Y), MiddleRightSlice, layerZDepth);
 				DrawTiling(new Point(middleCenterLoc.X, bottomRightLoc.Y),
-					new Point(middleCenterSize.X, bottomRightSize.Y), BottomCenterSlice);
+					new Point(middleCenterSize.X, bottomRightSize.Y), BottomCenterSlice, layerZDepth);
 				DrawTiling(new Point(middleCenterLoc.X, middleCenterLoc.Y),
-					new Point(middleCenterSize.X, middleCenterSize.Y), MiddleCenterSlice);
+					new Point(middleCenterSize.X, middleCenterSize.Y), MiddleCenterSlice, layerZDepth);
 			}
 		}
 
-		private void DrawTiling(Point start, Point size, Rectangle srcRect)
+		private void DrawTiling(Point start, Point size, Rectangle srcRect, float layerDepth = 0)
 		{
 			var globalScale = Owner.Transform.GlobalScaleRendering;
 			var srcWidthScaled = srcRect.Width * (int) globalScale.X;
@@ -151,7 +151,7 @@ namespace Dolanan.Components.UI
 						widthLeft > srcWidthScaled ? srcWidthScaled : widthLeft,
 						heightLeft > srcHeightScaled ? srcHeightScaled : heightLeft);
 
-					GameMgr.SpriteBatch.Draw(Texture2D, destination, srcRect, TintColor);
+					GameMgr.Draw(Owner, Texture2D, destination, srcRect, TintColor, 0, Vector2.Zero, SpriteEffects.None, layerDepth);
 
 					y += srcHeightScaled;
 					heightLeft -= srcHeightScaled;

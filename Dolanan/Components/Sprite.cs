@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 
 namespace Dolanan.Components
 {
-	// TODO Create Frame feature
 	public class Sprite : Renderer
 	{
 		private int _frame;
