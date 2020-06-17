@@ -5,6 +5,10 @@ using Microsoft.Xna.Framework;
 
 namespace Dolanan.Components.UI
 {
+	/// <summary>
+	/// Container will auto set the childs position. The event only trigger when an UIActor.SetParent is triggered.
+	/// all child position is editable, don't change it's value if you want to keep it's position.
+	/// </summary>
 	public class HContainer : UIComponent
 	{
 		public HContainer(Actor owner) : base(owner)
@@ -12,10 +16,10 @@ namespace Dolanan.Components.UI
 		}
 
 		public ChildAlignment ChildAlignment = ChildAlignment.TopLeft;
-		public int HorizontalCount = 4;
 		public Padding Padding;
+		public int Spacing = 4;
 
-		protected void RefreshChildsLocation()
+		public void RefreshChildsLocation()
 		{
 			Anchor childAnchor;
 			switch (ChildAlignment)
@@ -42,9 +46,6 @@ namespace Dolanan.Components.UI
 			if (ChildAlignment == ChildAlignment.BottomLeft || ChildAlignment == ChildAlignment.BottomRight)
 				startY = (int) Transform.GlobalRectangle.Bottom - Padding.Bottom;
 
-			int spacing = (int)(Transform.Rectangle.Size.X - (Padding.Left + Padding.Right)) / (HorizontalCount );
-			// Console.WriteLine(spacing);
-			
 			int dir = (ChildAlignment == ChildAlignment.TopRight || ChildAlignment == ChildAlignment.BottomRight) ? -1 : 1;
 			foreach (var transformChild in Transform.Childs)
 			{
@@ -55,12 +56,11 @@ namespace Dolanan.Components.UI
 					rt.Anchor = childAnchor;
 
 					rt.LocationByPivot = new Vector2(lastX, startY);
-					lastX += dir * (spacing);
+					lastX += dir * ((int)rt.RectSize.X + Spacing);
 				}
 			}
 		}
 		
-		#region Cycle
 		public override void Start()
 		{
 			base.Start();
@@ -71,8 +71,6 @@ namespace Dolanan.Components.UI
 				RefreshChildsLocation();
 			};
 		}
-		
-		#endregion
 	}
 
 	public enum ChildAlignment
