@@ -62,21 +62,7 @@ namespace Dolanan.Components.UI
 					origin: origin, 
 					scale: Transform.GlobalScale,
 					effects: SpriteEffects.None,
-					layerDepth: Single.Epsilon);
-				
-				GameMgr.SpriteBatch.Draw(texture: Texture2D,
-					position: Transform.GlobalLocationByPivot, 
-					sourceRectangle: TextureRectangle,
-					color: TintColor,
-					rotation: Transform.GlobalRotation,
-					origin: origin, 
-					scale: Transform.GlobalScale,
-					effects: SpriteEffects.None,
-					layerDepth: Single.Epsilon * 2f);
-				// Console.WriteLine(value: Transform.GlobalLocationByPivot);
-				// Console.WriteLine(value: Transform.GlobalScale);
-				// Console.WriteLine(value: TextureRectangle);
-				// Console.WriteLine(value: origin);
+					layerDepth: layerZDepth);
 			}
 		}
 	}
