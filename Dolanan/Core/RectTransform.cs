@@ -25,7 +25,7 @@ namespace Dolanan.Core
 		public RectangleF Rectangle
 		{
 			get => _rectangle;
-			set
+			internal set
 			{
 				_rectangle = value;
 
@@ -90,8 +90,11 @@ namespace Dolanan.Core
 			}
 		}
 
-		public Vector2 RectLocation => Rectangle.Location;
-		public Vector2 RectSize => Rectangle.Size;
+		public Vector2 Size
+		{
+			get => Rectangle.Size;
+			set => Rectangle = new RectangleF(_rectangle.Location, value);
+		}
 
 		/// <summary>
 		///     Location is calculated from the TopLeft of the Rectangle. Location relative only to its parent location (also top
@@ -249,7 +252,7 @@ namespace Dolanan.Core
 			if(UIParent == null)
 				return;
 			
-			Anchor = new Anchor(Location / UIParent.RectTransform.RectSize, (Location + RectSize) / UIParent.RectTransform.RectSize);
+			Anchor = new Anchor(Location / UIParent.RectTransform.Size, (Location + Size) / UIParent.RectTransform.Size);
 		}
 
 		public void RefreshParent()

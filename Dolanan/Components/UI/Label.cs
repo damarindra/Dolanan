@@ -38,12 +38,12 @@ namespace Dolanan.Components.UI
 			if (TextAlign == TextAlign.Right)
 				result.X += Transform.RightRect - size.Value.X;
 			else if (TextAlign == TextAlign.Center)
-				result.X += Transform.RectSize.X / 2f - size.Value.X / 2f;
+				result.X += Transform.Size.X / 2f - size.Value.X / 2f;
 
 			if (TextVAlign == TextVAlign.Bottom)
 				result.Y += Transform.BottomRect - size.Value.Y;
 			else if (TextVAlign == TextVAlign.Middle)
-				result.Y += Transform.RectSize.Y / 2f - size.Value.Y / 2f;
+				result.Y += Transform.Size.Y / 2f - size.Value.Y / 2f;
 
 			return result;
 		}
@@ -112,7 +112,7 @@ namespace Dolanan.Components.UI
  
 			foreach (string word in wordArray)
 			{
-				if (Font.MeasureString(line + word).Length() > Transform.RectSize.X)
+				if (Font.MeasureString(line + word).Length() > Transform.Size.X)
 				{
 					line = line.Remove(line.Length - 1);
 					result.Add(line);

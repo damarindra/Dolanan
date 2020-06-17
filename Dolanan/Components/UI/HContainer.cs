@@ -56,7 +56,7 @@ namespace Dolanan.Components.UI
 					rt.Anchor = childAnchor;
 
 					rt.LocationByPivot = new Vector2(lastX, startY);
-					lastX += dir * ((int)rt.RectSize.X + Spacing);
+					lastX += dir * ((int)rt.Size.X + Spacing);
 				}
 			}
 		}
