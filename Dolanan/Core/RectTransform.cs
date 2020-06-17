@@ -90,6 +90,18 @@ namespace Dolanan.Core
 			}
 		}
 
+		public float Width
+		{
+			get => Size.X;
+			set => Rectangle = new RectangleF(_rectangle.X, _rectangle.Y, value, _rectangle.Height);
+		}
+		
+		public float Height
+		{
+			get => Size.Y;
+			set => Rectangle = new RectangleF(_rectangle.X, _rectangle.Y, _rectangle.Width, value);
+		}
+
 		public Vector2 Size
 		{
 			get => Rectangle.Size;

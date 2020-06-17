@@ -17,6 +17,14 @@ namespace Dolanan.Components.UI
 		}
 		public ChildAlignment Alignment = ChildAlignment.TopLeft;
 		public Padding Padding = new Padding(4);
+		/// <summary>
+		/// Horizontal rectangle will following the parent
+		/// </summary>
+		public bool ChildStretchHorizontal = false;
+		/// <summary>
+		/// Vertical rectangle will following the parent
+		/// </summary>
+		public bool ChildStretchVertical = false;
 
 		protected Anchor _childAnchor;
 
@@ -54,7 +62,18 @@ namespace Dolanan.Components.UI
 					_childAnchor = Anchor.BottomRight;
 					break;
 			}
-			
+
+			if (ChildStretchHorizontal)
+			{
+				_childAnchor.Min.X = 0;
+				_childAnchor.Max.X = 1;
+			}
+
+			if (ChildStretchVertical)
+			{
+				_childAnchor.Min.Y = 0;
+				_childAnchor.Max.Y = 0;
+			}
 		}
 		
 		#region Cycle

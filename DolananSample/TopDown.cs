@@ -63,14 +63,6 @@ namespace DolananSample
 			if (_texturesTopDown.TryGet("square", out var texture2D))
 			{
 			}
-			// Console.WriteLine(Single.Epsilon);
-			// Console.WriteLine(1.00000001f);
-			// Console.WriteLine(1.0000001f);
-			// Console.WriteLine(1.000001f);
-			// Console.WriteLine(1.00001f);
-			// Console.WriteLine(1.0001f);
-			// var s = System.IO.File.ReadAllText("Level/testJson.json");
-			// Console.WriteLine(s);
 			
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
@@ -78,16 +70,18 @@ namespace DolananSample
 			Canvas.ReceiveMouseInput = false;
 
 			var vContAct = UILayer.CreateActor<UIActor>("VContainer");
-			vContAct.Transform.Anchor = Anchor.TopLeft;
+			vContAct.Location += Vector2.UnitX * 50;
 			vContAct.RectTransform.Size = new Vector2(400, 600);
+			vContAct.Transform.Anchor = Anchor.FullStretch;
 			var vCont = vContAct.AddComponent<VContainer>();
 			vCont.Alignment = Container.ChildAlignment.TopRight;
 			vCont.Padding = new Padding(6, 6);
+			vCont.ChildStretchHorizontal = true;
 
 			for (int y = 0; y < 3; y++)
 			{
 				var containerAct = UILayer.CreateActor<UIActor>("HContainer");
-				containerAct.RectTransform.Size = new Vector2(400, 100);
+				containerAct.RectTransform.Size = new Vector2(vContAct.RectTransform.Width, 100);
 				containerAct.RectTransform.Pivot = Pivot.TopRight;
 				containerAct.SetParent(vContAct);
 				var hCont = containerAct.AddComponent<HContainer>();
@@ -284,13 +278,14 @@ namespace DolananSample
 			// if (_uiAseprite.TryGetSlice("Slice 9", out slice))
 			// {
 			// 	img.TextureRectangle = slice.Bounds;
-			// 	stretchVertical.RectTransform.Rectangle = new RectangleF(GameSettings.ViewportSize.X * .2f, 0,
-			// 		slice.Bounds.Width, slice.Bounds.Height);
+			// 	stretchVertical.RectTransform.Location = new Vector2(GameSettings.ViewportSize.X * .2f, 0);
+			// 	stretchVertical.RectTransform.Size = new Vector2(slice.Bounds.Width, slice.Bounds.Height);
 			// }
 			// stretchVertical.ReceiveMouseInput = true;
 			// Log.Print(stretchVertical);
 			//
-			// stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
+			// // stretchVertical.RectTransform.Anchor = new Anchor(new Vector2(.2f, 0), new Vector2(.35f, 1));
+			// stretchVertical.RectTransform.Anchor = Anchor.FullStretch;
 			// stretchVertical.SetParent(Canvas);
 			// //
 			// //
@@ -303,8 +298,8 @@ namespace DolananSample
 			// {
 			// 	ns.TextureRectangle = slice.Bounds;
 			// 	ns.Center = slice.Center;
-			// 	stretchHorizontal.RectTransform.Rectangle = new RectangleF(50, GameSettings.ViewportSize.Y * 0.2f,
-			// 		GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
+			// 	stretchHorizontal.RectTransform.Location = new Vector2(50, GameSettings.ViewportSize.Y * 0.2f);
+			// 	stretchHorizontal.RectTransform.Size = new Vector2(GameSettings.ViewportSize.X - 100, GameSettings.ViewportSize.Y * .5f);
 			// }
 			// //
 			// stretchHorizontal.RectTransform.Anchor = new Anchor(new Vector2(0f, .2f), new Vector2(1, 0.5f));
