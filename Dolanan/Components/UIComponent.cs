@@ -1,4 +1,5 @@
-﻿using Dolanan.Core;
+﻿using System;
+using Dolanan.Core;
 using Dolanan.Scene;
 
 namespace Dolanan.Components
@@ -35,4 +36,37 @@ namespace Dolanan.Components
 			Owner = (UIActor) base.Owner;
 		}
 	}
+
+	public struct Padding
+	{
+		public int Left;
+		public int Right;
+		public int Top;
+		public int Bottom;
+
+		public Padding(int left, int right, int top, int bottom)
+		{
+			Left = left;
+			Right = right;
+			Top = top;
+			Bottom = bottom;
+		}
+		public Padding(int val)
+		{
+			Left = val;
+			Right = val;
+			Top = val;
+			Bottom = val;
+		}
+		public Padding(int horizontal, int vertical)
+		{
+			Left = horizontal;
+			Right = horizontal;
+			Top = vertical;
+			Bottom = vertical;
+		}
+		
+		public static Padding Zero => new Padding(0);
+	}
+
 }

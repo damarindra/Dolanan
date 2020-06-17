@@ -10,8 +10,6 @@ namespace Dolanan.Scene
 		private UISpace _uiSpace = UISpace.Window;
 		/// <summary>
 		/// Scaling all UIActor in this layer
-		/// Scaling is what you think, the technique I'm using is, invert the scaling. So if scaling is 2, that means divide by 2
-		/// ScreenCanvas will be divided by 2, that means all of ScreenCanvas child will be shrink
 		/// </summary>
 		public float Scaling = 2;
 
