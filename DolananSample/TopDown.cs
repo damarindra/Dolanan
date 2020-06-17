@@ -88,6 +88,7 @@ namespace DolananSample
 			{
 				var containerAct = UILayer.CreateActor<UIActor>("HContainer");
 				containerAct.RectTransform.Size = new Vector2(400, 100);
+				containerAct.RectTransform.Pivot = Pivot.TopRight;
 				containerAct.SetParent(vContAct);
 				var hCont = containerAct.AddComponent<HContainer>();
 				hCont.Alignment = Container.ChildAlignment.TopRight;
@@ -103,6 +104,7 @@ namespace DolananSample
 					c.RectTransform.Pivot = Pivot.TopRight;
 					c.SetParent(containerAct);
 				}
+				Console.WriteLine(containerAct.RectTransform.LocationByPivot);
 			}
 			
 			

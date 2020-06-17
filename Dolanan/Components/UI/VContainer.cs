@@ -22,10 +22,10 @@ namespace Dolanan.Components.UI
 			base.RefreshChildsLocation();
 			
 			int lastY = (int)Transform.GlobalRectangle.Y + Padding.Top;
-			if (Alignment == ChildAlignment.TopRight || Alignment == ChildAlignment.BottomRight)
+			if (Alignment == ChildAlignment.BottomLeft || Alignment == ChildAlignment.BottomRight)
 				lastY = (int) Transform.GlobalRectangle.Bottom - Padding.Bottom;
 			int startX = (int) Transform.GlobalRectangle.X + Padding.Left;
-			if (Alignment == ChildAlignment.BottomLeft || Alignment == ChildAlignment.BottomRight)
+			if (Alignment == ChildAlignment.TopRight || Alignment == ChildAlignment.BottomRight)
 				startX = (int) Transform.GlobalRectangle.Right - Padding.Right;
 
 			int dir = (Alignment == ChildAlignment.BottomLeft || Alignment == ChildAlignment.BottomRight) ? -1 : 1;
@@ -39,6 +39,8 @@ namespace Dolanan.Components.UI
 
 					rt.LocationByPivot = new Vector2(startX, lastY);
 					lastY += dir * ((int)rt.Size.Y + Spacing);
+					
+					Console.WriteLine(rt.LocationByPivot);
 				}
 			}
 		}
