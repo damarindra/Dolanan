@@ -122,6 +122,8 @@ namespace Dolanan.Engine
 		public Vector2 Down => _matrix.Up.ToVector2();
 		public Vector2 Up => -Down;
 
+		public Transform2D[] GetChilds => Childs.ToArray();
+		
 		public override void Start()
 		{
 		}

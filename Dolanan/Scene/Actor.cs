@@ -11,6 +11,8 @@ namespace Dolanan.Scene
 {
 	public delegate void ParentState(Actor parent);
 
+	public delegate void ChildState(Transform2D[] childs);
+
 	public delegate void LayerState(Layer layer);
 
 	/// <summary>
@@ -26,6 +28,7 @@ namespace Dolanan.Scene
 		public LayerState OnLayerChange;
 
 		public ParentState OnParentChange;
+		public ChildState OnChildChange;
 		public Transform2D Transform;
 
 		public Actor(string name, [NotNull] Layer layer)
@@ -144,6 +147,7 @@ namespace Dolanan.Scene
 				return;
 			Transform.Parent = parent.Transform;
 			OnParentChange?.Invoke(parent);
+			parent.OnChildChange?.Invoke(parent.Transform.Childs.ToArray());
 		}
 
 		public void SetLayer([NotNull] Layer layer)

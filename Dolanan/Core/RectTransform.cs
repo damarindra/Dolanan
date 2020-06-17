@@ -27,10 +27,6 @@ namespace Dolanan.Core
 			get => _rectangle;
 			set
 			{
-				if (_rectangle.Location != value.Location)
-				{
-				}
-
 				_rectangle = value;
 
 				UpdateAnchorOffset();
@@ -116,12 +112,17 @@ namespace Dolanan.Core
 			set => Location = value - ParentGlobalLocation;
 		}
 		
-		internal float UILayerScaling => UIParent?.UILayer?.Scaling ?? 1;
+		public float UILayerScaling => UIParent?.UILayer?.Scaling ?? 1;
 
+		/// <summary>
+		/// Used for rendering scale.
+		/// </summary>
+		public Vector2 GlobalScaleRendering => GlobalScale * UILayerScaling;
+		
 		/// <summary>
 		/// Scale doesn't affect the Rectangle, it is only affected to the renderer component.
 		/// </summary>
-		public override Vector2 GlobalScale => base.GlobalScale * UILayerScaling;
+		public override Vector2 GlobalScale => base.GlobalScale;
 		
 		public Point ScreenLocation
 		{

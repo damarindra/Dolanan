@@ -28,13 +28,13 @@ namespace Dolanan.Components.UI
 		private Rectangle _center = Rectangle.Empty;
 
 
-		public ResizeMode Mode = ResizeMode.Tile;
+		public ResizeMode Mode = ResizeMode.Stretch;
 
 		public NineSlice(Actor owner) : base(owner)
 		{
 		}
 
-		public new Texture2D Texture2D
+		public Texture2D Texture2D
 		{
 			get => Texture;
 			set
@@ -77,7 +77,7 @@ namespace Dolanan.Components.UI
 
 			var transformRectangle = Transform.GlobalRectangle.ToRectangle();
 
-			Vector2 globalScale = Transform.GlobalScale;
+			Vector2 globalScale = Owner.Transform.GlobalScaleRendering;
 			
 			Point topLeftSize = TopLeftSlice.Size * globalScale.ToPoint();
 			Point bottomRightSize = BottomRightSlice.Size * globalScale.ToPoint();
@@ -124,7 +124,7 @@ namespace Dolanan.Components.UI
 
 		private void DrawTiling(Point start, Point size, Rectangle srcRect)
 		{
-			Vector2 globalScale = Transform.GlobalScale;
+			Vector2 globalScale = Owner.Transform.GlobalScaleRendering;
 			int srcWidthScaled = srcRect.Width * (int)globalScale.X;
 			int srcHeightScaled = srcRect.Width * (int)globalScale.Y;
 			var x = start.X;

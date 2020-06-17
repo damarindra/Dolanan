@@ -60,7 +60,7 @@ namespace Dolanan.Components.UI
 					color: TintColor,
 					rotation: Transform.GlobalRotation,
 					origin: origin, 
-					scale: Transform.GlobalScale,
+					scale: Owner.Transform.GlobalScaleRendering,
 					effects: SpriteEffects.None,
 					layerDepth: layerZDepth);
 			}

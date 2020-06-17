@@ -61,7 +61,7 @@ namespace Dolanan.Components.UI
 					TintColor,
 					Transform.GlobalRotation,
 					Vector2.Zero,
-					Transform.GlobalScale,
+					Owner.Transform.GlobalScaleRendering,
 					SpriteEffects.None,
 					layerZDepth);
 			else
@@ -93,10 +93,10 @@ namespace Dolanan.Components.UI
 						TintColor,
 						Transform.GlobalRotation,
 						Vector2.Zero,
-						Transform.GlobalScale,
+						Owner.Transform.GlobalScaleRendering,
 						SpriteEffects.None,
 						layerZDepth);
-					yOffset += textLocations[i].Y * Transform.GlobalScale.Y;
+					yOffset += textLocations[i].Y * Owner.Transform.GlobalScaleRendering.Y;
 				}
 			}	
 		}
