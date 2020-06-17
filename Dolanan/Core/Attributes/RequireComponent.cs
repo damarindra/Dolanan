@@ -3,10 +3,10 @@ using Dolanan.Scene;
 
 namespace Dolanan.Engine.Attributes
 {
-    /// <summary>
-    ///     Still don't know how to do this
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Constructor)]
+	/// <summary>
+	///     Still don't know how to do this
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Constructor)]
 	public class RequireComponent : Attribute
 	{
 		public Actor Actor;

@@ -1,5 +1,4 @@
-﻿using System;
-using Dolanan.Components;
+﻿using Dolanan.Components;
 using Dolanan.Engine;
 using Dolanan.Scene;
 using Dolanan.Tools;
@@ -46,9 +45,10 @@ namespace Dolanan.Core
 			get => _anchor;
 			set
 			{
-				if(UIParent == null)
-					Log.PrintWarning("Actor : "+ Owner.Name + ", Trying to modify anchor, but don't have Parent UIActor, it is useless! SetParent before modify anchor! ");
-				
+				if (UIParent == null)
+					Log.PrintWarning("Actor : " + Owner.Name +
+					                 ", Trying to modify anchor, but don't have Parent UIActor, it is useless! SetParent before modify anchor! ");
+
 				_anchor.Min = new Vector2(MathEx.Clamp(value.Min.X, 0, 1), MathEx.Clamp(value.Min.Y, 0, 1));
 				_anchor.Max = new Vector2(MathEx.Clamp(value.Max.X, 0, 1), MathEx.Clamp(value.Max.Y, 0, 1));
 
@@ -66,7 +66,8 @@ namespace Dolanan.Core
 				if (UIParent == null)
 				{
 					Log.PrintError(
-						"Actor : "+ Owner.Name + ", Trying to get Anchor Rect, but doesn't have any parent, returning default Rectangle");
+						"Actor : " + Owner.Name +
+						", Trying to get Anchor Rect, but doesn't have any parent, returning default Rectangle");
 					return _rectangle;
 				}
 
@@ -95,7 +96,7 @@ namespace Dolanan.Core
 			get => Size.X;
 			set => Rectangle = new RectangleF(_rectangle.X, _rectangle.Y, value, _rectangle.Height);
 		}
-		
+
 		public float Height
 		{
 			get => Size.Y;
@@ -126,19 +127,19 @@ namespace Dolanan.Core
 			get => base.GlobalLocation;
 			set => Location = value - ParentGlobalLocation;
 		}
-		
+
 		public float UILayerScaling => UIParent?.UILayer?.Scaling ?? 1;
 
 		/// <summary>
-		/// Used for rendering scale.
+		///     Used for rendering scale.
 		/// </summary>
 		public Vector2 GlobalScaleRendering => GlobalScale * UILayerScaling;
-		
+
 		/// <summary>
-		/// Scale doesn't affect the Rectangle, it is only affected to the renderer component.
+		///     Scale doesn't affect the Rectangle, it is only affected to the renderer component.
 		/// </summary>
 		public override Vector2 GlobalScale => base.GlobalScale;
-		
+
 		public Point ScreenLocation
 		{
 			get
@@ -257,14 +258,15 @@ namespace Dolanan.Core
 		#region Method
 
 		/// <summary>
-		/// 	Set Anchor Min and Max exactly the same as rectangle
+		///     Set Anchor Min and Max exactly the same as rectangle
 		/// </summary>
 		public void FitAnchorToRect()
 		{
-			if(UIParent == null)
+			if (UIParent == null)
 				return;
-			
-			Anchor = new Anchor(Location / UIParent.RectTransform.Size, (Location + Size) / UIParent.RectTransform.Size);
+
+			Anchor = new Anchor(Location / UIParent.RectTransform.Size,
+				(Location + Size) / UIParent.RectTransform.Size);
 		}
 
 		public void RefreshParent()

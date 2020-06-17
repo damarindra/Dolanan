@@ -1,5 +1,4 @@
-﻿using System;
-using Dolanan.Core;
+﻿using Dolanan.Core;
 using Dolanan.Scene;
 
 namespace Dolanan.Components
@@ -51,6 +50,7 @@ namespace Dolanan.Components
 			Top = top;
 			Bottom = bottom;
 		}
+
 		public Padding(int val)
 		{
 			Left = val;
@@ -58,6 +58,7 @@ namespace Dolanan.Components
 			Top = val;
 			Bottom = val;
 		}
+
 		public Padding(int horizontal, int vertical)
 		{
 			Left = horizontal;
@@ -65,8 +66,7 @@ namespace Dolanan.Components
 			Top = vertical;
 			Bottom = vertical;
 		}
-		
+
 		public static Padding Zero => new Padding(0);
 	}
-
 }

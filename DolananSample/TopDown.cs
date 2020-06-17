@@ -1,5 +1,4 @@
-﻿using System;
-using Dolanan;
+﻿using Dolanan;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
@@ -63,7 +62,7 @@ namespace DolananSample
 			if (_texturesTopDown.TryGet("square", out var texture2D))
 			{
 			}
-			
+
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Size = new Vector2(GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
@@ -78,7 +77,7 @@ namespace DolananSample
 			vCont.Padding = new Padding(6, 6);
 			vCont.ChildStretchHorizontal = true;
 
-			for (int y = 0; y < 3; y++)
+			for (var y = 0; y < 3; y++)
 			{
 				var containerAct = UILayer.CreateActor<UIActor>("HContainer");
 				containerAct.RectTransform.Size = new Vector2(vContAct.RectTransform.Width, 100);
@@ -87,7 +86,7 @@ namespace DolananSample
 				var hCont = containerAct.AddComponent<HContainer>();
 				hCont.Alignment = Container.ChildAlignment.TopRight;
 				hCont.Padding = new Padding(4, 4);
-				for (int i = 0; i < 4; i++)
+				for (var i = 0; i < 4; i++)
 				{
 					var c = UILayer.CreateActor<UIActor>("img");
 					img = c.AddComponent<Image>();
@@ -107,7 +106,7 @@ namespace DolananSample
 			var gCont = gridAct.AddComponent<GridContainer>();
 			gCont.Alignment = Container.ChildAlignment.TopLeft;
 			gCont.AutoRectSize = true;
-			for (int i = 0; i < 30; i++)
+			for (var i = 0; i < 30; i++)
 			{
 				var c = UILayer.CreateActor<UIActor>("img");
 				img = c.AddComponent<Image>();
@@ -118,7 +117,6 @@ namespace DolananSample
 				c.RectTransform.Pivot = Pivot.TopLeft;
 				c.SetParent(gridAct);
 			}
-
 
 
 			// var topLeft = World.CreateActor<UIActor>("TopLeft", UILayer);

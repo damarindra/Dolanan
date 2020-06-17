@@ -8,8 +8,9 @@ namespace Dolanan.Scene
 	public class UILayer : Layer
 	{
 		private UISpace _uiSpace = UISpace.Window;
+
 		/// <summary>
-		/// Scaling all UIActor in this layer
+		///     Scaling all UIActor in this layer
 		/// </summary>
 		public float Scaling = 2;
 
@@ -48,7 +49,7 @@ namespace Dolanan.Scene
 		public new T CreateActor<T>(string name) where T : UIActor
 		{
 			UIActor actor = base.CreateActor<T>(name);
-			if(ScreenCanvas != null)
+			if (ScreenCanvas != null)
 				actor.SetParent(ScreenCanvas);
 			return (T) actor;
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using Dolanan.Components;
+﻿using Dolanan.Components;
 using Dolanan.Controller;
 using Dolanan.Core;
 using Dolanan.Engine;
@@ -95,7 +94,7 @@ namespace Dolanan.Scene
 		{
 			base.Start();
 			base.Transform = RectTransform = base.AddComponent<RectTransform>();
-			if (Layer.GetType() == typeof(UILayer) || Layer .GetType().IsSubclassOf(typeof(UILayer)))
+			if (Layer.GetType() == typeof(UILayer) || Layer.GetType().IsSubclassOf(typeof(UILayer)))
 				UILayer = (UILayer) Layer;
 
 			OnParentChange += parent =>
@@ -108,10 +107,8 @@ namespace Dolanan.Scene
 			OnLayerChange += layer =>
 			{
 				if (layer != null)
-				{
 					if (layer.GetType() == typeof(UILayer) || layer.GetType().IsSubclassOf(typeof(UILayer)))
 						UILayer = (UILayer) layer;
-				}
 			};
 		}
 
@@ -158,10 +155,8 @@ namespace Dolanan.Scene
 
 			GameMgr.SpriteBatch.DrawStroke(Transform.GlobalRectangle.ToRectangle(), Color.Yellow);
 			if (UIParent != null)
-			{
 				GameMgr.SpriteBatch.DrawStroke(Transform.AnchorRect.ToRectangle(), Color.Red);
-				// Console.WriteLine(Name + " , " + Transform.AnchorRect);
-			}
+			// Console.WriteLine(Name + " , " + Transform.AnchorRect);
 		}
 
 		public new T AddComponent<T>() where T : UIComponent

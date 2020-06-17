@@ -5,53 +5,56 @@ using Microsoft.Xna.Framework;
 namespace Dolanan.Components.UI
 {
 	/// <summary>
-	/// Container is a container for UIActor. Container will automatically layouting all the childs
-	/// 
+	///     Container is a container for UIActor. Container will automatically layouting all the childs
 	/// </summary>
 	public abstract class Container : UIComponent
 	{
 		public enum ChildAlignment
 		{
-			TopLeft, TopRight,
-			BottomLeft, BottomRight
+			TopLeft,
+			TopRight,
+			BottomLeft,
+			BottomRight
 		}
-		
-		protected Container(Actor owner) : base(owner)
-		{
-		}
-		/// <summary>
-		/// 	Alignment for the child (sub child not affected)
-		/// 	what alignment do : set all of the childs Anchor.
-		/// </summary>
-		public ChildAlignment Alignment = ChildAlignment.TopLeft;
-		
-		/// <summary>
-		/// 	Padding of the rectangle
-		/// </summary>
-		public Padding Padding = new Padding(4);
-		
-		/// <summary>
-		/// 	Horizontal rectangle will following the parent.
-		/// 	What it actually do : set the anchor Min.X = 0 and Max.X = 1
-		/// </summary>
-		public bool ChildStretchHorizontal = false;
-		/// <summary>
-		/// 	Vertical rectangle will following the parent
-		/// 	What it actually do : set the anchor Min.Y = 0 and Max.Y = 1
-		/// </summary>
-		public bool ChildStretchVertical = false;
 
 		protected Anchor _childAnchor;
 
 		/// <summary>
-		/// 	Inner Rectangle, the location is on Global Space.
-		/// 	what it is : GlobalRectangle - Padding
+		///     Alignment for the child (sub child not affected)
+		///     what alignment do : set all of the childs Anchor.
+		/// </summary>
+		public ChildAlignment Alignment = ChildAlignment.TopLeft;
+
+		/// <summary>
+		///     Horizontal rectangle will following the parent.
+		///     What it actually do : set the anchor Min.X = 0 and Max.X = 1
+		/// </summary>
+		public bool ChildStretchHorizontal = false;
+
+		/// <summary>
+		///     Vertical rectangle will following the parent
+		///     What it actually do : set the anchor Min.Y = 0 and Max.Y = 1
+		/// </summary>
+		public bool ChildStretchVertical = false;
+
+		/// <summary>
+		///     Padding of the rectangle
+		/// </summary>
+		public Padding Padding = new Padding(4);
+
+		protected Container(Actor owner) : base(owner)
+		{
+		}
+
+		/// <summary>
+		///     Inner Rectangle, the location is on Global Space.
+		///     what it is : GlobalRectangle - Padding
 		/// </summary>
 		public Rectangle InnerRectangle
 		{
 			get
 			{
-				Rectangle innerRect = Transform.GlobalRectangle.ToRectangle();
+				var innerRect = Transform.GlobalRectangle.ToRectangle();
 				innerRect.X += Padding.Left;
 				innerRect.Y += Padding.Top;
 				innerRect.Width -= Padding.Right;
@@ -91,19 +94,17 @@ namespace Dolanan.Components.UI
 				_childAnchor.Max.Y = 0;
 			}
 		}
-		
+
 		#region Cycle
+
 		public override void Start()
 		{
 			base.Start();
 			Owner.Clip = true;
 
-			Owner.OnChildChange += childs =>
-			{
-				RefreshChildsRectangle();
-			};
+			Owner.OnChildChange += childs => { RefreshChildsRectangle(); };
 		}
-		
+
 		#endregion
 	}
 }

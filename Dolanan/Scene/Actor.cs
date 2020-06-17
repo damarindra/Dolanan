@@ -25,10 +25,10 @@ namespace Dolanan.Scene
 		protected readonly List<Component> Components = new List<Component>();
 
 		public string Name;
+		public ChildState OnChildChange;
 		public LayerState OnLayerChange;
 
 		public ParentState OnParentChange;
-		public ChildState OnChildChange;
 		public Transform2D Transform;
 
 		public Actor(string name, [NotNull] Layer layer)

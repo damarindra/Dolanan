@@ -1,21 +1,17 @@
 ﻿using System;
 using Dolanan.Controller;
 using Dolanan.Scene;
-using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Dolanan.Components.UI
 {
 	/// <summary>
-	///     NineSlice texture. RectTransform Scale and Rotation might not working very well. Scale only accept whole number (int)
+	///     NineSlice texture. RectTransform Scale and Rotation might not working very well. Scale only accept whole number
+	///     (int)
 	/// </summary>
 	public class NineSlice : UIComponent
 	{
-		protected Texture2D Texture;
-		public Rectangle TextureRectangle = Rectangle.Empty;
-		public Color TintColor = Color.White;
-		
 		/// <summary>
 		///     Resize Mode, IMPORTANT, Tile mode only works when the texture size is Power of 2
 		/// </summary>
@@ -29,6 +25,9 @@ namespace Dolanan.Components.UI
 
 
 		public ResizeMode Mode = ResizeMode.Stretch;
+		protected Texture2D Texture;
+		public Rectangle TextureRectangle = Rectangle.Empty;
+		public Color TintColor = Color.White;
 
 		public NineSlice(Actor owner) : base(owner)
 		{
@@ -50,7 +49,7 @@ namespace Dolanan.Components.UI
 		}
 
 		/// <summary>
-		/// Inner rectangle nine slice
+		///     Inner rectangle nine slice
 		/// </summary>
 		public Rectangle Center
 		{
@@ -77,56 +76,69 @@ namespace Dolanan.Components.UI
 
 			var transformRectangle = Transform.GlobalRectangle.ToRectangle();
 
-			Vector2 globalScale = Owner.Transform.GlobalScaleRendering;
-			
-			Point topLeftSize = TopLeftSlice.Size * globalScale.ToPoint();
-			Point bottomRightSize = BottomRightSlice.Size * globalScale.ToPoint();
-			Point middleCenterSize = new Point(transformRectangle.Size.X - topLeftSize.X - bottomRightSize.X, transformRectangle.Size.Y - topLeftSize.Y - bottomRightSize.Y);
+			var globalScale = Owner.Transform.GlobalScaleRendering;
 
-			Point topLeftLoc = transformRectangle.Location;
-			Point middleCenterLoc = transformRectangle.Location + topLeftSize;
-			Point bottomRightLoc = transformRectangle.Location +
-			                       (transformRectangle.Size - bottomRightSize);
+			var topLeftSize = TopLeftSlice.Size * globalScale.ToPoint();
+			var bottomRightSize = BottomRightSlice.Size * globalScale.ToPoint();
+			var middleCenterSize = new Point(transformRectangle.Size.X - topLeftSize.X - bottomRightSize.X,
+				transformRectangle.Size.Y - topLeftSize.Y - bottomRightSize.Y);
+
+			var topLeftLoc = transformRectangle.Location;
+			var middleCenterLoc = transformRectangle.Location + topLeftSize;
+			var bottomRightLoc = transformRectangle.Location +
+			                     (transformRectangle.Size - bottomRightSize);
 
 			// Draw corner
-			GameMgr.SpriteBatch.Draw(Texture2D, 
+			GameMgr.SpriteBatch.Draw(Texture2D,
 				new Rectangle(topLeftLoc, topLeftSize), TopLeftSlice, TintColor);
-			GameMgr.SpriteBatch.Draw(Texture2D, 
-				new Rectangle(bottomRightLoc.X, topLeftLoc.Y, bottomRightSize.X, topLeftSize.Y), TopRightSlice, TintColor);
-			GameMgr.SpriteBatch.Draw(Texture2D, 
-				new Rectangle(topLeftLoc.X, bottomRightLoc.Y, topLeftSize.X, bottomRightSize.Y), BottomLeftSlice, TintColor);
-			GameMgr.SpriteBatch.Draw(Texture2D, 
+			GameMgr.SpriteBatch.Draw(Texture2D,
+				new Rectangle(bottomRightLoc.X, topLeftLoc.Y, bottomRightSize.X, topLeftSize.Y), TopRightSlice,
+				TintColor);
+			GameMgr.SpriteBatch.Draw(Texture2D,
+				new Rectangle(topLeftLoc.X, bottomRightLoc.Y, topLeftSize.X, bottomRightSize.Y), BottomLeftSlice,
+				TintColor);
+			GameMgr.SpriteBatch.Draw(Texture2D,
 				new Rectangle(bottomRightLoc, bottomRightSize), BottomRightSlice, TintColor);
 
 			// Draw resizeable side
 			if (Mode == ResizeMode.Stretch)
 			{
-				GameMgr.SpriteBatch.Draw(Texture2D, 
-					new Rectangle(middleCenterLoc.X, topLeftLoc.Y, middleCenterSize.X, topLeftSize.Y), TopCenterSlice, TintColor);
-				GameMgr.SpriteBatch.Draw(Texture2D, 
-					new Rectangle(topLeftLoc.X, middleCenterLoc.Y, topLeftSize.X, middleCenterSize.Y), MiddleLeftSlice, TintColor);
 				GameMgr.SpriteBatch.Draw(Texture2D,
-					new Rectangle(bottomRightLoc.X, middleCenterLoc.Y, bottomRightSize.X, middleCenterSize.Y), MiddleRightSlice, TintColor);
-				GameMgr.SpriteBatch.Draw(Texture2D, 
-					new Rectangle(middleCenterLoc.X, bottomRightLoc.Y, middleCenterSize.X, bottomRightSize.Y), BottomCenterSlice, TintColor);
+					new Rectangle(middleCenterLoc.X, topLeftLoc.Y, middleCenterSize.X, topLeftSize.Y), TopCenterSlice,
+					TintColor);
 				GameMgr.SpriteBatch.Draw(Texture2D,
-					new Rectangle(middleCenterLoc.X, middleCenterLoc.Y, middleCenterSize.X, middleCenterSize.Y), MiddleCenterSlice, TintColor);
+					new Rectangle(topLeftLoc.X, middleCenterLoc.Y, topLeftSize.X, middleCenterSize.Y), MiddleLeftSlice,
+					TintColor);
+				GameMgr.SpriteBatch.Draw(Texture2D,
+					new Rectangle(bottomRightLoc.X, middleCenterLoc.Y, bottomRightSize.X, middleCenterSize.Y),
+					MiddleRightSlice, TintColor);
+				GameMgr.SpriteBatch.Draw(Texture2D,
+					new Rectangle(middleCenterLoc.X, bottomRightLoc.Y, middleCenterSize.X, bottomRightSize.Y),
+					BottomCenterSlice, TintColor);
+				GameMgr.SpriteBatch.Draw(Texture2D,
+					new Rectangle(middleCenterLoc.X, middleCenterLoc.Y, middleCenterSize.X, middleCenterSize.Y),
+					MiddleCenterSlice, TintColor);
 			}
 			else
 			{
-				DrawTiling(new Point(middleCenterLoc.X, topLeftLoc.Y), new Point(middleCenterSize.X, topLeftSize.Y), TopCenterSlice);
-				DrawTiling(new Point(topLeftLoc.X, middleCenterLoc.Y), new Point(topLeftSize.X, middleCenterSize.Y), MiddleLeftSlice);
-				DrawTiling(new Point(bottomRightLoc.X, middleCenterLoc.Y), new Point(bottomRightSize.X, middleCenterSize.Y), MiddleRightSlice);
-				DrawTiling(new Point(middleCenterLoc.X, bottomRightLoc.Y), new Point(middleCenterSize.X, bottomRightSize.Y), BottomCenterSlice);
-				DrawTiling(new Point(middleCenterLoc.X, middleCenterLoc.Y), new Point(middleCenterSize.X, middleCenterSize.Y), MiddleCenterSlice);
+				DrawTiling(new Point(middleCenterLoc.X, topLeftLoc.Y), new Point(middleCenterSize.X, topLeftSize.Y),
+					TopCenterSlice);
+				DrawTiling(new Point(topLeftLoc.X, middleCenterLoc.Y), new Point(topLeftSize.X, middleCenterSize.Y),
+					MiddleLeftSlice);
+				DrawTiling(new Point(bottomRightLoc.X, middleCenterLoc.Y),
+					new Point(bottomRightSize.X, middleCenterSize.Y), MiddleRightSlice);
+				DrawTiling(new Point(middleCenterLoc.X, bottomRightLoc.Y),
+					new Point(middleCenterSize.X, bottomRightSize.Y), BottomCenterSlice);
+				DrawTiling(new Point(middleCenterLoc.X, middleCenterLoc.Y),
+					new Point(middleCenterSize.X, middleCenterSize.Y), MiddleCenterSlice);
 			}
 		}
 
 		private void DrawTiling(Point start, Point size, Rectangle srcRect)
 		{
-			Vector2 globalScale = Owner.Transform.GlobalScaleRendering;
-			int srcWidthScaled = srcRect.Width * (int)globalScale.X;
-			int srcHeightScaled = srcRect.Width * (int)globalScale.Y;
+			var globalScale = Owner.Transform.GlobalScaleRendering;
+			var srcWidthScaled = srcRect.Width * (int) globalScale.X;
+			var srcHeightScaled = srcRect.Width * (int) globalScale.Y;
 			var x = start.X;
 			var widthLeft = size.X;
 			while (widthLeft > 0)

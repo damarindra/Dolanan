@@ -1,5 +1,4 @@
-﻿using System;
-using Dolanan.Controller;
+﻿using Dolanan.Controller;
 using Dolanan.Scene;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
@@ -9,10 +8,10 @@ namespace Dolanan.Components.UI
 {
 	public class Image : UIComponent
 	{
+		public bool Stretch = true;
 		protected Texture2D Texture;
 		public Rectangle TextureRectangle = Rectangle.Empty;
 		public Color TintColor = Color.White;
-		public bool Stretch = true;
 
 		public Image(Actor owner) : base(owner)
 		{
@@ -42,27 +41,27 @@ namespace Dolanan.Components.UI
 
 		public override void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
-			base.Draw(gameTime: gameTime, layerZDepth: layerZDepth);
+			base.Draw(gameTime, layerZDepth);
 
 			var origin = Transform.Pivot * TextureRectangle.Size.ToVector2();
 			if (Stretch)
 			{
 				var destinationRect = Owner.RectTransform.GlobalRectangle;
 				destinationRect.Location += Transform.Pivot * destinationRect.Size;
-				GameMgr.SpriteBatch.Draw(texture: Texture2D, destinationRectangle: destinationRect.ToRectangle(), sourceRectangle: TextureRectangle,
-					color: TintColor, rotation: Transform.GlobalRotation, origin: origin, effects: SpriteEffects.None, layerDepth: 0);
+				GameMgr.SpriteBatch.Draw(Texture2D, destinationRect.ToRectangle(), TextureRectangle,
+					TintColor, Transform.GlobalRotation, origin, SpriteEffects.None, 0);
 			}
 			else
 			{
-				GameMgr.SpriteBatch.Draw(texture: Texture2D,
-					position: Transform.GlobalLocationByPivot + Vector2.One * 3, 
-					sourceRectangle: TextureRectangle,
-					color: TintColor,
-					rotation: Transform.GlobalRotation,
-					origin: origin, 
-					scale: Owner.Transform.GlobalScaleRendering,
-					effects: SpriteEffects.None,
-					layerDepth: layerZDepth);
+				GameMgr.SpriteBatch.Draw(Texture2D,
+					Transform.GlobalLocationByPivot + Vector2.One * 3,
+					TextureRectangle,
+					TintColor,
+					Transform.GlobalRotation,
+					origin,
+					Owner.Transform.GlobalScaleRendering,
+					SpriteEffects.None,
+					layerZDepth);
 			}
 		}
 	}

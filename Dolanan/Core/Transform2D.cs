@@ -102,7 +102,7 @@ namespace Dolanan.Engine
 		}
 
 		public virtual Vector2 GlobalScale => ParentScale * LocalScale;
-		
+
 		/// <summary>
 		///     Getting Parent Global Position, Careful, if parent null, return Vector2.Zero.
 		/// </summary>
@@ -123,7 +123,7 @@ namespace Dolanan.Engine
 		public Vector2 Up => -Down;
 
 		public Transform2D[] GetChilds => Childs.ToArray();
-		
+
 		public override void Start()
 		{
 		}
