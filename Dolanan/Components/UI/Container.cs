@@ -4,6 +4,10 @@ using Microsoft.Xna.Framework;
 
 namespace Dolanan.Components.UI
 {
+	/// <summary>
+	/// Container is a container for UIActor. Container will automatically layouting all the childs
+	/// 
+	/// </summary>
 	public abstract class Container : UIComponent
 	{
 		public enum ChildAlignment
@@ -15,21 +19,33 @@ namespace Dolanan.Components.UI
 		protected Container(Actor owner) : base(owner)
 		{
 		}
-		public ChildAlignment Alignment = ChildAlignment.TopLeft;
-		public Padding Padding = new Padding(4);
 		/// <summary>
-		/// Horizontal rectangle will following the parent
+		/// 	Alignment for the child (sub child not affected)
+		/// 	what alignment do : set all of the childs Anchor.
+		/// </summary>
+		public ChildAlignment Alignment = ChildAlignment.TopLeft;
+		
+		/// <summary>
+		/// 	Padding of the rectangle
+		/// </summary>
+		public Padding Padding = new Padding(4);
+		
+		/// <summary>
+		/// 	Horizontal rectangle will following the parent.
+		/// 	What it actually do : set the anchor Min.X = 0 and Max.X = 1
 		/// </summary>
 		public bool ChildStretchHorizontal = false;
 		/// <summary>
-		/// Vertical rectangle will following the parent
+		/// 	Vertical rectangle will following the parent
+		/// 	What it actually do : set the anchor Min.Y = 0 and Max.Y = 1
 		/// </summary>
 		public bool ChildStretchVertical = false;
 
 		protected Anchor _childAnchor;
 
 		/// <summary>
-		/// Inner Rectangle, the location is on Global Space
+		/// 	Inner Rectangle, the location is on Global Space.
+		/// 	what it is : GlobalRectangle - Padding
 		/// </summary>
 		public Rectangle InnerRectangle
 		{
