@@ -81,7 +81,7 @@ namespace DolananSample
 			vContAct.Transform.Anchor = Anchor.TopLeft;
 			vContAct.RectTransform.Size = new Vector2(400, 600);
 			var vCont = vContAct.AddComponent<VContainer>();
-			vCont.ChildAlignment = ChildAlignment.TopLeft;
+			vCont.Alignment = Container.ChildAlignment.TopRight;
 			vCont.Padding = new Padding(6, 6);
 
 			for (int y = 0; y < 1; y++)
@@ -90,19 +90,19 @@ namespace DolananSample
 				containerAct.RectTransform.Size = new Vector2(400, 100);
 				containerAct.SetParent(vContAct);
 				var hCont = containerAct.AddComponent<HContainer>();
-				hCont.ChildAlignment = ChildAlignment.TopRight;
+				hCont.Alignment = Container.ChildAlignment.TopRight;
 				hCont.Padding = new Padding(4, 4);
-				// for (int i = 0; i < 4; i++)
-				// {
-				// 	var c = UILayer.CreateActor<UIActor>("img");
-				// 	// img = c.AddComponent<Image>();
-				// 	// img.Texture2D = _uiTexture;
-				// 	// if (_uiAseprite.TryGetSlice("Slice 1", out slice))
-				// 	// 	img.TextureRectangle = slice.Bounds;
-				// 	c.RectTransform.SetRectSize(new Vector2(64, 64));
-				// 	c.RectTransform.Pivot = Pivot.TopRight;
-				// 	c.SetParent(containerAct);
-				// }
+				for (int i = 0; i < 4; i++)
+				{
+					var c = UILayer.CreateActor<UIActor>("img");
+					img = c.AddComponent<Image>();
+					img.Texture2D = _uiTexture;
+					if (_uiAseprite.TryGetSlice("Slice 1", out slice))
+						img.TextureRectangle = slice.Bounds;
+					c.RectTransform.SetRectSize(new Vector2(64, 64));
+					c.RectTransform.Pivot = Pivot.TopRight;
+					c.SetParent(containerAct);
+				}
 			}
 			
 			

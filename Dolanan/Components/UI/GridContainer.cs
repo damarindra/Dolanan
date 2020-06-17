@@ -1,77 +1,79 @@
 ﻿using System;
 using Dolanan.Core;
+using Dolanan.Engine;
 using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Components.UI
 {
-	public class GridContainer : UIComponent
+	/// <summary>
+	/// Container will auto set the childs position. The event only trigger when an UIActor.SetParent is triggered.
+	/// all child position is editable, don't change it's value if you want to keep it's position.
+	/// </summary>
+	public class GridContainer : Container
 	{
 		public GridContainer(Actor owner) : base(owner)
 		{
 		}
 		
-		public ChildAlignment ChildAlignment = ChildAlignment.TopLeft;
-		public int HorizontalCount = 4;
-		public Padding Padding;
+		public Point GridSize = new Point(32, 32);
+		/// <summary>
+		/// If true, grid will go vertically first, if false, otherwise
+		/// </summary>
+		public bool IsVerticalPriority = false;
 
-		protected void RefreshChildsLocation()
+		protected override void RefreshChildsLocation()
 		{
-			Anchor childAnchor;
-			switch (ChildAlignment)
-			{
-				default:
-				case ChildAlignment.TopLeft:
-					childAnchor = Anchor.TopLeft;
-					break;
-				case ChildAlignment.TopRight:
-					childAnchor = Anchor.TopRight;
-					break;
-				case ChildAlignment.BottomLeft:
-					childAnchor = Anchor.BottomLeft;
-					break;
-				case ChildAlignment.BottomRight:
-					childAnchor = Anchor.BottomRight;
-					break;
-			}
-			
-			int lastX = (int)Transform.GlobalRectangle.X + Padding.Left;
-			if (ChildAlignment == ChildAlignment.TopRight || ChildAlignment == ChildAlignment.BottomRight)
-				lastX = (int) Transform.GlobalRectangle.Right - Padding.Right;
-			int startY = (int) Transform.GlobalRectangle.Y + Padding.Top;
-			if (ChildAlignment == ChildAlignment.BottomLeft || ChildAlignment == ChildAlignment.BottomRight)
-				startY = (int) Transform.GlobalRectangle.Bottom - Padding.Bottom;
+			base.RefreshChildsLocation();
 
-			int spacing = (int)(Transform.Rectangle.Size.X - (Padding.Left + Padding.Right)) / (HorizontalCount );
-			// Console.WriteLine(spacing);
+			Rectangle innerRect = InnerRectangle;
 			
-			int dir = (ChildAlignment == ChildAlignment.TopRight || ChildAlignment == ChildAlignment.BottomRight) ? -1 : 1;
+			int lastX = (int)innerRect.X;
+			if (Alignment == ChildAlignment.TopRight || Alignment == ChildAlignment.BottomRight)
+				lastX = (int) Transform.GlobalRectangle.Right - Padding.Right;
+			int lastY = (int) innerRect.Y;
+			if (Alignment == ChildAlignment.BottomLeft || Alignment == ChildAlignment.BottomRight)
+				lastY = (int) Transform.GlobalRectangle.Bottom - Padding.Bottom;
+
+			Point dir = Point.Zero;
+			dir.X = (Alignment == ChildAlignment.TopRight || Alignment == ChildAlignment.BottomRight) 
+				? -1 
+				: 1;
+			dir.Y = Alignment == ChildAlignment.BottomLeft || Alignment == ChildAlignment.BottomRight
+				? -1
+				: 1;
+
 			foreach (var transformChild in Transform.Childs)
 			{
 				Type ownerType = transformChild.Owner.GetType();
 				if (ownerType == typeof(UIActor) || ownerType.IsSubclassOf(typeof(UIActor)))
 				{
 					RectTransform rt = (RectTransform) transformChild;
-					rt.Anchor = childAnchor;
+					rt.Anchor = _childAnchor;
 
-					rt.LocationByPivot = new Vector2(lastX, startY);
-					lastX += dir * (spacing);
+					rt.LocationByPivot = new Vector2(lastX, lastY);
+
+					if (IsVerticalPriority)
+					{
+						lastY += dir.Y * (GridSize.Y);
+						if (lastY < innerRect.Top || lastY > innerRect.Bottom)
+						{
+							lastY = dir.Y == 1 ? innerRect.Y : innerRect.Y + innerRect.Height;
+							lastX += GridSize.X;
+						}
+					}
+					else
+					{
+						lastX += dir.X * (GridSize.X);
+						if (lastX < innerRect.Left || lastX > innerRect.Right)
+						{
+							lastX = dir.X == 1 ? innerRect.X : innerRect.X + innerRect.Width;
+							lastY += GridSize.Y;
+						}
+					}
+
 				}
 			}
 		}
-		
-		#region Cycle
-		public override void Start()
-		{
-			base.Start();
-			Owner.Clip = true;
-
-			Owner.OnChildChange += childs =>
-			{
-				RefreshChildsLocation();
-			};
-		}
-		
-		#endregion
 	}
 }
