@@ -137,13 +137,12 @@ namespace Dolanan
 
 			World.LateUpdate(gameTime);
 			
-			UIInput(gameTime);
+			UIInput.HandleInput();
 
 			Input.LastFrameKeyboardState = Keyboard.GetState();
 			Input.LastFrameGamePadState = GamePad.GetState(0);
 			Input.LastFrameMouseState = Mouse.GetState();
-			Input.UIInteractedByMouseButtonJustPressed.Clear();
-			Input.UIInteractedByMouseButtonJustUp.Clear();
+			UIInput.Reset();
 		}
 
 		/// <summary>
@@ -155,26 +154,6 @@ namespace Dolanan
 		/// <param name="gameTime"></param>
 		protected virtual void Process(GameTime gameTime)
 		{
-		}
-
-		protected virtual void UIInput(GameTime gameTime)
-		{
-			// Process the UIInput
-			if (Input.UIInteractedByMouseButtonJustPressed.Count > 0)
-			{
-				Input.UIInteractedByMouseButtonJustPressed = Input.UIInteractedByMouseButtonJustPressed.OrderByDescending(ui => ui.Owner.ZDepth).ToList();
-				Input.CurrentUIButtonPressed = Input.UIInteractedByMouseButtonJustPressed[0];
-				Input.CurrentUIButtonPressed.OnPressedDown?.Invoke();
-				Input.CurrentUIButtonPressed.State = Button.ButtonState.Pressed;
-			}
-
-			// if (Input.UIInteractedByMouseButtonJustUp.Count > 0)
-			// {
-			// 	Input.UIInteractedByMouseButtonJustUp = Input.UIInteractedByMouseButtonJustUp.OrderByDescending(ui => ui.Owner.LocalZDepth).ToList();
-			// 	var btn = Input.UIInteractedByMouseButtonJustUp[0];
-			// 	btn.OnPressedUp?.Invoke();
-			// 	btn.State = Button.ButtonState.None;
-			// }
 		}
 
 		protected override void Draw(GameTime gameTime)

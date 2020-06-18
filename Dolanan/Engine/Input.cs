@@ -14,18 +14,6 @@ namespace Dolanan.Engine
 		public static MouseState LastFrameMouseState;
 		private static readonly Dictionary<string, InputAction> _inputActions = new Dictionary<string, InputAction>();
 		private static readonly Dictionary<string, InputAxis> _inputAxises = new Dictionary<string, InputAxis>();
-		/// <summary>
-		/// 	All Button (UIButton Component) that interacted by mouse will be registered here first, sorted by depth backwards,
-		/// 	First index is bigger, last index is lower
-		/// </summary>
-		internal static List<Button> UIInteractedByMouseButtonJustPressed = new List<Button>();
-		/// <summary>
-		/// 	All Button (UIButton Component) that interacted by mouse will be registered here first, sorted by depth backwards,
-		/// 	First index is bigger, last index is lower
-		/// </summary>
-		internal static List<Button> UIInteractedByMouseButtonJustUp = new List<Button>();
-
-		public static Button CurrentUIButtonPressed = null;
 		
 		/// <summary>
 		/// </summary>

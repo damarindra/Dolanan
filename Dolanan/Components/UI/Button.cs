@@ -66,39 +66,24 @@ namespace Dolanan.Components.UI
 			{
 				if (State == ButtonState.Hovering) State = ButtonState.None;
 			};
+
+			OnPressedDown += () =>
+			{
+				State = ButtonState.Pressed;
+			};
+			OnPressedUp += () =>
+			{
+				State = ButtonState.None;
+			};
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
 
-			if (Interactable)
-				if (Owner.IsMouseInside)
-					if (Input.IsMouseButtonJustPressed())
-					{
-						// Register to Input Manager, it will be processed which button should be pressed (if stacking each other)
-						// Input.CurrentUIButtonActive to access the selected button
-						Input.UIInteractedByMouseButtonJustPressed.Add(this);
-						// OnPressedDown?.Invoke();
-						// State = ButtonState.Pressed;
-					}
+			if (Interactable && Owner.IsMouseInside && Input.IsMouseButtonJustPressed())
+				UIInput.RegisterButton(this);
 
-			if (State == ButtonState.Pressed && Input.CurrentUIButtonPressed == this)
-			{
-				if (Input.IsMouseButtonJustUp())
-				{
-					if (Owner.IsMouseInside)
-						State = ButtonState.Hovering;
-					else
-						State = ButtonState.None;
-					// Input.UIInteractedByMouseButtonJustUp.Add(this);
-					OnPressedUp?.Invoke();
-				}
-				else
-				{
-					OnPressed?.Invoke();
-				}
-			}
 
 			#region Interaction Effect
 

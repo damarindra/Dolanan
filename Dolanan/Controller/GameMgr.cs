@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Dolanan.Controller
 {
+	// TODO make spritebatch manager
 	public static class GameMgr
 	{
 		public static SamplerState DefaultSamplerState = SamplerState.PointClamp;
