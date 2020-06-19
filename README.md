@@ -12,7 +12,9 @@ Dolanan is just an library project, it is separated from your main project. So w
     - Visual Studio, open your MonoGame project, it will automatically create sln
     - Rider, create a new sln, add reference to `MyProject.csproj`
 3. Clone this project, what you need is only `Dolanan` project. Other than that, is just example how to use Dolanan and Cross Platform.
-4. Add reference to Dolanan, and you can use create a game with Dolanan Library.
+4. Add reference to Dolanan.csproj, and you can use it to create a game with Dolanan Library.
+5. add content from Dolanan as reference.
+6. If you confused how to do this, just look at DolananSample.csproj (your main game code) or Platform_WinDX.csproj (for multiplatform)
 
 ## Project Details
 
