@@ -16,6 +16,8 @@ namespace Dolanan.Engine
 			return i;
 		}
 
+		public static float KindaSmallNumber => 0.00001f;
+
 		public static float FPosMod(float f1, float f2)
 		{
 			var i = f1 % f2;

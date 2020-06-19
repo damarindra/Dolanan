@@ -4,13 +4,21 @@
         <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
 
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    </PropertyGroup>
+
     <ItemGroup>
-      <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
-      <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189" />
-      <PackageReference Include="Sigil" Version="5.0.0" />
+        <PackageReference Include="MonoGame.Framework.Portable" Version="3.7.1.189"/>
+        <PackageReference Include="Sigil" Version="5.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Scene\Object" />
+        <Folder Include="Editor\Attribute"/>
+        <Folder Include="Scene\Object"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DolananEditor\DolananEditor.csproj"/>
     </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@ using Dolanan.Scene;
 using Dolanan.Scene.Object;
 using Dolanan.ThirdParty;
 using Dolanan.Tools;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -35,6 +36,19 @@ namespace DolananSample
 		protected override void Initialize()
 		{
 			base.Initialize();
+
+#if DEBUG
+			// TODO : wait until this issues fix https://github.com/MonoGame/MonoGame/issues/7213
+			//ImGuiRenderer.SetupMonoGameWindowInput();
+			// MonoGame-specific //////////////////////
+			Window.TextInput += (sender, args) =>
+			{
+				if (args.Character == '\t') return;
+				
+				ImGuiRenderer.GetIOPtr.AddInputCharacter(args.Character);
+			};
+#endif
+
 			p = World.CreateActor<Player>("Player");
 			p.Transform.GlobalLocation =
 				new Vector2(GameSettings.RenderSize.X / 2f, GameSettings.RenderSize.Y / 2f);
@@ -116,7 +130,7 @@ namespace DolananSample
 			var gCont = gridAct.AddComponent<GridContainer>();
 			gCont.Alignment = Container.ChildAlignment.TopLeft;
 			gCont.AutoRectSize = true;
-			for (var i = 0; i < 30; i++)
+			for (var i = 0; i < 50; i++)
 			{
 				var c = UILayer.CreateActor<UIActor>("img");
 				c.Interactable = true;
@@ -132,7 +146,6 @@ namespace DolananSample
 				{
 					c.Transform.Location += Input.GetMouseMotion().ToVector2();
 				};
-				Console.WriteLine(c.ZDepth);
 			}
 
 
@@ -237,8 +250,17 @@ namespace DolananSample
 			middleCenter.Interactable = true;
 			var btn = middleCenter.AddComponent<Button>();
 			btn.OnPressed += () => { middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2(); };
+			
 			middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
-
+			middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			img = middleCenter.AddComponent<Image>();
+			middleCenter.Transform.Pivot = Pivot.Center;
+			middleCenter.RectTransform.Location = new Vector2(GameSettings.RenderSize.X / 2 - 50,
+				GameSettings.RenderSize.Y / 2 - 50);
+			middleCenter.RectTransform.Size = new Vector2(100, 100);
+			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
+			middleCenter.SetParent(Canvas);
+			
 			//
 			// var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);
 			// img = middleRight.AddComponent<Image>();
@@ -324,6 +346,27 @@ namespace DolananSample
 		protected override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
+			
+			
+			ImGuiRenderer.BeforeLayout(gameTime);
+			
+			if (show_another_window)
+			{
+				ImGui.SetNextWindowSize(new System.Numerics.Vector2(200, 100), ImGuiCond.FirstUseEver);
+				ImGui.Begin("Another Window", ref show_another_window);
+				ImGui.Text("Hello");
+				ImGui.End();
+			}
+
+			// 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
+			if (show_test_window)
+			{
+				ImGui.SetNextWindowPos(new System.Numerics.Vector2(650, 20), ImGuiCond.FirstUseEver);
+				ImGui.ShowDemoWindow(ref show_test_window);
+			}
+			
+			ImGuiRenderer.AfterLayout();
+
 		}
 
 		protected override void LoadContent()
@@ -371,6 +414,8 @@ namespace DolananSample
 			base.Process(gameTime);
 		}
 
+		private bool show_test_window = true;
+		private bool show_another_window = true;
 		/// <summary>
 		///     Back Draw, occured after BackBufferRendering. Useful for drawing UI, debugging, etc. Always show in front.
 		/// </summary>
@@ -381,6 +426,7 @@ namespace DolananSample
 			base.BackDraw(gameTime, worldRect);
 			GameMgr.SpriteBatch.Draw(ScreenDebugger.Pixel,
 				new Rectangle(Camera.WorldToScreen(p.Transform.GlobalLocation), new Point(5, 5)), null, Color.Yellow);
+			
 		}
 	}
 

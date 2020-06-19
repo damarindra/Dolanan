@@ -11,10 +11,8 @@ namespace Dolanan.Engine
 
 		public static Color BackgroundColor = Color.DimGray;
 
-
 		private static Point _windowSize = new Point(960, 540);
 		private static Point _renderSize = new Point(960, 540);
-
 
 		private static bool _allowWindowResize = true;
 		private static WindowMode _windowMode = WindowMode.Window;

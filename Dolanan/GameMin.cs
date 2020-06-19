@@ -7,6 +7,7 @@ using Dolanan.Engine;
 using Dolanan.Resources;
 using Dolanan.Scene;
 using Dolanan.Tools;
+using DolananEditor;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -23,7 +24,9 @@ namespace Dolanan
 		private bool _debugFps;
 		private bool _debugShowCollision;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
-
+#if DEBUG
+		public ImGuiRenderer ImGuiRenderer { get; private set; }		
+#endif
 
 		protected RenderTarget2D RenderTarget;
 		protected SpriteBatch SpriteBatch;
@@ -43,6 +46,7 @@ namespace Dolanan
 
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
+			
 		}
 
 		public float ScaleRenderTarget => GameSettings.WindowKeep == WindowSizeKeep.Width
@@ -85,6 +89,13 @@ namespace Dolanan
 			_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportRectSize.X;
 			_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportRectSize.Y;
 
+#if DEBUG
+			ImGuiRenderer = new ImGuiRenderer(this);
+			
+			ImGuiRenderer.RebuildFontAtlas();
+			ImGuiRenderer.DrawLayout(GetType());
+#endif
+			
 			base.Initialize();
 
 			IsGameFinishedInitialize = true;
