@@ -14,7 +14,6 @@ namespace Dolanan.Scene.Object
 	public class Player : Actor
 	{
 		private readonly float _moveSpeed = 160;
-		private Aseprite _aseprite;
 
 		private Vector2 _movementInput;
 
@@ -24,21 +23,13 @@ namespace Dolanan.Scene.Object
 
 		public Body Body { get; private set; }
 		public Sprite Sprite { get; private set; }
-		public AnimationPlayer AnimationPlayer { get; private set; }
+		public AnimationPlayer AnimationPlayer { get; set; }
 
 		public override void Start()
 		{
 			base.Start();
 			Sprite = AddComponent<Sprite>();
-			Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("Graphics/Aseprites/player");
-			Sprite.FrameSize = new Point(32, 32);
-
-			_aseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/Aseprites/player_ase");
-
-			AnimationPlayer = AddComponent<AnimationPlayer>();
-			foreach (var asepriteAnimationFrame in _aseprite.AnimationFrames)
-				AnimationPlayer.AddAnimationSequence(asepriteAnimationFrame.ToAnimationSequence(Sprite, "Frame"));
-
+			
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
 			Body.Size = Vector2.One * 20;

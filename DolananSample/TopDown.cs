@@ -1,5 +1,6 @@
 ﻿using System;
 using Dolanan;
+using Dolanan.Animation;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
@@ -36,7 +37,16 @@ namespace DolananSample
 			base.Initialize();
 			p = World.CreateActor<Player>("Player");
 			p.Transform.GlobalLocation =
-				new Vector2(GameSettings.ViewportSize.X / 2f, GameSettings.ViewportSize.Y / 2f);
+				new Vector2(GameSettings.RenderSize.X / 2f, GameSettings.RenderSize.Y / 2f);
+			p.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("Graphics/Aseprites/player");
+			p.Sprite.FrameSize = new Point(32, 32);
+
+			Aseprite aseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/Aseprites/player_ase");
+
+			p.AnimationPlayer = p.AddComponent<AnimationPlayer>();
+			foreach (var asepriteAnimationFrame in aseprite.AnimationFrames)
+				p.AnimationPlayer.AddAnimationSequence(asepriteAnimationFrame.ToAnimationSequence(p.Sprite, "Frame"));
+
 
 			var fd = World.CreateActor<SpriteActor>("r");
 			fd.SetParent(p);
@@ -66,7 +76,7 @@ namespace DolananSample
 
 			UILayer = World.CreateLayer<UILayer>(12);
 			Canvas = UILayer.ScreenCanvas;
-			Canvas.RectTransform.Size = new Vector2(GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+			Canvas.RectTransform.Size = new Vector2(GameSettings.RenderSize.X, GameSettings.RenderSize.Y);
 			Canvas.Interactable = false;
 
 			var vContAct = UILayer.CreateActor<UIActor>("VContainer");
@@ -220,8 +230,8 @@ namespace DolananSample
 			var middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
 			img = middleCenter.AddComponent<Image>();
 			middleCenter.Transform.Pivot = Pivot.Center;
-			middleCenter.RectTransform.Location = new Vector2(GameSettings.ViewportSize.X / 2 - 50,
-				GameSettings.ViewportSize.Y / 2 - 50);
+			middleCenter.RectTransform.Location = new Vector2(GameSettings.RenderSize.X / 2 - 50,
+				GameSettings.RenderSize.Y / 2 - 50);
 			middleCenter.RectTransform.Size = new Vector2(100, 100);
 			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
 			middleCenter.SetParent(Canvas);
