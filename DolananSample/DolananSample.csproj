@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.WindowsDX.Core" Version="3.8.*" />
-    <PackageReference Include="MonoGame.Content.Builder" Version="3.7.*" />
+    <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
     <PackageReference Include="Sigil" Version="5.0.0" />
   </ItemGroup>
 
@@ -32,11 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- ADD ALL MGCB HERE -->
+    <MonoGameContentReference Include="Content\Content.mgcb" />
     <MonoGameContentReference Include="..\Dolanan\Content\Content.mgcb">
-      <Link>Content\Content.mgcb</Link>
+      <Link>Content\DolananContent.mgcb</Link>
     </MonoGameContentReference>
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Remove="Level\testJson.json" />
     <Content Include="Level\testJson.json">

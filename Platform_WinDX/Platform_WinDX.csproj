@@ -28,19 +28,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Content" />
     <Folder Include="Content\" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <MonoGameContentReference Include="..\Dolanan\Content\Content.mgcb">
-      <Link>Content\Content.mgcb</Link>
-    </MonoGameContentReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DolananSample\DolananSample.csproj" />
     <ProjectReference Include="..\Dolanan\Dolanan.csproj" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <!-- ADD ALL MGCB HERE -->
+    <MonoGameContentReference Include="..\DolananSample\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+    </MonoGameContentReference>
+    <MonoGameContentReference Include="..\Dolanan\Content\Content.mgcb">
+      <Link>Content\DolananContent.mgcb</Link>
+    </MonoGameContentReference>
+  </ItemGroup>
 
 </Project>
 

@@ -49,7 +49,7 @@ namespace DolananSample
 
 			var fd = World.CreateActor<SpriteActor>("r");
 			fd.SetParent(p);
-			fd.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("square_64x64");
+			fd.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("Graphics/square_64x64");
 			fd.Location = Vector2.One * 64;
 			fd.Rotation = MathHelper.ToRadians(45);
 

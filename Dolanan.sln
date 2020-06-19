@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform_OpenGL", "Platform_OpenGL\Platform_OpenGL.csproj", "{7B81CE94-CBF8-4648-9D90-03224278A931}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platform_WinDX", "Platform_WinDX\Platform_WinDX.csproj", "{321DB5A8-C5C4-4186-B614-7F5A322A00C8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DolananSample", "DolananSample\DolananSample.csproj", "{32E47704-0C8E-456B-814A-4DE1B52DFF3C}"
@@ -12,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dolanan", "Dolanan\Dolanan.csproj", "{3DB5C31E-8742-4868-88AE-D8A95ED6B702}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dolanan.AsepritePipeline", "Pipeline\Dolanan.AsepritePipeline\Dolanan.AsepritePipeline.csproj", "{29D3A1C5-5E95-46E3-8906-8BAE7DA0A885}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DolananEditor", "DolananEditor\DolananEditor.csproj", "{A7A4FD16-8297-49F1-B7D1-E14D1B69EF66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +39,10 @@ Global
 		{29D3A1C5-5E95-46E3-8906-8BAE7DA0A885}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29D3A1C5-5E95-46E3-8906-8BAE7DA0A885}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29D3A1C5-5E95-46E3-8906-8BAE7DA0A885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7A4FD16-8297-49F1-B7D1-E14D1B69EF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7A4FD16-8297-49F1-B7D1-E14D1B69EF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7A4FD16-8297-49F1-B7D1-E14D1B69EF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7A4FD16-8297-49F1-B7D1-E14D1B69EF66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
