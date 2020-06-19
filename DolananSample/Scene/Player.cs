@@ -23,12 +23,13 @@ namespace Dolanan.Scene.Object
 
 		public Body Body { get; private set; }
 		public Sprite Sprite { get; private set; }
-		public AnimationPlayer AnimationPlayer { get; set; }
+		public AnimationPlayer AnimationPlayer { get; private set; }
 
 		public override void Start()
 		{
 			base.Start();
 			Sprite = AddComponent<Sprite>();
+			AnimationPlayer = AddComponent<AnimationPlayer>();
 			
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;

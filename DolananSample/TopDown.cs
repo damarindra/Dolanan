@@ -43,7 +43,6 @@ namespace DolananSample
 
 			Aseprite aseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/Aseprites/player_ase");
 
-			p.AnimationPlayer = p.AddComponent<AnimationPlayer>();
 			foreach (var asepriteAnimationFrame in aseprite.AnimationFrames)
 				p.AnimationPlayer.AddAnimationSequence(asepriteAnimationFrame.ToAnimationSequence(p.Sprite, "Frame"));
 
