@@ -64,10 +64,10 @@ namespace Dolanan.Scene
 
 		public override void Start()
 		{
-			ViewportRectSize = GameSettings.ViewportSize;
+			ViewportRectSize = GameSettings.RenderSize;
 			Transform = AddComponent<Transform2D>();
 			Transform.Location = new Vector2(ViewportRectSize.X / 2, ViewportRectSize.Y / 2);
-			Limit = new Rectangle(0, 0, GameSettings.ViewportSize.X * 2, GameSettings.ViewportSize.Y * 2);
+			Limit = new Rectangle(0, 0, GameSettings.RenderSize.X * 2, GameSettings.RenderSize.Y * 2);
 		}
 
 		public override void LateUpdate(GameTime gameTime)

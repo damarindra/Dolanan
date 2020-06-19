@@ -24,8 +24,8 @@ namespace Dolanan.Scene
 			set
 			{
 				if (value == UISpace.Viewport)
-					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X,
-						GameSettings.ViewportSize.Y);
+					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.RenderSize.X,
+						GameSettings.RenderSize.Y);
 				_uiSpace = value;
 			}
 		}
@@ -37,12 +37,12 @@ namespace Dolanan.Scene
 			base.Start();
 			ScreenCanvas = CreateActor<UIActor>("Canvas");
 			ScreenCanvas.RectTransform.Rectangle =
-				new RectangleF(0, 0, GameSettings.ViewportSize.X, GameSettings.ViewportSize.Y);
+				new RectangleF(0, 0, GameSettings.RenderSize.X, GameSettings.RenderSize.Y);
 			GameMgr.Game.World.Camera.OnViewportChanged += viewport =>
 			{
 				if (_uiSpace == UISpace.Viewport)
-					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.ViewportSize.X,
-						GameSettings.ViewportSize.Y);
+					ScreenCanvas.RectTransform.Rectangle = new RectangleF(0, 0, GameSettings.RenderSize.X,
+						GameSettings.RenderSize.Y);
 			};
 		}
 

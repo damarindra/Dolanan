@@ -12,18 +12,8 @@ namespace Dolanan.Engine
 		public static Color BackgroundColor = Color.DimGray;
 
 
-		/// <summary>
-		///     Window Size
-		///     Tips : Pixel Art Guide for windowSize
-		///     720p 1440p = 640, 480 (divide / multiply by even number)
-		///     1080p 2160p = 960, 540 (divide / multiply by even number)
-		/// </summary>
 		private static Point _windowSize = new Point(960, 540);
-
-		/// <summary>
-		///     Viewport size is the camera that will render the world
-		/// </summary>
-		private static Point _viewportSize = new Point(960, 540);
+		private static Point _renderSize = new Point(960, 540);
 
 
 		private static bool _allowWindowResize = true;
@@ -32,6 +22,13 @@ namespace Dolanan.Engine
 		private static GraphicsDeviceManager _graphics;
 		private static GameWindow _window;
 
+		// TODO make window size as a scaler from RenderSize. float WindowScaler = 2. then the result window will be RenderSize * WindowScaler
+		/// <summary>
+		///     Window Size
+		///     Tips : Pixel Art Guide
+		///     720p 1440p = 640, 480 (divide / multiply by even number)
+		///     1080p 2160p = 960, 540 (divide / multiply by even number)
+		/// </summary>
 		public static Point WindowSize
 		{
 			get => _windowSize;
@@ -42,12 +39,18 @@ namespace Dolanan.Engine
 			}
 		}
 
-		public static Point ViewportSize
+		/// <summary>
+		///     Viewport size is the camera that will render the world
+		///     Tips : Pixel Art Guide
+		///     720p 1440p = 640, 480 (divide / multiply by even number)
+		///     1080p 2160p = 960, 540 (divide / multiply by even number)
+		/// </summary>
+		public static Point RenderSize
 		{
-			get => _viewportSize;
+			get => _renderSize;
 			set
 			{
-				_viewportSize = value;
+				_renderSize = value;
 				IsDirty = true;
 			}
 		}
