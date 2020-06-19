@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using Dolanan.Core.Utility;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +9,8 @@ namespace Dolanan.Engine
 {
 	public static class GameSettings
 	{
+		public static string ConfigFilePath = "Settings/GameSettings.cfg";
+		
 		public static bool IsDirty;
 
 		public static Color BackgroundColor = Color.DimGray;
@@ -93,6 +97,35 @@ namespace Dolanan.Engine
 		{
 			_graphics = graphics;
 			_window = window;
+			var configs = DolananParser.ParseCfg(File.ReadAllText(ConfigFilePath));
+			foreach (var cfg in configs)
+			{
+				var keyVal = cfg.Split('=');
+				switch (keyVal[0])
+				{
+					case "BackgroundColor":
+						BackgroundColor = MathEx.HextToColor(keyVal[1]);
+						break;
+					case "WindowSize":
+						if (DolananParser.TryParseToPoint(keyVal[1], out var p)) WindowSize = p;
+						break;
+					case "RenderSize":
+						if (DolananParser.TryParseToPoint(keyVal[1], out p)) RenderSize = p;
+						break;
+					case "ClipCursor":
+						if (Boolean.TryParse(keyVal[1], out var b)) ClipCursor = b;
+						break;
+					case "AllowWindowResize":
+						if (Boolean.TryParse(keyVal[1], out b)) AllowWindowResize = b;
+						break;
+					case "WindowMode":
+						if (Enum.TryParse(typeof(WindowMode), keyVal[1], true, out var e)) WindowMode = (WindowMode) e;
+						break;
+					case "WindowKeep":
+						if (Enum.TryParse(typeof(WindowSizeKeep), keyVal[1], true, out e)) WindowKeep = (WindowSizeKeep) e;
+						break;
+				}
+			}
 			Configure();
 		}
 

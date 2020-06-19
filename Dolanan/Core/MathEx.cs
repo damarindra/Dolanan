@@ -171,6 +171,50 @@ namespace Dolanan.Engine
 
 		#endregion
 
+		#region Color
+		
+		/// <summary>
+		///     Converts a hex string into a Microsoft.Xna.Color
+		/// </summary>
+		/// <param name="hex">The 6 digit or 8 digit hex string without the # at the beginning</param>
+		/// <returns></returns>
+		public static Color HextToColor(string hex)
+		{
+			hex = hex.Replace("#", "");
+			if (hex.Length >= 6)
+			{
+				float r = (HexToByte(hex[0]) * 16 + HexToByte(hex[1])) / 255.0f;
+				float g = (HexToByte(hex[2]) * 16 + HexToByte(hex[3])) / 255.0f;
+				float b = (HexToByte(hex[4]) * 16 + HexToByte(hex[5])) / 255.0f;
+
+				if (hex.Length == 8)
+				{
+					float a = (HexToByte(hex[6]) * 16 + HexToByte(hex[7])) / 255.0f;
+					return new Color(r, g, b, a);
+				}
+
+				return new Color(r, g, b);
+			}
+
+			return Color.White;
+		}
+
+		/// <summary>
+		///     Lookup table for base16 digits
+		/// </summary>
+		private const string Hex = "0123456789ABCDEF";
+
+		/// <summary>
+		///     Converts the given hex digit to a byte
+		/// </summary>
+		/// <param name="c">The hex digit as a char</param>
+		/// <returns></returns>
+		public static byte HexToByte(char c)
+		{
+			return (byte)Hex.IndexOf(char.ToUpper(c));
+		}
+		
+		#endregion
 
 		// public static Matrix SetRotationScaleAndSkew(this ref Matrix matrix, float rotation, Vector2 scale, float skew)
 		// {

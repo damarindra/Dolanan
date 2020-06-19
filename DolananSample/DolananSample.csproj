@@ -45,6 +45,10 @@
     <Content Include="Level\testJson.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Remove="Settings\GameSettings.cfg" />
+    <Content Include="Settings\GameSettings.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

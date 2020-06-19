@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
-using Dolanan.Components.UI;
 using Dolanan.Controller;
+using Dolanan.Editor;
 using Dolanan.Engine;
 using Dolanan.Resources;
 using Dolanan.Scene;
@@ -38,12 +37,15 @@ namespace Dolanan
 			GameSettings.InitializeGameSettings(Graphics, Window);
 			Window.ClientSizeChanged += OnWindowResize;
 
+#if DEBUG
 			// Configuration Input, basic debugging stuff
 			Input.AddInputAction("Alt", new InputAction(Keys.LeftAlt, Keys.RightAlt));
 			Input.AddInputAction("Enter", new InputAction(Keys.Enter));
 			Input.AddInputAction("Show Collision", new InputAction(Keys.F4));
 			Input.AddInputAction("Show FPS", new InputAction(Keys.F3));
-
+			Input.AddInputAction("cmd", new InputAction(Keys.OemTilde));
+#endif
+			
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 			
@@ -86,8 +88,6 @@ namespace Dolanan
 			GameMgr.Init(this);
 
 			World = new World();
-			_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportRectSize.X;
-			_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportRectSize.Y;
 
 #if DEBUG
 			ImGuiRenderer = new ImGuiRenderer(this);
@@ -120,7 +120,7 @@ namespace Dolanan
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
-#endif
+			
 			if (Input.IsInputActionPressed("Alt") && Input.IsInputActionJustPressed("Enter"))
 			{
 				if (GameSettings.WindowMode == WindowMode.Borderless)
@@ -131,24 +131,37 @@ namespace Dolanan
 
 			if (Input.IsInputActionJustPressed("Show Collision")) _debugShowCollision = !_debugShowCollision;
 			if (Input.IsInputActionJustPressed("Show FPS")) _debugFps = !_debugFps;
+#endif
 
 			// TODO: Use preprocessor for windows only
 			// Read here : https://gamedev.stackexchange.com/questions/55657/monogame-cross-platform-conditional-compilation-symbols
 			if (IsActive && GameSettings.ClipCursor)
 				ClipCursor();
 
+#if DEBUG
+			if (!EditorMode.IsActive)
+			{
+#endif
 			World.Update(gameTime);
 			Process(gameTime);
-
+#if DEBUG
+			}
+#endif
 			if (GameSettings.IsDirty)
 				GameSettings.ApplyChanges();
 
 
 			base.Update(gameTime);
 
+#if DEBUG
+			if (!EditorMode.IsActive)
+			{
+#endif
 			World.LateUpdate(gameTime);
-			
 			UIInput.HandleInput();
+#if DEBUG
+			}
+#endif
 
 			Input.LastFrameKeyboardState = Keyboard.GetState();
 			Input.LastFrameGamePadState = GamePad.GetState(0);
