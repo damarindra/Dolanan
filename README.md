@@ -14,6 +14,18 @@ Dolanan is just an library project, it is separated from your main project. So w
 3. Clone this project, what you need is only `Dolanan` project. Other than that, is just example how to use Dolanan and Cross Platform.
 4. Add reference to Dolanan, and you can use create a game with Dolanan Library.
 
+## Project Details
+
+**Dolanan**         -> is the main library
+
+**DolananEditor**   -> Editor extension using dear ImGUI.
+
+**DolananSample**   -> example on how to use Dolanan Library, and as a OpenGL platform
+
+**Platform_WinDX**  -> Windows DX platform, it uses DolananSample as the sample of the game
+
+**AsepritePipeline**-> AsepritePipeline, read the json produced by Aseprite
+
 ## Documentation
 
 
