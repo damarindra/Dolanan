@@ -55,17 +55,14 @@ Dolanan shared project using the `Content.mgcb`, so you need to include the `Con
 
 ## Project Details
 
-**Dolanan**         -> is the main library shared project
-
-**Sample**          -> Main Game code
-
-**WinDX**           -> Windows DX platform, it uses Sample as the sample of the game
-
-**DesktopGL**       -> Open GL platform, it uses Sample as the sample of the game
-
-**PipelineReader**  -> Reader for all custom pipeline type, including aseprite
-
-**AsepritePipeline**-> AsepritePipeline, read the json produced by Aseprite
+|**Projects**        | Desc                                                                    |
+|--------------------|--------------------------------------------------------------------------|
+|**Dolanan**         | is the main library shared project                                       |
+|**Sample**          | Main Game code                                                           |
+|**WinDX**           | Windows DX platform, it uses Sample as the sample of the game            |
+|**DesktopGL**       | Open GL platform, it uses Sample as the sample of the game               |
+|**PipelineReader**  | Reader for all custom pipeline type, including aseprite                  |
+|**AsepritePipeline**| AsepritePipeline, read the json produced by Aseprite                     |
 
 ## Documentation
 
