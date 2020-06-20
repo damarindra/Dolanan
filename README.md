@@ -28,7 +28,13 @@ This is just an example how to do it, you can follow it if you want.
 
 6. Happy coding! Remember, if you don't doing step 5, you can just code inside your `MonoGameProject.csproj`.
 
-### Content.mgcb ?
+### What you need to do before start coding
+
+#### Nuget Library
+
+Dolanan uses 2 nuget library, ImGUI.Net and Sigil. What you need to do is install the package using nuget.
+
+#### Content.mgcb
 
 Dolanan shared project using the `Content.mgcb`, so you need to include the `Content.mgcb` into your `MonoGameProject.csproj`, edit by hand the `MonoGameProject.csproj` and add this line code
 
@@ -51,6 +57,17 @@ Dolanan shared project using the `Content.mgcb`, so you need to include the `Con
     
   </ItemGroup>
 </Project>
+```
+
+#### Unsafe Code
+
+Also, you might get error about `unsafe code`. This error is caused by ImGuiRenderer. Dolanan only allowed ImGui on Debug mode only, so add this code to the `MonoGameProject.csproj`
+
+```
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 ```
 
 ## Project Details
