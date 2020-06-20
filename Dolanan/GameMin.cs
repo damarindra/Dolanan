@@ -1,12 +1,13 @@
-﻿using System;
+﻿﻿using System;
 using System.Runtime.InteropServices;
 using Dolanan.Controller;
 using Dolanan.Editor;
+using Dolanan.Editor.ImGui;
 using Dolanan.Engine;
 using Dolanan.Resources;
 using Dolanan.Scene;
 using Dolanan.Tools;
-using DolananEditor;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,7 +25,10 @@ namespace Dolanan
 		private bool _debugShowCollision;
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 #if DEBUG
-		public ImGuiRenderer ImGuiRenderer { get; private set; }		
+		public ImGuiRenderer ImGuiRenderer { get; private set; }
+		public delegate void DrawImGuiWindow();
+
+		public DrawImGuiWindow OnImGuiDraw;
 #endif
 
 		protected RenderTarget2D RenderTarget;
@@ -34,8 +38,11 @@ namespace Dolanan
 		public GameMin()
 		{
 			Graphics = new GraphicsDeviceManager(this);
+			GameMgr.Init(this);
 			GameSettings.InitializeGameSettings(Graphics, Window);
 			Window.ClientSizeChanged += OnWindowResize;
+			Content.RootDirectory = "Content";
+
 
 #if DEBUG
 			// Configuration Input, basic debugging stuff
@@ -46,7 +53,6 @@ namespace Dolanan
 			Input.AddInputAction("cmd", new InputAction(Keys.OemTilde));
 #endif
 			
-			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 			
 		}
@@ -85,15 +91,11 @@ namespace Dolanan
 		protected override void Initialize()
 		{
 			// Add your initialization logic here
-			GameMgr.Init(this);
-
 			World = new World();
 
 #if DEBUG
 			ImGuiRenderer = new ImGuiRenderer(this);
-			
 			ImGuiRenderer.RebuildFontAtlas();
-			ImGuiRenderer.DrawLayout(GetType());
 #endif
 			
 			base.Initialize();
@@ -186,30 +188,60 @@ namespace Dolanan
 			GraphicsDevice.SetRenderTarget(RenderTarget);
 			GraphicsDevice.Clear(GameSettings.BackgroundColor);
 			GameMgr.DrawState = DrawState.Draw;
-
+			
 			GameMgr.BeginDrawWorld();
 			World.Draw(gameTime);
 			SpriteBatch.End();
-
+			
 			DrawProcess(gameTime);
-
+			
 			GameMgr.BeginDrawWorld();
 			if (_debugShowCollision) World.DrawCollision();
 			SpriteBatch.End();
-
+			
 			GameMgr.DrawState = DrawState.BackDraw;
 			BackBufferRender();
-
+			
 			GameMgr.BeginDrawAuto();
 			BackDraw(gameTime, RenderDestination);
 			if (_debugFps && ResFont.Instance.TryGet("16px", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
-
+			
 			SpriteBatch.End();
+
+#if DEBUG
+			ImGuiRenderer.BeforeLayout(gameTime);
+			OnImGuiDraw?.Invoke();
+			{
+			if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
+			if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
+			ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
+				
+			}
+
+			
+			if (show_another_window)
+			{
+				ImGui.SetNextWindowSize(new System.Numerics.Vector2(200, 100), ImGuiCond.FirstUseEver);
+				ImGui.Begin("Another Window", ref show_another_window);
+				ImGui.Text("Hello");
+				ImGui.End();
+			}
+
+			// 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
+			if (show_test_window)
+			{
+				ImGui.SetNextWindowPos(new System.Numerics.Vector2(650, 20), ImGuiCond.FirstUseEver);
+				ImGui.ShowDemoWindow(ref show_test_window);
+			}
+			ImGuiRenderer.AfterLayout();
+#endif
 
 			base.Draw(gameTime);
 		}
 
+		private bool show_test_window = true;
+		private bool show_another_window = true;
 		/// <summary>
 		///     DrawProcess is exactly the same as Draw. Dolanan already using the MonoGame.Draw for drawing basic stuff
 		///     If you need the same as MonoGame.Draw, just use override this function! It is exactly the same as Update

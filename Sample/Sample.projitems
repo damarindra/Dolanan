@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>FE35CA72-02FB-445D-B30C-14CB9E76A4A0</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Sample</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Platformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene\Player.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TopDown.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\Aseprites\concept_character_v3_green.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\Aseprites\concept_character_v3_green.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\square_64x64.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\brown.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\brown_inlay.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\brown_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\grey.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\grey_inlay.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\grey_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\tan.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\tan_inlay.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\tan_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\white.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\white_inlay.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Ancient\white_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\blue-sheet.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\blue.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\blue.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\blue_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\green.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\green_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\grey.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\grey_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\red.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\red_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\yellow.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Colored\yellow_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\list.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\nineslice.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\nineslice_ase.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\blue.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\blue_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\green.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\green_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\red.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\red_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\yellow.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\Outline\yellow_pressed.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\rpgItems.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\rpgitems_ase.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\space.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\space_inlay.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Level\testJson.json" />
+    <Content Include="$(MSBuildThisFileDirectory)Settings\GameSettings.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

@@ -1,17 +1,15 @@
-﻿using System;
-using Dolanan;
-using Dolanan.Animation;
+﻿using Dolanan;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
 using Dolanan.Core;
 using Dolanan.Engine;
+using Dolanan.PipelineReader.Aseprite;
 using Dolanan.Resources;
 using Dolanan.Scene;
 using Dolanan.Scene.Object;
 using Dolanan.ThirdParty;
 using Dolanan.Tools;
-using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -46,6 +44,10 @@ namespace DolananSample
 				if (args.Character == '\t') return;
 				
 				ImGuiRenderer.GetIOPtr.AddInputCharacter(args.Character);
+			};
+
+			OnImGuiDraw += () =>
+			{
 			};
 #endif
 
@@ -346,26 +348,6 @@ namespace DolananSample
 		protected override void Draw(GameTime gameTime)
 		{
 			base.Draw(gameTime);
-			
-			
-			ImGuiRenderer.BeforeLayout(gameTime);
-			
-			if (show_another_window)
-			{
-				ImGui.SetNextWindowSize(new System.Numerics.Vector2(200, 100), ImGuiCond.FirstUseEver);
-				ImGui.Begin("Another Window", ref show_another_window);
-				ImGui.Text("Hello");
-				ImGui.End();
-			}
-
-			// 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
-			if (show_test_window)
-			{
-				ImGui.SetNextWindowPos(new System.Numerics.Vector2(650, 20), ImGuiCond.FirstUseEver);
-				ImGui.ShowDemoWindow(ref show_test_window);
-			}
-			
-			ImGuiRenderer.AfterLayout();
 
 		}
 
@@ -414,8 +396,6 @@ namespace DolananSample
 			base.Process(gameTime);
 		}
 
-		private bool show_test_window = true;
-		private bool show_another_window = true;
 		/// <summary>
 		///     Back Draw, occured after BackBufferRendering. Useful for drawing UI, debugging, etc. Always show in front.
 		/// </summary>

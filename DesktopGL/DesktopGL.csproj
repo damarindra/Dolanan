@@ -15,6 +15,7 @@
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,34 +23,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1375-develop" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1375-develop" />
-    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1375-develop" />
+    <PackageReference Include="ImGui.NET" Version="1.75.0" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.8.*" />
+    <PackageReference Include="MonoGame.Content.Builder" Version="3.7.*" />
     <PackageReference Include="Sigil" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dolanan\Dolanan.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <!-- ADD ALL MGCB HERE -->
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="..\Sample\Content\Content.mgcb">
+      <Link>Content\Content.mgcb</Link>
+    </MonoGameContentReference>
     <MonoGameContentReference Include="..\Dolanan\Content\Content.mgcb">
       <Link>Content\DolananContent.mgcb</Link>
     </MonoGameContentReference>
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Remove="Level\testJson.json" />
-    <Content Include="Level\testJson.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Settings\GameSettings.cfg" />
-    <Content Include="Settings\GameSettings.cfg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+
+
+  <!-- DOLANAN -->
+  <Import Project="..\Dolanan\Dolanan.projitems" Label="Shared" />
+  <Import Project="..\Sample\Sample.projitems" Label="Shared" />
 
 </Project>
 

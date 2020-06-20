@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using Dolanan.Scene;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
@@ -133,22 +133,22 @@ namespace Dolanan.Controller
 			RegisterZDepth(actor, layerDepth);
 		}
 		
-		[Obsolete]
-		public static void Draw(Actor actor,
-			Texture2D texture,
-			Vector2? position = null,
-			Rectangle? destinationRectangle = null,
-			Rectangle? sourceRectangle = null,
-			Vector2? origin = null,
-			float rotation = 0.0f,
-			Vector2? scale = null,
-			Color? color = null,
-			SpriteEffects effects = SpriteEffects.None,
-			float layerDepth = 0.0f)
-		{
-			SpriteBatch.Draw(texture, position, destinationRectangle, sourceRectangle, origin,rotation, scale, color, effects, layerDepth);
-			RegisterZDepth(actor, layerDepth);
-		}
+		// [Obsolete]
+		// public static void Draw(Actor actor,
+		// 	Texture2D texture,
+		// 	Vector2? position = null,
+		// 	Rectangle? destinationRectangle = null,
+		// 	Rectangle? sourceRectangle = null,
+		// 	Vector2? origin = null,
+		// 	float rotation = 0.0f,
+		// 	Vector2? scale = null,
+		// 	Color? color = null,
+		// 	SpriteEffects effects = SpriteEffects.None,
+		// 	float layerDepth = 0.0f)
+		// {
+		// 	SpriteBatch.Draw(texture, position, destinationRectangle, sourceRectangle, origin,rotation, scale, color, effects, layerDepth);
+		// 	RegisterZDepth(actor, layerDepth);
+		// }
 
 		private static int drawCounter = 0;
 		static void RegisterZDepth(Actor actor, float layerDepth)

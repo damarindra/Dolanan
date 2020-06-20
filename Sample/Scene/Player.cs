@@ -1,12 +1,9 @@
-﻿using System;
+﻿﻿using System;
 using Dolanan.Animation;
 using Dolanan.Collision;
 using Dolanan.Components;
-using Dolanan.Controller;
 using Dolanan.Engine;
-using Dolanan.ThirdParty;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Dolanan.Scene.Object

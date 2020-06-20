@@ -12,7 +12,7 @@ namespace Dolanan.AsepritePipeline
 		public override string GetRuntimeReader(TargetPlatform targetPlatform)
 		{
 			// Class Type, Main Project / namespace (? not sure about the last one)
-			return "Dolanan.ThirdParty.AsepriteReader, Dolanan";
+			return "Dolanan.PipelineReader.Aseprite.AsepriteReader, Dolanan.PipelineReader";
 		}
 
 		protected override void Write(ContentWriter output, TWrite value)

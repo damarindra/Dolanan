@@ -1,7 +1,10 @@
-﻿using System;
+﻿﻿using System;
 using System.IO;
+using Dolanan.Controller;
 using Dolanan.Core.Utility;
+using Dolanan.Editor.ImGui;
 using Dolanan.Tools;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,8 +16,13 @@ namespace Dolanan.Engine
 		
 		public static bool IsDirty;
 
-		public static Color BackgroundColor = Color.DimGray;
+		public static Color BackgroundColor
+		{
+			get => _backgroundColor;
+			set => _backgroundColor = value;
+		}
 
+		private static Color _backgroundColor = Color.DimGray;
 		private static Point _windowSize = new Point(960, 540);
 		private static Point _renderSize = new Point(960, 540);
 
@@ -93,42 +101,21 @@ namespace Dolanan.Engine
 		/// </summary>
 		public static bool ClipCursor { get; set; } = false;
 
+		public static bool IsSetupDone = false;
+		
 		public static void InitializeGameSettings(GraphicsDeviceManager graphics, GameWindow window)
 		{
+			
 			_graphics = graphics;
 			_window = window;
-			var configs = DolananParser.ParseCfg(File.ReadAllText(ConfigFilePath));
-			foreach (var cfg in configs)
-			{
-				var keyVal = cfg.Split('=');
-				switch (keyVal[0])
-				{
-					case "BackgroundColor":
-						BackgroundColor = MathEx.HextToColor(keyVal[1]);
-						break;
-					case "WindowSize":
-						if (DolananParser.TryParseToPoint(keyVal[1], out var p)) WindowSize = p;
-						break;
-					case "RenderSize":
-						if (DolananParser.TryParseToPoint(keyVal[1], out p)) RenderSize = p;
-						break;
-					case "ClipCursor":
-						if (Boolean.TryParse(keyVal[1], out var b)) ClipCursor = b;
-						break;
-					case "AllowWindowResize":
-						if (Boolean.TryParse(keyVal[1], out b)) AllowWindowResize = b;
-						break;
-					case "WindowMode":
-						if (Enum.TryParse(typeof(WindowMode), keyVal[1], true, out var e)) WindowMode = (WindowMode) e;
-						break;
-					case "WindowKeep":
-						if (Enum.TryParse(typeof(WindowSizeKeep), keyVal[1], true, out e)) WindowKeep = (WindowSizeKeep) e;
-						break;
-				}
-			}
-			Configure();
-		}
+			LoadFromCfg();
 
+#if DEBUG
+			if(!IsSetupDone) GameMgr.Game.OnImGuiDraw += DrawImGuiWindow;
+#endif
+			IsSetupDone = true;
+		}
+		
 		public static void ApplyChanges()
 		{
 			IsDirty = false;
@@ -167,6 +154,59 @@ namespace Dolanan.Engine
 			if (_window.AllowUserResizing != AllowWindowResize)
 				_window.AllowUserResizing = AllowWindowResize;
 		}
+
+		public static void LoadFromCfg()
+		{
+			var configs = DolananParser.ParseCfg(File.ReadAllText(ConfigFilePath));
+			foreach (var cfg in configs)
+			{
+				var keyVal = cfg.Split('=');
+				switch (keyVal[0])
+				{
+					case "BackgroundColor":
+						BackgroundColor = MathEx.HextToColor(keyVal[1]);
+						break;
+					case "WindowSize":
+						if (DolananParser.TryParseToPoint(keyVal[1], out var p)) WindowSize = p;
+						break;
+					case "RenderSize":
+						if (DolananParser.TryParseToPoint(keyVal[1], out p)) RenderSize = p;
+						break;
+					case "ClipCursor":
+						if (Boolean.TryParse(keyVal[1], out var b)) ClipCursor = b;
+						break;
+					case "AllowWindowResize":
+						if (Boolean.TryParse(keyVal[1], out b)) AllowWindowResize = b;
+						break;
+					case "WindowMode":
+						if (Enum.TryParse(typeof(WindowMode), keyVal[1], true, out var e)) WindowMode = (WindowMode) e;
+						break;
+					case "WindowKeep":
+						if (Enum.TryParse(typeof(WindowSizeKeep), keyVal[1], true, out e)) WindowKeep = (WindowSizeKeep) e;
+						break;
+				}
+			}
+
+			Configure();
+		}
+
+#if DEBUG
+		public static bool ShowWindow
+		{
+			get => _showWindow;
+			set => _showWindow = value;
+		}
+		private static bool _showWindow = true;
+		public static void DrawImGuiWindow()
+		{
+			if (ShowWindow)
+			{
+				ImGui.Begin("Game Settings", ref _showWindow);
+				//ImGuiMg.ColorEdit("Background Color", ref _backgroundColor);
+				ImGui.End();
+			}
+		}
+#endif
 	}
 
 	public enum WindowSizeKeep

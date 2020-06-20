@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿﻿﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
-namespace Dolanan.ThirdParty
+namespace Dolanan.PipelineReader.Aseprite
 {
 	public class AsepriteReader : ContentTypeReader<Aseprite>
 	{

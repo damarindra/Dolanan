@@ -1,6 +1,5 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -9,8 +8,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace DolananEditor
+namespace Dolanan.Editor.ImGui
 {
+    using ImGui = ImGuiNET.ImGui;
     /// <summary>
     /// ImGui renderer for use with XNA-likes (FNA & MonoGame)
     /// </summary>
@@ -293,6 +293,10 @@ namespace DolananEditor
             // Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled, vertex/texcoord/color pointers
             var lastViewport = _graphicsDevice.Viewport;
             var lastScissorBox = _graphicsDevice.ScissorRectangle;
+            var blendFactor = _graphicsDevice.BlendFactor;
+            var blendState = _graphicsDevice.BlendState;
+            var rasterizerState = _graphicsDevice.RasterizerState;
+            var dss = _graphicsDevice.DepthStencilState;
 
             _graphicsDevice.BlendFactor = Color.White;
             _graphicsDevice.BlendState = BlendState.NonPremultiplied;
@@ -313,6 +317,10 @@ namespace DolananEditor
             // Restore modified state
             _graphicsDevice.Viewport = lastViewport;
             _graphicsDevice.ScissorRectangle = lastScissorBox;
+            _graphicsDevice.BlendFactor = blendFactor;
+            _graphicsDevice.BlendState = blendState;
+            _graphicsDevice.RasterizerState = rasterizerState;
+            _graphicsDevice.DepthStencilState = dss;
         }
 
         private unsafe void UpdateBuffers(ImDrawDataPtr drawData)
