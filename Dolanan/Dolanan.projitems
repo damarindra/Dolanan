@@ -36,7 +36,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Components\UI\ScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\UI\ScrollContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\UI\VContainer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\TypeParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Editor\EditorSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engine\FileDirectory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ThirdParty\AsepriteHelper.cs" />

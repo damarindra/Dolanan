@@ -4,6 +4,7 @@ using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
 using Dolanan.Core;
+using Dolanan.Editor;
 using Dolanan.Engine;
 using Dolanan.PipelineReader.Aseprite;
 using Dolanan.Resources;
@@ -42,6 +43,7 @@ namespace DolananSample
 				new Vector2(GameSettings.RenderSize.X / 2f, GameSettings.RenderSize.Y / 2f);
 			p.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("Graphics/Aseprites/player");
 			p.Sprite.FrameSize = new Point(32, 32);
+			EditorMode.SelectedActor = p;
 
 			Aseprite aseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/Aseprites/player_ase");
 

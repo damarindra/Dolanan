@@ -66,12 +66,14 @@ namespace Dolanan.Editor
 			if (ShowWindow)
 			{
 				ig.SetNextWindowSize(new System.Numerics.Vector2(650, 200), ImGuiNET.ImGuiCond.Appearing);
+				ig.Begin("Editor Settings", ref _showWindow);
 				ImGuiMg.InputText("Project Path", ref _projectPath, 100);
 				
 				if (ig.Button("Save"))
 				{
 					FileDirectory.WriteFile(EditorSettingPath, ToStrCfg());
 				}
+				ig.End();
 			}
 		}
 

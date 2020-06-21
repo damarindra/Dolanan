@@ -44,8 +44,16 @@ namespace Dolanan.Editor.ImGui
 			Array.Resize<Byte>(ref bytes, bufSize);
 			ImGui.InputText(label, bytes, bufSize);
 			string newStr = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-			while (newStr[^1] == '\u0000')
-				newStr = newStr.Remove(newStr.Length - 1);
+			for (int i = 0; i < newStr.Length; i++)
+			{
+				if (newStr[i] == '\u0000')
+				{
+					newStr = newStr.Remove(i);
+					break;
+				}
+			}
+			// while (newStr[^1] == '\u0000')
+			// 	newStr = newStr.Remove(newStr.Length - 1);
 			if (!string.Equals(newStr, str, StringComparison.Ordinal))
 				str = newStr;
 		}

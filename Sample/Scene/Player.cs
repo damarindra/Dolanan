@@ -1,7 +1,8 @@
-﻿﻿using System;
+﻿using System;
 using Dolanan.Animation;
 using Dolanan.Collision;
 using Dolanan.Components;
+using Dolanan.Editor.Attribute;
 using Dolanan.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +11,8 @@ namespace Dolanan.Scene.Object
 {
 	public class Player : Actor
 	{
+		[VisibleProperty] public Vector2 TestVecProp { get; set; }
+
 		private readonly float _moveSpeed = 160;
 
 		private Vector2 _movementInput;
@@ -27,7 +30,7 @@ namespace Dolanan.Scene.Object
 			base.Start();
 			Sprite = AddComponent<Sprite>();
 			AnimationPlayer = AddComponent<AnimationPlayer>();
-			
+
 			Body = AddComponent<Body>();
 			Body.BodyType = BodyType.Kinematic;
 			Body.Size = Vector2.One * 20;

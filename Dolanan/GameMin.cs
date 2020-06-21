@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Dolanan.Controller;
 using Dolanan.Editor;
+using Dolanan.Editor.Attribute;
 using Dolanan.Editor.ImGui;
 using Dolanan.Engine;
 using Dolanan.Resources;
@@ -11,9 +15,14 @@ using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Sigil;
 
 namespace Dolanan
 {
+#if DEBUG
+	public delegate void DrawImGuiWindow();
+#endif
+	
 	/// <summary>
 	///     GameMin is a Game class. We try our best to make it as minimum as possible
 	///     Contains basic setup for your game settings, such as window settings
@@ -26,8 +35,6 @@ namespace Dolanan
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 #if DEBUG
 		public ImGuiRenderer ImGuiRenderer { get; private set; }
-
-		public delegate void DrawImGuiWindow();
 
 		public DrawImGuiWindow OnImGuiDraw;
 #endif
@@ -101,11 +108,74 @@ namespace Dolanan
 			ImGuiRenderer.RebuildFontAtlas();
 
 			ImGuiRenderer.SetupMonoGameWindowInput();
+			
+			// TODO Complete the ShowInEditor, 
+			var types = (from t in Assembly.GetExecutingAssembly().GetTypes()
+				where t.GetCustomAttributes<ShowInEditorAttribute>().Any()
+				select t).ToList();
+
+			foreach (var type in types)
+			{
+				var properties =
+					(from p in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+						where p.GetCustomAttributes<VisiblePropertyAttribute>().Any()
+						select p).ToList();
+				Console.WriteLine(type);
+
+				// Dictionary<string, (Func<object>, Action<object, object>)> setter = new Dictionary<string, (Func<object>, Action<object, object>)>();
+				// foreach (var propertyInfo in properties)
+				// {
+				// 	Console.WriteLine(propertyInfo);
+				// 	Type propertyType = propertyInfo.GetType();
+				// 	var setterEmit = Emit<Action<object, object>>
+				// 		.NewDynamicMethod()
+				// 		.LoadArgument(0)
+				// 		.CastClass(type)
+				// 		.LoadArgument(1)
+				// 		.Call(propertyInfo.GetSetMethod(true))
+				// 		.Return();
+				// 	var s = setterEmit.CreateDelegate();
+				// 	var getterEmit = Emit<Func<object>>.NewDynamicMethod();
+				// 	getterEmit.Call(propertyInfo.GetGetMethod(true)).Return();
+				// 	var g = getterEmit.CreateDelegate();
+				// 	setter.Add(propertyInfo.Name, (g, s));
+				// 	Console.WriteLine(g.Invoke());
+				// }
+
+				
+				DrawImGuiWindow drawImGuiWindow = (() =>
+				{
+					// foreach (var action in setter)
+					// {
+					// 	string oldval = (string)action.Value.;
+					// 	ImGuiMg.InputText(action.Key, ref oldval);
+					// 	
+					// }
+					if(EditorMode.SelectedActor == null)
+						return;
+					ImGui.SetNextWindowSize(new System.Numerics.Vector2(320, 200), ImGuiCond.Appearing);
+
+					foreach (var propertyInfo in properties)
+					{
+						var att = propertyInfo.GetCustomAttribute<VisiblePropertyAttribute>();
+						att.ObjectActor = EditorMode.SelectedActor;
+						att.PropertyInfo = propertyInfo;
+						att.OnDrawProperty();
+						// string oldVal = (string) propertyInfo.GetValue(EditorMode.SelectedActor);
+						// ImGuiMg.InputText(propertyInfo.Name, ref oldVal);
+						// propertyInfo.SetValue(EditorMode.SelectedActor, oldVal);
+					}
+				});
+				
+				EditorMode.Inspector.Add(type, drawImGuiWindow);
+			}
 #endif
 
 			base.Initialize();
 
 			IsGameFinishedInitialize = true;
+			_scaleRenderTarget.X = Window.ClientBounds.Width / (float) World.Camera.ViewportRectSize.X;
+			_scaleRenderTarget.Y = Window.ClientBounds.Height / (float) World.Camera.ViewportRectSize.Y;
 		}
 
 		protected override void LoadContent()

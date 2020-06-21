@@ -1,8 +1,9 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dolanan.Components;
+using Dolanan.Editor.Attribute;
 using Dolanan.Engine;
 using Dolanan.Tools;
 using Microsoft.Xna.Framework;
@@ -18,13 +19,14 @@ namespace Dolanan.Scene
 	/// <summary>
 	///     Actor is an Entity.
 	/// </summary>
+	[ShowInEditor]
 	public class Actor : IGameCycle
 	{
 		// Component stuff
 		// Render
 		protected readonly List<Component> Components = new List<Component>();
 
-		public string Name;
+		[VisibleProperty] public string Name { get; set; }
 		public ChildState OnChildChange;
 		public LayerState OnLayerChange;
 

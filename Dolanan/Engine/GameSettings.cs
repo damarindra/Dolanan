@@ -36,8 +36,8 @@ using Microsoft.Xna.Framework.Graphics;
 		/// <summary>
 		///     Window Size
 		///     Tips : Pixel Art Guide
-		///     720p 1440p = 640, 480 (divide / multiply by even number)
-		///     1080p 2160p = 960, 540 (divide / multiply by even number)
+		///     720p / 1440p = 640, 480 (divide / multiply by even number)
+		///     1080p / 2160p = 960, 540 (divide / multiply by even number)
 		/// </summary>
 		public static Point WindowSize
 		{
