@@ -36,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Components\UI\ScrollBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\UI\ScrollContainer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Components\UI\VContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\TypeParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ThirdParty\AsepriteHelper.cs" />
     <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
     <Compile Include="$(MSBuildThisFileDirectory)Controller\GameMgr.cs" />
@@ -78,6 +79,9 @@
     <Folder Include="$(MSBuildThisFileDirectory)Scene\Object" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)..\..\..\MonoGameLib\ImGuiNet\x64\Release\imgui.dll">
+      <Link>Editor\ImGui\imgui.dll</Link>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)Content\1px.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\Fonts\04B_03__.TTF" />
     <Content Include="$(MSBuildThisFileDirectory)Content\Fonts\04B_03__16px.spritefont" />

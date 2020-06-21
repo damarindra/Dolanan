@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using Dolanan.Controller;
 using Dolanan.Editor;
@@ -26,6 +26,7 @@ namespace Dolanan
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 #if DEBUG
 		public ImGuiRenderer ImGuiRenderer { get; private set; }
+
 		public delegate void DrawImGuiWindow();
 
 		public DrawImGuiWindow OnImGuiDraw;
@@ -52,9 +53,8 @@ namespace Dolanan
 			Input.AddInputAction("Show FPS", new InputAction(Keys.F3));
 			Input.AddInputAction("cmd", new InputAction(Keys.OemTilde));
 #endif
-			
+
 			IsMouseVisible = true;
-			
 		}
 
 		public float ScaleRenderTarget => GameSettings.WindowKeep == WindowSizeKeep.Width
@@ -96,8 +96,10 @@ namespace Dolanan
 #if DEBUG
 			ImGuiRenderer = new ImGuiRenderer(this);
 			ImGuiRenderer.RebuildFontAtlas();
-#endif
 			
+			ImGuiRenderer.SetupMonoGameWindowInput();
+#endif
+
 			base.Initialize();
 
 			IsGameFinishedInitialize = true;
@@ -122,7 +124,7 @@ namespace Dolanan
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
 			    Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
-			
+
 			if (Input.IsInputActionPressed("Alt") && Input.IsInputActionJustPressed("Enter"))
 			{
 				if (GameSettings.WindowMode == WindowMode.Borderless)
@@ -144,8 +146,8 @@ namespace Dolanan
 			if (!EditorMode.IsActive)
 			{
 #endif
-			World.Update(gameTime);
-			Process(gameTime);
+				World.Update(gameTime);
+				Process(gameTime);
 #if DEBUG
 			}
 #endif
@@ -159,8 +161,8 @@ namespace Dolanan
 			if (!EditorMode.IsActive)
 			{
 #endif
-			World.LateUpdate(gameTime);
-			UIInput.HandleInput();
+				World.LateUpdate(gameTime);
+				UIInput.HandleInput();
 #if DEBUG
 			}
 #endif
@@ -188,52 +190,53 @@ namespace Dolanan
 			GraphicsDevice.SetRenderTarget(RenderTarget);
 			GraphicsDevice.Clear(GameSettings.BackgroundColor);
 			GameMgr.DrawState = DrawState.Draw;
-			
+
 			GameMgr.BeginDrawWorld();
 			World.Draw(gameTime);
 			SpriteBatch.End();
-			
+
 			DrawProcess(gameTime);
-			
+
 			GameMgr.BeginDrawWorld();
 			if (_debugShowCollision) World.DrawCollision();
 			SpriteBatch.End();
-			
+
 			GameMgr.DrawState = DrawState.BackDraw;
 			BackBufferRender();
-			
+
 			GameMgr.BeginDrawAuto();
 			BackDraw(gameTime, RenderDestination);
 			if (_debugFps && ResFont.Instance.TryGet("16px", out var font))
 				FPSCounter.Draw(gameTime, SpriteBatch, font);
-			
+
 			SpriteBatch.End();
 
 #if DEBUG
 			ImGuiRenderer.BeforeLayout(gameTime);
 			OnImGuiDraw?.Invoke();
-			{
-			if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
-			if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
-			ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
-				
-			}
-
-			
-			if (show_another_window)
-			{
-				ImGui.SetNextWindowSize(new System.Numerics.Vector2(200, 100), ImGuiCond.FirstUseEver);
-				ImGui.Begin("Another Window", ref show_another_window);
-				ImGui.Text("Hello");
-				ImGui.End();
-			}
-
-			// 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
+// 			{
+// 			if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
+// 			if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
+// 			ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
+// 				
+// 			}
+//
+// 			
+// 			if (show_another_window)
+// 			{
+// 				ImGui.SetNextWindowSize(new System.Numerics.Vector2(200, 100), ImGuiCond.FirstUseEver);
+// 				ImGui.Begin("Another Window", ref show_another_window);
+// 				ImGui.Text("Hello");
+// 				ImGui.End();
+// 			}
+//
+// 			// 3. Show the ImGui test window. Most of the sample code is in ImGui.ShowTestWindow()
 			if (show_test_window)
 			{
 				ImGui.SetNextWindowPos(new System.Numerics.Vector2(650, 20), ImGuiCond.FirstUseEver);
 				ImGui.ShowDemoWindow(ref show_test_window);
 			}
+
 			ImGuiRenderer.AfterLayout();
 #endif
 
@@ -242,6 +245,7 @@ namespace Dolanan
 
 		private bool show_test_window = true;
 		private bool show_another_window = true;
+
 		/// <summary>
 		///     DrawProcess is exactly the same as Draw. Dolanan already using the MonoGame.Draw for drawing basic stuff
 		///     If you need the same as MonoGame.Draw, just use override this function! It is exactly the same as Update

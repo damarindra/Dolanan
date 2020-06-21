@@ -199,6 +199,25 @@ namespace Dolanan.Engine
 			return Color.White;
 		}
 
+		public static string ColorToHex(Color color)
+		{
+			string r = color.R.ToString("X");
+			string g = color.G.ToString("X");
+			string b = color.B.ToString("X");
+			string a = color.A.ToString("X");
+
+			if (r.Length == 1)
+				r = "0" + r;
+			if (g.Length == 1)
+				g = "0" + g;
+			if (b.Length == 1)
+				b = "0" + b;
+			if (a.Length == 1)
+				a = "0" + a;
+
+			return "#" + r + g + b + a;
+		}
+
 		/// <summary>
 		///     Lookup table for base16 digits
 		/// </summary>

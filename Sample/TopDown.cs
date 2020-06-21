@@ -35,22 +35,6 @@ namespace DolananSample
 		{
 			base.Initialize();
 
-#if DEBUG
-			// TODO : wait until this issues fix https://github.com/MonoGame/MonoGame/issues/7213
-			//ImGuiRenderer.SetupMonoGameWindowInput();
-			// MonoGame-specific //////////////////////
-			Window.TextInput += (sender, args) =>
-			{
-				if (args.Character == '\t') return;
-				
-				ImGuiRenderer.GetIOPtr.AddInputCharacter(args.Character);
-			};
-
-			OnImGuiDraw += () =>
-			{
-			};
-#endif
-
 			p = World.CreateActor<Player>("Player");
 			p.Transform.GlobalLocation =
 				new Vector2(GameSettings.RenderSize.X / 2f, GameSettings.RenderSize.Y / 2f);
@@ -253,15 +237,15 @@ namespace DolananSample
 			var btn = middleCenter.AddComponent<Button>();
 			btn.OnPressed += () => { middleCenter.Transform.Location += Input.GetMouseMotion().ToVector2(); };
 			
-			middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
-			middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
-			img = middleCenter.AddComponent<Image>();
-			middleCenter.Transform.Pivot = Pivot.Center;
-			middleCenter.RectTransform.Location = new Vector2(GameSettings.RenderSize.X / 2 - 50,
-				GameSettings.RenderSize.Y / 2 - 50);
-			middleCenter.RectTransform.Size = new Vector2(100, 100);
-			middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
-			middleCenter.SetParent(Canvas);
+			// middleCenter.Transform.Rotation = MathHelper.ToRadians(45);
+			// middleCenter = World.CreateActor<UIActor>("MiddleCenter", UILayer);
+			// img = middleCenter.AddComponent<Image>();
+			// middleCenter.Transform.Pivot = Pivot.Center;
+			// middleCenter.RectTransform.Location = new Vector2(GameSettings.RenderSize.X / 2 - 50,
+			// 	GameSettings.RenderSize.Y / 2 - 50);
+			// middleCenter.RectTransform.Size = new Vector2(100, 100);
+			// middleCenter.RectTransform.Anchor = Anchor.MiddleCenter;
+			// middleCenter.SetParent(Canvas);
 			
 			//
 			// var middleRight = World.CreateActor<UIActor>("middleRight", UILayer);

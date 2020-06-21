@@ -1,4 +1,8 @@
-﻿﻿using System;
+﻿/*	Original  : https://github.com/mellinoe/ImGui.NET
+	MIT
+	This file is modified by : Damar Indra
+ */
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Reflection;
@@ -11,6 +15,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Dolanan.Editor.ImGui
 {
     using ImGui = ImGuiNET.ImGui;
+    #if DEBUG
     /// <summary>
     /// ImGui renderer for use with XNA-likes (FNA & MonoGame)
     /// </summary>
@@ -433,4 +438,5 @@ namespace Dolanan.Editor.ImGui
 
         #endregion Internals
     }
+    #endif
 }

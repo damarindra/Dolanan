@@ -1,14 +1,16 @@
 ﻿﻿using System;
 using System.IO;
-using Dolanan.Controller;
+ using System.Linq;
+ using Dolanan.Controller;
 using Dolanan.Core.Utility;
 using Dolanan.Editor.ImGui;
 using Dolanan.Tools;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+ using Vector3 = System.Numerics.Vector3;
 
-namespace Dolanan.Engine
+ namespace Dolanan.Engine
 {
 	public static class GameSettings
 	{
@@ -99,7 +101,7 @@ namespace Dolanan.Engine
 		/// <summary>
 		///     Clipping cursor, no need to apply
 		/// </summary>
-		public static bool ClipCursor { get; set; } = false;
+		public static bool ClipCursor = false;
 
 		public static bool IsSetupDone = false;
 		
@@ -167,10 +169,10 @@ namespace Dolanan.Engine
 						BackgroundColor = MathEx.HextToColor(keyVal[1]);
 						break;
 					case "WindowSize":
-						if (DolananParser.TryParseToPoint(keyVal[1], out var p)) WindowSize = p;
+						WindowSize = DolananParser.ToPoint(keyVal[1]);
 						break;
 					case "RenderSize":
-						if (DolananParser.TryParseToPoint(keyVal[1], out p)) RenderSize = p;
+						RenderSize = DolananParser.ToPoint(keyVal[1]);
 						break;
 					case "ClipCursor":
 						if (Boolean.TryParse(keyVal[1], out var b)) ClipCursor = b;
@@ -187,7 +189,48 @@ namespace Dolanan.Engine
 				}
 			}
 
+
 			Configure();
+		}
+
+		static void SaveCfg()
+		{
+			string newCfg = "";
+			var oldCfg = DolananParser.ParseCfg(File.ReadAllText(ConfigFilePath));
+			
+			foreach (var cfg in oldCfg)
+			{
+				var keyVal = cfg.Split('=');
+				newCfg += keyVal[0] + " = ";
+				switch (keyVal[0])
+				{
+					case "BackgroundColor":
+						newCfg += MathEx.ColorToHex(BackgroundColor);
+						break;
+					case "WindowSize":
+						newCfg += WindowSize.ToString();
+						break;
+					case "RenderSize":
+						newCfg += RenderSize.ToString();
+						break;
+					case "ClipCursor":
+						newCfg += ClipCursor.ToString();
+						break;
+					case "AllowWindowResize":
+						newCfg += AllowWindowResize.ToString();
+						break;
+					case "WindowMode":
+						newCfg += WindowMode.ToString();
+						break;
+					case "WindowKeep":
+						newCfg += WindowKeep.ToString();
+						break;
+				}
+
+				newCfg += "\n";
+			}
+
+			File.WriteAllText(ConfigFilePath, newCfg.Remove(newCfg.Length - 1));
 		}
 
 #if DEBUG
@@ -201,8 +244,38 @@ namespace Dolanan.Engine
 		{
 			if (ShowWindow)
 			{
+				ImGui.SetNextWindowSize(new System.Numerics.Vector2(650, 200), ImGuiCond.Appearing);
 				ImGui.Begin("Game Settings", ref _showWindow);
-				//ImGuiMg.ColorEdit("Background Color", ref _backgroundColor);
+				ImGuiMg.ColorEdit("Background Color", ref _backgroundColor);
+				ImGuiMg.Point("Render Size", ref _renderSize);
+				ImGuiMg.Point("Window Size", ref _windowSize);
+				ImGui.Checkbox("Resizable Window", ref _allowWindowResize);
+				ImGui.Checkbox("Clip Cursor", ref ClipCursor);
+				
+				var wkStr = Enum.GetNames(typeof(WindowSizeKeep));
+				var wkInt = (int)WindowKeep;
+				ImGui.Combo("Window Keep", ref wkInt, wkStr, wkStr.Length);
+				if (wkInt != (int) WindowKeep)
+					WindowKeep = (WindowSizeKeep)Enum.Parse(typeof(WindowSizeKeep), wkStr[wkInt]);
+				
+				var wmStr = Enum.GetNames(typeof(WindowMode));
+				var wmInt = (int)WindowMode;
+				ImGui.Combo("Window Mode", ref wmInt, wmStr, wmStr.Length);
+				if (wmInt != (int) WindowMode)
+					WindowMode = (WindowMode)Enum.Parse(typeof(WindowMode), wmStr[wmInt]);
+
+				if (ImGui.Button("Save"))
+				{
+					SaveCfg();
+				}
+
+				ImGui.SameLine(); 
+				if(ImGui.Button("Apply"))
+				{
+					IsDirty = true;
+					Configure();
+				}
+				
 				ImGui.End();
 			}
 		}
@@ -215,8 +288,8 @@ namespace Dolanan.Engine
 
 		Height
 		// TODO : Expand will use the most possible between width or height ( we don't really need this actually)
-		,
-		Expand
+		// ,
+		// Expand
 	}
 
 	public enum WindowMode

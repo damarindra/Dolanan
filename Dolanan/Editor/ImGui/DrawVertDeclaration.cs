@@ -1,11 +1,14 @@
-﻿using ImGuiNET;
+﻿/*	Original  : https://github.com/mellinoe/ImGui.NET
+	MIT
+ */
+using ImGuiNET;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Dolanan.Editor.ImGui
 {
+#if DEBUG
 	public static class DrawVertDeclaration
 	{
-#if DEBUG
 		public static readonly VertexDeclaration Declaration;
 
 		public static readonly int Size;
@@ -27,6 +30,6 @@ namespace Dolanan.Editor.ImGui
 				new VertexElement(16, VertexElementFormat.Color, VertexElementUsage.Color, 0)
 			);
 		}
-#endif
 	}
+#endif
 }
