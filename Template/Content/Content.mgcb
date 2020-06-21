@@ -1,0 +1,16 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:Windows
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\..\Pipeline\Dolanan.AsepritePipeline\bin\Release\net45\Dolanan.AsepritePipeline.dll
+
+#---------------------------------- Content ---------------------------------#
+

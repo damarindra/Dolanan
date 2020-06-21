@@ -15,6 +15,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Sample", "Sample\Sample.shp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dolanan.PipelineReader", "ThirdParty\Dolanan.PipelineReader\Dolanan.PipelineReader.csproj", "{FAA1775E-0E8B-4627-BCF8-CEE1025B6BBE}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Template", "Template\Template.shproj", "{7F40F1E7-D4B9-4BE9-A205-1918831EFB5E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Dolanan\Dolanan.projitems*{321db5a8-c5c4-4186-b614-7f5a322a00c8}*SharedItemsImports = 5
