@@ -41,11 +41,14 @@ namespace Dolanan
 			Graphics = new GraphicsDeviceManager(this);
 			GameMgr.Init(this);
 			GameSettings.InitializeGameSettings(Graphics, Window);
+#if DEBUG
+			EditorSettings.Init();
+#endif
 			Window.ClientSizeChanged += OnWindowResize;
 			Content.RootDirectory = "Content";
 
-
 #if DEBUG
+
 			// Configuration Input, basic debugging stuff
 			Input.AddInputAction("Alt", new InputAction(Keys.LeftAlt, Keys.RightAlt));
 			Input.AddInputAction("Enter", new InputAction(Keys.Enter));
@@ -96,7 +99,7 @@ namespace Dolanan
 #if DEBUG
 			ImGuiRenderer = new ImGuiRenderer(this);
 			ImGuiRenderer.RebuildFontAtlas();
-			
+
 			ImGuiRenderer.SetupMonoGameWindowInput();
 #endif
 

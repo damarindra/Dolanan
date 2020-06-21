@@ -1,14 +1,12 @@
 ﻿﻿using System;
 using System.IO;
- using System.Linq;
- using Dolanan.Controller;
+using Dolanan.Controller;
 using Dolanan.Core.Utility;
 using Dolanan.Editor.ImGui;
 using Dolanan.Tools;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
- using Vector3 = System.Numerics.Vector3;
 
  namespace Dolanan.Engine
 {
@@ -103,7 +101,7 @@ using Microsoft.Xna.Framework.Graphics;
 		/// </summary>
 		public static bool ClipCursor = false;
 
-		public static bool IsSetupDone = false;
+		private static bool _isSetupDone = false;
 		
 		public static void InitializeGameSettings(GraphicsDeviceManager graphics, GameWindow window)
 		{
@@ -113,9 +111,9 @@ using Microsoft.Xna.Framework.Graphics;
 			LoadFromCfg();
 
 #if DEBUG
-			if(!IsSetupDone) GameMgr.Game.OnImGuiDraw += DrawImGuiWindow;
+			if(!_isSetupDone) GameMgr.Game.OnImGuiDraw += DrawImGuiWindow;
 #endif
-			IsSetupDone = true;
+			_isSetupDone = true;
 		}
 		
 		public static void ApplyChanges()
@@ -230,7 +228,7 @@ using Microsoft.Xna.Framework.Graphics;
 				newCfg += "\n";
 			}
 
-			File.WriteAllText(ConfigFilePath, newCfg.Remove(newCfg.Length - 1));
+			FileDirectory.WriteFile(ConfigFilePath, newCfg.Remove(newCfg.Length - 1));
 		}
 
 #if DEBUG

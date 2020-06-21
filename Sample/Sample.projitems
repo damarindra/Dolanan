@@ -57,6 +57,9 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\rpgitems_ase.json" />
     <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\space.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\Graphics\UI\space_inlay.png" />
+    <Content Include="$(MSBuildThisFileDirectory)EditorSettings.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)Level\testJson.json" />
     <Content Include="$(MSBuildThisFileDirectory)Settings\GameSettings.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -1,5 +1,8 @@
-﻿﻿using Microsoft.Xna.Framework;
-using Num = System.Numerics;
+﻿﻿using System;
+ using System.Linq;
+ using Microsoft.Xna.Framework;
+ using System.Text;
+ using Num = System.Numerics;
 
 namespace Dolanan.Editor.ImGui
 {
@@ -33,6 +36,18 @@ namespace Dolanan.Editor.ImGui
 
 			if(!vector2.Equals(newVal))
 				vector2 = newVal;
+		}
+
+		public static void InputText(string label, ref string str, byte bufSize = 100)
+		{
+			byte[] bytes =  Encoding.UTF8.GetBytes(str);
+			Array.Resize<Byte>(ref bytes, bufSize);
+			ImGui.InputText(label, bytes, bufSize);
+			string newStr = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+			while (newStr[^1] == '\u0000')
+				newStr = newStr.Remove(newStr.Length - 1);
+			if (!string.Equals(newStr, str, StringComparison.Ordinal))
+				str = newStr;
 		}
 	
 		public static Num.Vector3 ToNumVec3(this Vector3 v)

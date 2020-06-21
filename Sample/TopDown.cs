@@ -1,4 +1,5 @@
-﻿using Dolanan;
+﻿using System;
+using Dolanan;
 using Dolanan.Components;
 using Dolanan.Components.UI;
 using Dolanan.Controller;
@@ -35,6 +36,7 @@ namespace DolananSample
 		{
 			base.Initialize();
 
+			
 			p = World.CreateActor<Player>("Player");
 			p.Transform.GlobalLocation =
 				new Vector2(GameSettings.RenderSize.X / 2f, GameSettings.RenderSize.Y / 2f);
@@ -53,6 +55,7 @@ namespace DolananSample
 			fd.Location = Vector2.One * 64;
 			fd.Rotation = MathHelper.ToRadians(45);
 
+			
 			_uiTexture = GameMgr.Game.Content.Load<Texture2D>("Graphics/UI/rpgItems");
 			_uiAseprite = GameMgr.Game.Content.Load<Aseprite>("Graphics/UI/rpgitems_ase");
 			Slice slice;
