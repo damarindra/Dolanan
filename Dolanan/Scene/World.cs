@@ -25,8 +25,8 @@ namespace Dolanan.Scene
 			Start();
 		}
 
-		protected List<Layer> Layers { get; } = new List<Layer>();
-		protected List<UILayer> UILayers { get; private set; } = new List<UILayer>();
+		public List<Layer> Layers { get; } = new List<Layer>();
+		public List<UILayer> UILayers { get; private set; } = new List<UILayer>();
 
 		public int LayerCount => Layers.Count;
 
@@ -36,17 +36,17 @@ namespace Dolanan.Scene
 		/// <param name="layerZ"></param>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public T CreateLayer<T>(int layerZ) where T : Layer
+		public T CreateLayer<T>(string name) where T : Layer
 		{
-			foreach (var layer in Layers)
-				if (layer.LayerZ == layerZ)
-					return (T) layer;
+			// foreach (var layer in Layers)
+			// 	if (layer.LayerZ == layerZ)
+			// 		return (T) layer;
 
-			var result = (T) Activator.CreateInstance(typeof(T), this, layerZ);
+			var result = (T) Activator.CreateInstance(typeof(T), this, name);
 			Layers.Add(result);
 			UILayers.Clear();
 			UILayers = Layers.OfType<UILayer>().ToList();
-			UpdateLayerZOrder();
+			// UpdateLayerZOrder();
 			return result;
 		}
 
@@ -58,14 +58,19 @@ namespace Dolanan.Scene
 					(int) collisionCollider.Size.X, (int) collisionCollider.Size.Y), Color.White);
 		}
 
-		public Layer GetLayer(LayerName layerName)
+		public Layer GetLayer(string name)
 		{
-			return Layers[(int) layerName];
+			foreach (var layer in Layers)
+			{
+				if (layer.Name == name)
+					return layer;
+			}
+			return null;
 		}
 
 		public Layer GetDefaultLayer()
 		{
-			return Layers[(int) LayerName.Default];
+			return Layers[1];
 		}
 
 		public T CreateActor<T>(string name) where T : Actor
@@ -78,10 +83,10 @@ namespace Dolanan.Scene
 			return layer.CreateActor<T>(name);
 		}
 
-		public void UpdateLayerZOrder()
-		{
-			for (var i = 0; i < Layers.Count; i++) Layers[i].LayerZ = i / (float) LayerCount;
-		}
+		// public void UpdateLayerZOrder()
+		// {
+		// 	for (var i = 0; i < Layers.Count; i++) Layers[i].LayerZ = i / (float) LayerCount;
+		// }
 
 		public void SwapLayer(Layer l1, Layer l2)
 		{
@@ -94,9 +99,9 @@ namespace Dolanan.Scene
 			Layers[indexL1] = l2;
 			Layers[indexL2] = l1;
 
-			var l1LayerZ = l1.LayerZ;
-			l1.LayerZ = l2.LayerZ;
-			l2.LayerZ = l1LayerZ;
+			// var l1LayerZ = l1.LayerZ;
+			// l1.LayerZ = l2.LayerZ;
+			// l2.LayerZ = l1LayerZ;
 		}
 
 		public void SwapLayer(int indexL1, int indexL2)
@@ -108,9 +113,9 @@ namespace Dolanan.Scene
 			Layers[indexL1] = Layers[indexL2];
 			Layers[indexL2] = l1;
 
-			var l1LayerZ = l1.LayerZ;
-			l1.LayerZ = Layers[indexL2].LayerZ;
-			Layers[indexL2].LayerZ = l1LayerZ;
+			// var l1LayerZ = l1.LayerZ;
+			// l1.LayerZ = Layers[indexL2].LayerZ;
+			// Layers[indexL2].LayerZ = l1LayerZ;
 		}
 
 		#region Cycle
@@ -122,7 +127,7 @@ namespace Dolanan.Scene
 		public virtual void Start()
 		{
 			foreach (var name in (LayerName[]) Enum.GetValues(typeof(LayerName)))
-				Layers.Add(new Layer(this, (int) name));
+				Layers.Add(new Layer(this, name.ToString()));
 
 			Camera = GetDefaultLayer().CreateActor<Camera>("Camera");
 		}
@@ -146,9 +151,14 @@ namespace Dolanan.Scene
 		/// <param name="layerZDepth">Not important, for Layer / Actor / Component only</param>
 		public virtual void Draw(GameTime gameTime, float layerZDepth = 0)
 		{
+			float step = 1f / (float)Layers.Count;
+			float currentZ = 0f;
 			foreach (var layer in Layers)
+			{
 				if (!UILayers.Contains(layer) || ((UILayer) layer).UISpace == UISpace.World)
-					layer.Draw(gameTime, layerZDepth);
+					layer.Draw(gameTime, currentZ);
+				currentZ += step;
+			}
 		}
 
 		/// <summary>

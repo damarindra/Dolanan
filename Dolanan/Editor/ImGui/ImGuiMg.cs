@@ -21,17 +21,35 @@ namespace Dolanan.Editor.ImGui
 	
 		public static void Point(string label, ref Point point)
 		{
-			var v = point.ToVector2().ToNumVec2();
-			ImGui.InputFloat2(label, ref v, "%.0f");
-			var vP = v.ToXnaVec2().ToPoint();
+			int[] p = new[] {point.X, point.Y};
 
-			if(!point.Equals(vP))
-				point = vP;
+			ImGui.InputInt2(label, ref p[0]);
+
+			if(point.X != p[0] || point.Y != p[1])
+				point = new Point(p[0], p[1]);
 		}
 		public static void Vector2(string label, ref Vector2 vector2)
 		{
 			var v = vector2.ToNumVec2();
 			ImGui.InputFloat2(label, ref v);
+			var newVal = v.ToXnaVec2();
+
+			if(!vector2.Equals(newVal))
+				vector2 = newVal;
+		}
+		public static void DragPoint(string label, ref Point point)
+		{
+			int[] p = new[] {point.X, point.Y};
+
+			ImGui.DragInt2(label, ref p[0]);
+
+			if(point.X != p[0] || point.Y != p[1])
+				point = new Point(p[0], p[1]);
+		}
+		public static void DragVector2(string label, ref Vector2 vector2)
+		{
+			var v = vector2.ToNumVec2();
+			ImGui.DragFloat2(label, ref v);
 			var newVal = v.ToXnaVec2();
 
 			if(!vector2.Equals(newVal))

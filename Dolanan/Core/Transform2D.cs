@@ -1,6 +1,7 @@
 ﻿﻿using System.Collections.Generic;
 using Dolanan.Components;
-using Dolanan.Scene;
+ using Dolanan.Editor.Attribute;
+ using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Engine
@@ -12,12 +13,12 @@ namespace Dolanan.Engine
 	/// </summary>
 	public class Transform2D : Component
 	{
-		private Vector2 _localScale = Vector2.One;
-		private Vector2 _location = Vector2.Zero;
+		[VisibleProperty] private Vector2 _localScale = Vector2.One;
+		[VisibleProperty] private Vector2 _location = Vector2.Zero;
 
 		private Matrix _matrix = Matrix.Identity;
 		private Transform2D _parent;
-		private float _rotation;
+		[VisibleProperty] private float _rotation;
 		internal List<Transform2D> Childs = new List<Transform2D>();
 		public TransformParentChange OnParentChange;
 
@@ -26,7 +27,7 @@ namespace Dolanan.Engine
 		}
 
 		/// <summary>
-		///     Never set parent! Set parent from Actor instead!
+		///     Never set parent! Set parent from Actor instead! C# doens't have friend feature, so this is suck!
 		/// </summary>
 		public Transform2D Parent
 		{

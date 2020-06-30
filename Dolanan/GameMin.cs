@@ -35,7 +35,6 @@ namespace Dolanan
 		private Vector2 _scaleRenderTarget = new Vector2(1, 1);
 #if DEBUG
 		public ImGuiRenderer ImGuiRenderer { get; private set; }
-
 		public DrawImGuiWindow OnImGuiDraw;
 #endif
 
@@ -108,67 +107,7 @@ namespace Dolanan
 			ImGuiRenderer.RebuildFontAtlas();
 
 			ImGuiRenderer.SetupMonoGameWindowInput();
-			
-			// TODO Complete the ShowInEditor, 
-			var types = (from t in Assembly.GetExecutingAssembly().GetTypes()
-				where t.GetCustomAttributes<ShowInEditorAttribute>().Any()
-				select t).ToList();
-
-			foreach (var type in types)
-			{
-				var properties =
-					(from p in type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-						where p.GetCustomAttributes<VisiblePropertyAttribute>().Any()
-						select p).ToList();
-				Console.WriteLine(type);
-
-				// Dictionary<string, (Func<object>, Action<object, object>)> setter = new Dictionary<string, (Func<object>, Action<object, object>)>();
-				// foreach (var propertyInfo in properties)
-				// {
-				// 	Console.WriteLine(propertyInfo);
-				// 	Type propertyType = propertyInfo.GetType();
-				// 	var setterEmit = Emit<Action<object, object>>
-				// 		.NewDynamicMethod()
-				// 		.LoadArgument(0)
-				// 		.CastClass(type)
-				// 		.LoadArgument(1)
-				// 		.Call(propertyInfo.GetSetMethod(true))
-				// 		.Return();
-				// 	var s = setterEmit.CreateDelegate();
-				// 	var getterEmit = Emit<Func<object>>.NewDynamicMethod();
-				// 	getterEmit.Call(propertyInfo.GetGetMethod(true)).Return();
-				// 	var g = getterEmit.CreateDelegate();
-				// 	setter.Add(propertyInfo.Name, (g, s));
-				// 	Console.WriteLine(g.Invoke());
-				// }
-
-				
-				DrawImGuiWindow drawImGuiWindow = (() =>
-				{
-					// foreach (var action in setter)
-					// {
-					// 	string oldval = (string)action.Value.;
-					// 	ImGuiMg.InputText(action.Key, ref oldval);
-					// 	
-					// }
-					if(EditorMode.SelectedActor == null)
-						return;
-					ImGui.SetNextWindowSize(new System.Numerics.Vector2(320, 200), ImGuiCond.Appearing);
-
-					foreach (var propertyInfo in properties)
-					{
-						var att = propertyInfo.GetCustomAttribute<VisiblePropertyAttribute>();
-						att.ObjectActor = EditorMode.SelectedActor;
-						att.PropertyInfo = propertyInfo;
-						att.OnDrawProperty();
-						// string oldVal = (string) propertyInfo.GetValue(EditorMode.SelectedActor);
-						// ImGuiMg.InputText(propertyInfo.Name, ref oldVal);
-						// propertyInfo.SetValue(EditorMode.SelectedActor, oldVal);
-					}
-				});
-				
-				EditorMode.Inspector.Add(type, drawImGuiWindow);
-			}
+			EditorMode.SetupInspectorWindow();
 #endif
 
 			base.Initialize();
@@ -188,6 +127,7 @@ namespace Dolanan
 				new RenderTarget2D(GraphicsDevice, World.Camera.ViewportRectSize.X, World.Camera.ViewportRectSize.Y);
 
 			// use this.Content to load your game content here
+			Console.WriteLine(Content.RootDirectory);
 		}
 
 		protected override void Update(GameTime gameTime)
@@ -286,6 +226,7 @@ namespace Dolanan
 
 #if DEBUG
 			ImGuiRenderer.BeforeLayout(gameTime);
+			Hierarchy.DrawHierarchy();
 			OnImGuiDraw?.Invoke();
 // 			{
 // 			if (ImGui.Button("Test Window")) show_test_window = !show_test_window;

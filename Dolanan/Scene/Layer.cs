@@ -15,7 +15,8 @@ namespace Dolanan.Scene
 	/// </summary>
 	public class Layer : IGameCycle
 	{
-		protected List<Actor> Actors = new List<Actor>();
+		public string Name = "";
+		public readonly List<Actor> Actors = new List<Actor>();
 
 		/// <summary>
 		///     Auto Y Sort only work when Actor Position is positive.
@@ -28,11 +29,11 @@ namespace Dolanan.Scene
 		/// <param name="gameWorld"></param>
 		/// <param name="layerName"></param>
 		/// <param name="useCollision"></param>
-		public Layer(World gameWorld, int layerZ)
+		public Layer(World gameWorld, string name)
 		{
 			Initialize();
 			GameWorld = gameWorld;
-			LayerZ = layerZ;
+			Name = name;
 			LoadLayer();
 			Start();
 		}
@@ -40,8 +41,6 @@ namespace Dolanan.Scene
 		public bool IsLoaded { get; private set; }
 
 		public World GameWorld { get; }
-
-		public float LayerZ { get; internal set; }
 
 		public virtual void Initialize()
 		{
@@ -70,7 +69,7 @@ namespace Dolanan.Scene
 			if (!IsLoaded)
 				return;
 			foreach (var actor in Actors)
-				actor.Draw(gameTime, LayerZ + (AutoYSort ? actor.Transform.Location.Y * Single.Epsilon : 0));
+				actor.Draw(gameTime, layerZDepth + (AutoYSort ? actor.Transform.Location.Y * Single.Epsilon : 0));
 		}
 
 		/// <summary>
@@ -122,7 +121,7 @@ namespace Dolanan.Scene
 		{
 			if (actor.Transform.Parent != null)
 			{
-				Log.PrintError("Trying to remove non-root Actor from layer : " + LayerZ +
+				Log.PrintError("Trying to remove non-root Actor from layer : " + Name +
 				               ". This is not allowed. Use Actor.RemoveChild.");
 				return;
 			}

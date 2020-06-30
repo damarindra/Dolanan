@@ -14,7 +14,7 @@ namespace Dolanan.Scene
 		/// </summary>
 		public float Scaling = 2;
 
-		public UILayer(World gameWorld, int layerZ) : base(gameWorld, layerZ)
+		public UILayer(World gameWorld, string name) : base(gameWorld, name)
 		{
 		}
 
@@ -101,7 +101,8 @@ namespace Dolanan.Scene
 				ScreenCanvas.RectTransform.Rectangle = worldRect.ToRectangleF();
 			}
 
-			base.Draw(gameTime, LayerZ);
+			// just placeholder, UI back draw draw at .97 is fine I think
+			base.Draw(gameTime, .97f);
 		}
 	}
 

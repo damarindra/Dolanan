@@ -24,9 +24,9 @@ namespace Dolanan.Scene
 	{
 		// Component stuff
 		// Render
-		protected readonly List<Component> Components = new List<Component>();
+		public readonly List<Component> Components = new List<Component>();
 
-		[VisibleProperty] public string Name { get; set; }
+		[VisibleProperty] public string Name;
 		public ChildState OnChildChange;
 		public LayerState OnLayerChange;
 
@@ -149,13 +149,18 @@ namespace Dolanan.Scene
 		///     Set parent. If parent in different layer, this layer will be the same as parent layer
 		/// </summary>
 		/// <param name="parent"></param>
-		public void SetParent([NotNull] Actor parent)
+		public void SetParent(Actor parent)
 		{
-			if (parent == this || Transform.Parent == parent.Transform)
+			if (parent == this)
 				return;
-			Transform.Parent = parent.Transform;
+			if(parent != null && Transform.Parent == parent.Transform)
+				return;
+
+			if (parent != null)
+				Transform.Parent = parent.Transform;
+			else Transform.Parent = null;
 			OnParentChange?.Invoke(parent);
-			parent.OnChildChange?.Invoke(parent.Transform.Childs.ToArray());
+			parent?.OnChildChange?.Invoke(parent.Transform.Childs.ToArray());
 		}
 
 		public void SetLayer([NotNull] Layer layer)

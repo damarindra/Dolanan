@@ -11,7 +11,8 @@ namespace Dolanan.Scene.Object
 {
 	public class Player : Actor
 	{
-		[VisibleProperty] public Vector2 TestVecProp { get; set; }
+		[VisibleProperty] public Vector2 TestVecProp;
+		[VisibleProperty] public Rectangle Rectangle;
 
 		private readonly float _moveSpeed = 160;
 

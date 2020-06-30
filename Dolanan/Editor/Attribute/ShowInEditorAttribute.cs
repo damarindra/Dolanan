@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace Dolanan.Editor.Attribute
 {
@@ -12,6 +13,6 @@ namespace Dolanan.Editor.Attribute
 	
 	public interface IPropertyDrawer
 	{
-		public void OnDrawProperty();
+		public abstract void OnDrawProperty(FieldInfo fieldInfo, Object obj);
 	} 
 }

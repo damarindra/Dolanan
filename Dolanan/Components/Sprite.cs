@@ -1,12 +1,13 @@
 ﻿﻿using System;
-using Dolanan.Scene;
+ using Dolanan.Editor.Attribute;
+ using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 
 namespace Dolanan.Components
 {
 	public class Sprite : Renderer
 	{
-		private int _frame;
+		[VisibleProperty] private int _frame;
 
 		public Sprite(Actor owner) : base(owner)
 		{

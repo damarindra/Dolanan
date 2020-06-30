@@ -51,7 +51,7 @@ namespace DolananSample
 				p.AnimationPlayer.AddAnimationSequence(asepriteAnimationFrame.ToAnimationSequence(p.Sprite, "Frame"));
 
 
-			var fd = World.CreateActor<SpriteActor>("r");
+			var fd = World.CreateActor<SpriteActor>("Square");
 			fd.SetParent(p);
 			fd.Sprite.Texture2D = GameMgr.Game.Content.Load<Texture2D>("Graphics/square_64x64");
 			fd.Location = Vector2.One * 64;
@@ -78,7 +78,7 @@ namespace DolananSample
 			{
 			}
 
-			UILayer = World.CreateLayer<UILayer>(12);
+			UILayer = World.CreateLayer<UILayer>("UI");
 			Canvas = UILayer.ScreenCanvas;
 			Canvas.RectTransform.Size = new Vector2(GameSettings.RenderSize.X, GameSettings.RenderSize.Y);
 			Canvas.Interactable = false;
@@ -350,7 +350,6 @@ namespace DolananSample
 		protected override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-
 			if (Keyboard.GetState().IsKeyDown(Keys.L))
 			{
 				if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))

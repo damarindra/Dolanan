@@ -1,7 +1,8 @@
 ﻿﻿using System;
 using System.Runtime.Serialization;
 using Dolanan.Controller;
-using Dolanan.Scene;
+ using Dolanan.Editor.Attribute;
+ using Dolanan.Scene;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,10 +10,10 @@ namespace Dolanan.Components
 {
 	public class Renderer : Component
 	{
-		private Vector2 _origin;
+		[VisibleProperty] private Vector2 _origin;
 
-		private Pivot _pivot = Pivot.Center;
-		private Point _srcSize;
+		[VisibleProperty] private Pivot _pivot = Pivot.Center;
+		[VisibleProperty] private Point _srcSize;
 		private Texture2D _texture;
 
 		public SpriteEffects SpriteEffect = SpriteEffects.None;
